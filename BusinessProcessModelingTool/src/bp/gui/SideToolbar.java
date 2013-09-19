@@ -22,6 +22,7 @@ public class SideToolbar extends JPanel {
 
     /** activity view **/
     private JButton task;
+    private JButton lane;
 
     /** flow control view **/
     private JButton edge;
@@ -43,6 +44,7 @@ public class SideToolbar extends JPanel {
         select = new JButton(ActionFactory.getSelect());
 
         task = new JButton(ActionFactory.getAddTask());
+        lane = new JButton(ActionFactory.getAddLane());
 
         edge = new JButton(ActionFactory.getAddEdge());
 
@@ -57,6 +59,7 @@ public class SideToolbar extends JPanel {
         
         add(activityLb);
         add(task);
+        add(lane);
 
         add(controlFlowLb);
         add(edge);

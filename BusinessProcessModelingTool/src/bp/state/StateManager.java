@@ -12,6 +12,7 @@ public class StateManager {
     private final SelectState selectState;
     private final TaskState taskState;
     private final EdgeState edgeState;
+    private final LaneState laneState;
 
     public StateManager(BPPanel panel) {
         this.panel = panel;
@@ -19,6 +20,7 @@ public class StateManager {
         selectState = new SelectState(panel);
         taskState = new TaskState(panel);
         edgeState = new EdgeState(panel);
+        laneState = new LaneState(panel);
 
         defaultState = selectState;
         currentState = defaultState;
@@ -49,6 +51,8 @@ public class StateManager {
             return taskState;
         else if (stateType == StateType.EDGE)
             return edgeState;
+        else if (stateType == StateType.LANE)
+            return laneState;
 
         return defaultState;
     }

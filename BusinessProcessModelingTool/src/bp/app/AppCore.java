@@ -89,6 +89,7 @@ public final class AppCore extends JFrame{
         propertiesView.removeAll();
         propertiesView.add(details);
         propertiesScroll.validate();
+        propertiesScroll.repaint();
     }
 
     public void createBPPanel() {

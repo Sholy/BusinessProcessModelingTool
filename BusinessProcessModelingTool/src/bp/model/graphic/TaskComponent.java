@@ -9,7 +9,7 @@ import bp.view.painter.BPShapeFactory;
 
 public class TaskComponent extends BPComponent {
 
-    private BPElementTextPainter painter;
+    private final BPElementTextPainter painter;
     private String text;
 
     public TaskComponent() {

@@ -7,6 +7,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
 import bp.model.graphic.BPComponent;
+import bp.model.graphic.LaneComponent;
 import bp.model.graphic.SquareComponent;
 import bp.model.graphic.util.ElementHandlers;
 import bp.model.graphic.util.Handler;
@@ -52,6 +53,20 @@ public class BPShapeFactory {
         gp.lineTo(-10, -5);
         gp.lineTo(-10, 5);
         gp.lineTo(0, 0);
+        return gp;
+    }
+
+    public static Shape lane(LaneComponent component) {
+        GeneralPath gp = new GeneralPath();
+        gp.moveTo(component.getTextPanelHeight(), 0);
+        gp.lineTo(component.getWidth(), 0);
+        gp.lineTo(component.getWidth(), component.getHeight());
+        gp.lineTo(component.getTextPanelHeight(), component.getHeight());
+        gp.lineTo(component.getTextPanelHeight(), 0);
+        gp.lineTo(0, 0);
+        gp.lineTo(0, component.getHeight());
+        gp.lineTo(component.getTextPanelHeight(), component.getHeight());
+        gp.lineTo(component.getTextPanelHeight(), 0);
         return gp;
     }
 }

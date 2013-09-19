@@ -3,6 +3,9 @@ package bp.model.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import bp.details.LaneDetails;
+import bp.model.graphic.LaneComponent;
+
 public class Lane extends Element {
 
     private String actor;
@@ -12,6 +15,17 @@ public class Lane extends Element {
 
     public Lane(String uniqueName) {
         super(uniqueName);
+    }
+
+    @Override
+    protected void initializeComponent() {
+        component = new LaneComponent();
+    }
+
+    @Override
+    protected void initializeDetails() {
+        details = new LaneDetails(this);
+        details.updateComponents();
     }
 
     public Lane getParent() {
@@ -36,6 +50,10 @@ public class Lane extends Element {
 
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    public LaneComponent getLaneComponent() {
+        return (LaneComponent) getComponent();
     }
 
 }

@@ -15,6 +15,7 @@ public class ActionFactory {
     private static final Action select = new SelectAction("Select", "Select Item");
     private static final Action addTask = new AddTask("Task", "Add Task");
     private static final Action addEdge = new AddEdge("Edge", "Add Edge");
+    private static final Action addLane = new AddLane("Lane", "Add Lane");
 
     public static Action getNewDiagram() {
         return newDiagram;
@@ -34,6 +35,10 @@ public class ActionFactory {
 
     public static Action getAddEdge() {
         return addEdge;
+    }
+
+    public static Action getAddLane() {
+        return addLane;
     }
 
 }

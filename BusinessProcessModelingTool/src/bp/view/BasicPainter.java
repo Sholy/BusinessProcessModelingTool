@@ -21,9 +21,9 @@ public abstract class BasicPainter {
 
     public abstract void paint(Graphics2D g);
 
-    public abstract void paintHandlers(Graphics2D g);
-
     public abstract boolean isElementAt(Point pos);
+
+    public abstract void paintHandlers(Graphics2D g);
 
     protected void paintHandler(Graphics2D g, Handler h) {
         AffineTransform oldTransform = g.getTransform();
