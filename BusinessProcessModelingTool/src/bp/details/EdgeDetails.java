@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import bp.model.data.Edge;
+import bp.model.util.BPKeyWords;
 
 public class EdgeDetails extends ElementDetails {
 
@@ -53,20 +54,15 @@ public class EdgeDetails extends ElementDetails {
     }
 
     @Override
-    public void updateComponents() {
-        super.updateComponents();
-
-        updateSource();
-        updateTarget();
+    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+        super.dataAttributeChanged(keyWord, value);
+        if (value != null) {
+            if (keyWord == BPKeyWords.SOURCE) {
+                // TODO
+            } else if (keyWord == BPKeyWords.TARGET) {
+                // TODO
+            }
+        }
     }
-
-    public void updateTarget() {
-        targetTf.setText(edge.getTarget().getName());
-    }
-
-    public void updateSource() {
-        sourceTf.setText(edge.getSource().getName());
-    }
-
     
 }

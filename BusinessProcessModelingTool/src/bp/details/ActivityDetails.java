@@ -13,6 +13,8 @@ import javax.swing.event.DocumentListener;
 
 import bp.model.data.Activity;
 import bp.model.data.Element;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 public abstract class ActivityDetails extends ElementDetails{
 
@@ -94,7 +96,7 @@ public abstract class ActivityDetails extends ElementDetails{
             }
 
             private void contentChanged() {
-                activity.setData(dataTa.getText());
+                activity.updateData(dataTa.getText(), Controller.DETAILS);
             }
         });
 
@@ -116,7 +118,7 @@ public abstract class ActivityDetails extends ElementDetails{
             }
 
             private void contentChanged() {
-                activity.setLoopExpression(loopExpressionTa.getText());
+                activity.updateLoopExpression(loopExpressionTa.getText(), Controller.DETAILS);
             }
         });
 
@@ -124,36 +126,23 @@ public abstract class ActivityDetails extends ElementDetails{
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                activity.setMinInput((Integer) minInputSp.getValue());
+                activity.updateMinInput((Integer) minInputSp.getValue(), Controller.DETAILS);
             }
         });
     }
 
     @Override
-    public void updateComponents() {
-        super.updateComponents();
-
-        updateData();
-        updateLoopExpression();
-        updateMinInput();
-    }
-
-    public void updateData() {
-        String data = activity.getData();
-        if (data != null)
-            dataTa.setText(data);
-    }
-
-    public void updateLoopExpression() {
-        String loopExpression = activity.getLoopExpression();
-        if (loopExpression != null)
-            loopExpressionTa.setText(loopExpression);
-    }
-
-    public void updateMinInput() {
-        Integer minInput = activity.getMinInput();
-        if (minInput != null)
-            minInputSp.setValue(minInput);
+    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+        super.dataAttributeChanged(keyWord, value);
+        if (value != null) {
+            if (keyWord == BPKeyWords.DATA) {
+                dataTa.setText((String) value);
+            } else if (keyWord == BPKeyWords.LOOP_EXPRESSION) {
+                loopExpressionTa.setText((String) value);
+            } else if (keyWord == BPKeyWords.MIN_INPUT) {
+                minInputSp.setValue(value);
+            }
+        }
     }
 
 }

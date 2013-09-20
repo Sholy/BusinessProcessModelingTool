@@ -3,6 +3,9 @@ package bp.model.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+
 public abstract class Activity extends Vertex {
 
     private String data;
@@ -19,24 +22,27 @@ public abstract class Activity extends Vertex {
         return data;
     }
 
-    public void setData(String data) {
+    public void updateData(String data, Controller source) {
         this.data = data;
+        fireAttributeChanged(BPKeyWords.DATA, this.data, source);
     }
 
     public String getLoopExpression() {
         return loopExpression;
     }
 
-    public void setLoopExpression(String loopExpression) {
+    public void updateLoopExpression(String loopExpression, Controller source) {
         this.loopExpression = loopExpression;
+        fireAttributeChanged(BPKeyWords.LOOP_EXPRESSION, this.loopExpression, source);
     }
 
     public Integer getMinInput() {
         return minInput;
     }
 
-    public void setMinInput(Integer minInput) {
+    public void updateMinInput(Integer minInput, Controller source) {
         this.minInput = minInput;
+        fireAttributeChanged(BPKeyWords.MIN_INPUT, this.minInput, source);
     }
 
     public List<ActivityEvent> getActivityEvents() {

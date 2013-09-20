@@ -19,8 +19,9 @@ import javax.swing.event.DocumentListener;
 
 import bp.model.data.Element;
 import bp.model.data.ExecutionType;
-import bp.model.data.Lane;
 import bp.model.data.Task;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 public class TaskDetails extends ActivityDetails{
 
@@ -125,7 +126,7 @@ public class TaskDetails extends ActivityDetails{
             }
 
             private void contentChanged() {
-                task.setActor(actorTa.getText());
+                task.updateActor(actorTa.getText(), Controller.DETAILS);
             }
         });
 
@@ -133,7 +134,7 @@ public class TaskDetails extends ActivityDetails{
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                task.setAutoAssign(autoAssignCb.isSelected());
+                task.updateAutoAssign(autoAssignCb.isSelected(), Controller.DETAILS);
             }
         });
 
@@ -141,7 +142,7 @@ public class TaskDetails extends ActivityDetails{
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                task.setMultipleExecution((Integer) multipleExecutionSp.getValue());
+                task.updateMultipleExecution((Integer) multipleExecutionSp.getValue(), Controller.DETAILS);
             }
         });
 
@@ -149,55 +150,27 @@ public class TaskDetails extends ActivityDetails{
 
             @Override
             public void itemStateChanged(ItemEvent arg0) {
-                task.setMultipleExecutionType(ExecutionType.getEnumValue((String) multipleExecutionTypeCb
-                        .getSelectedItem()));
-
+                task.updateMultipleExecutionType(ExecutionType.getEnumValue((String) multipleExecutionTypeCb.getSelectedItem()), Controller.DETAILS);
             }
         });
     }
 
     @Override
-    public void updateComponents() {
-        super.updateComponents();
-
-        updateActor();
-        updateLaneActor();
-        updateAutoAssign();
-        updateMultipleExecution();
-        updateMultipleExecutionType();
-    }
-
-    public void updateActor() {
-        String actor = task.getActor();
-        if (actor != null)
-            actorTa.setText(actor);
-    }
-
-    public void updateLaneActor() {
-        Lane lane = task.getLaneActor();
-        if (lane != null) {
-            String actor = lane.getActor();
-            if (actor != null)
-                laneActorTf.setText(actor);
+    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+        super.dataAttributeChanged(keyWord, value);
+        if (value != null) {
+            if (keyWord == BPKeyWords.ACTOR) {
+                actorTa.setText((String) value);
+            } else if (keyWord == BPKeyWords.LANE_ACTOR) {
+                // TODO
+            } else if (keyWord == BPKeyWords.AUTO_ASSIGN) {
+                autoAssignCb.setSelected((Boolean) value);
+            } else if (keyWord == BPKeyWords.MULTIPLE_EXECUTION) {
+                multipleExecutionSp.setValue(value);
+            } else if (keyWord == BPKeyWords.MULTIPLE_EXECUTION_TYPE) {
+                multipleExecutionTypeCb.setSelectedItem(((ExecutionType) value).getName());
+            }
         }
-    }
-
-    public void updateAutoAssign() {
-        Boolean autoAssign = task.getAutoAssign();
-        if (autoAssign != null)
-            autoAssignCb.setSelected(autoAssign);
-    }
-
-    public void updateMultipleExecution() {
-        Integer mulExecution = task.getMultipleExecution();
-        if (mulExecution != null)
-            multipleExecutionSp.setValue(mulExecution);
-    }
-
-    public void updateMultipleExecutionType() {
-        ExecutionType executionType = task.getMultipleExecutionType();
-        if (executionType != null)
-            multipleExecutionTypeCb.setSelectedItem(executionType.getName());
     }
 
 }

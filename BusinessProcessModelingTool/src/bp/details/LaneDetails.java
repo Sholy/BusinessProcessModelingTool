@@ -8,6 +8,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import bp.model.data.Lane;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 public class LaneDetails extends ElementDetails{
 
@@ -77,29 +79,20 @@ public class LaneDetails extends ElementDetails{
             }
 
             private void contentChanged() {
-                lane.setActor(actorTa.getText());
+                lane.updateActor(actorTa.getText(), Controller.DETAILS);
             }
         });
     }
 
     @Override
-    public void updateComponents() {
-        super.updateComponents();
-
-        updateParent();
-        updateActor();
-    }
-
-    public void updateParent() {
-        if (lane.getParent() != null && lane.getParent().getUniqueName() != null)
-            parentTf.setText(lane.getParent().getUniqueName());
-    }
-
-    public void updateActor() {
-        String laneActor = lane.getActor();
-        if (laneActor != null) {
-            actorTa.setText(laneActor);
+    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+        super.dataAttributeChanged(keyWord, value);
+        if (value != null) {
+            if (keyWord == BPKeyWords.PARENT) {
+                // TODO
+            } else if (keyWord == BPKeyWords.ACTOR) {
+                actorTa.setText((String) value);
+            }
         }
     }
-
 }

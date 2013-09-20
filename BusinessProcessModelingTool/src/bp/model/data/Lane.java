@@ -5,6 +5,8 @@ import java.util.List;
 
 import bp.details.LaneDetails;
 import bp.model.graphic.LaneComponent;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 public class Lane extends Element {
 
@@ -25,15 +27,15 @@ public class Lane extends Element {
     @Override
     protected void initializeDetails() {
         details = new LaneDetails(this);
-        details.updateComponents();
     }
 
     public Lane getParent() {
         return parent;
     }
 
-    public void setParent(Lane parent) {
+    public void updateParent(Lane parent, Controller source) {
         this.parent = parent;
+        fireAttributeChanged(BPKeyWords.PARENT, this.parent, source);
     }
 
     public List<Lane> getChildren() {
@@ -44,8 +46,9 @@ public class Lane extends Element {
         return actor;
     }
 
-    public void setActor(String actor) {
+    public void updateActor(String actor, Controller source) {
         this.actor = actor;
+        fireAttributeChanged(BPKeyWords.ACTOR, this.actor, source);
     }
 
     public List<Task> getTasks() {

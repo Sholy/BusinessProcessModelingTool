@@ -1,8 +1,9 @@
 package bp.model.data;
 
-import bp.app.AppCore;
 import bp.details.TaskDetails;
 import bp.model.graphic.TaskComponent;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 /**
  * Task represents atomic unit of work
@@ -28,61 +29,55 @@ public class Task extends Activity {
         return actor;
     }
 
-    public void setActor(String actor) {
+    public void updateActor(String actor, Controller source) {
         this.actor = actor;
+        fireAttributeChanged(BPKeyWords.ACTOR, this.actor, source);
     }
 
     public Boolean getAutoAssign() {
         return autoAssign;
     }
 
-    public void setAutoAssign(Boolean autoAssign) {
+    public void updateAutoAssign(Boolean autoAssign, Controller source) {
         this.autoAssign = autoAssign;
+        fireAttributeChanged(BPKeyWords.AUTO_ASSIGN, this.autoAssign, source);
     }
 
     public Integer getMultipleExecution() {
         return multipleExecution;
     }
 
-    public void setMultipleExecution(Integer multipleExecution) {
+    public void updateMultipleExecution(Integer multipleExecution, Controller source) {
         this.multipleExecution = multipleExecution;
+        fireAttributeChanged(BPKeyWords.MULTIPLE_EXECUTION, this.multipleExecution, source);
     }
 
     public ExecutionType getMultipleExecutionType() {
         return multipleExecutionType;
     }
 
-    public void setMultipleExecutionType(ExecutionType multipleExecutionType) {
+    public void updateMultipleExecutionType(ExecutionType multipleExecutionType, Controller source) {
         this.multipleExecutionType = multipleExecutionType;
+        fireAttributeChanged(BPKeyWords.MULTIPLE_EXECUTION_TYPE, this.multipleExecutionType, source);
     }
 
     public Lane getLaneActor() {
         return laneActor;
     }
 
-    public void setLaneActor(Lane laneActor) {
+    public void updateLaneActor(Lane laneActor, Controller source) {
         this.laneActor = laneActor;
-    }
-
-    @Override
-    public void setName(String name) {
-        // TODO change implementation
-        if (name != null && !name.equals(getName())) {
-            ((TaskComponent) component).updateText(name);
-            AppCore.getInstance().getBpPanel().updateUI();
-        }
-        super.setName(name);
+        fireAttributeChanged(BPKeyWords.LANE_ACTOR, this.laneActor, source);
     }
 
     @Override
     protected void initializeComponent() {
-        component = new TaskComponent();
+        component = new TaskComponent(this);
     }
 
     @Override
     protected void initializeDetails() {
         details = new TaskDetails(this);
-        details.updateComponents();
     }
 
     public TaskComponent getTaskComponent() {

@@ -7,7 +7,10 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import bp.event.AttributeChangeListener;
 import bp.model.data.Element;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 public abstract class ElementDetails extends AbstractDetails {
 
@@ -36,6 +39,7 @@ public abstract class ElementDetails extends AbstractDetails {
         initComponents();
         layoutComponents();
         addActions();
+        addDataListener();
     }
 
     protected void initComponents() {
@@ -76,12 +80,11 @@ public abstract class ElementDetails extends AbstractDetails {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                // TODO Auto-generated method stub
 
             }
 
             private void contentChanged() {
-                getElement().setUniqueName(uniqueNameTf.getText());
+                getElement().updateUniqueName(uniqueNameTf.getText(), Controller.DETAILS);
             }
         });
 
@@ -99,12 +102,11 @@ public abstract class ElementDetails extends AbstractDetails {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                // TODO Auto-generated method stub
 
             }
 
             private void contentChanged() {
-                getElement().setName(nameTf.getText());
+                getElement().updateName(nameTf.getText(), Controller.DETAILS);
             }
         });
 
@@ -126,31 +128,36 @@ public abstract class ElementDetails extends AbstractDetails {
             }
 
             private void contentChanged() {
-                getElement().setDescription(descriptionTa.getText());
+                getElement().updateDescription(descriptionTa.getText(), Controller.DETAILS);
             }
         });
     }
 
-    public void updateComponents() {
-        updateUniqueName();
-        updateName();
-        updateDescription();
+    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+        if (value != null) {
+            if (keyWord == BPKeyWords.UNIQUE_NAME) {
+                uniqueNameTf.setText((String) value);
+            } else if (keyWord == BPKeyWords.NAME) {
+                nameTf.setText((String) value);
+            } else if (keyWord == BPKeyWords.DESCRIPTION) {
+                descriptionTa.setText((String) value);
+            }
+        }
     }
 
-    public void updateUniqueName() {
-        uniqueNameTf.setText(getElement().getUniqueName());
-    }
+    private void addDataListener() {
+        getElement().addAttributeChangeListener(new AttributeChangeListener() {
 
-    public void updateName() {
-        String name = getElement().getName();
-        if (name != null)
-            nameTf.setText(name);
-    }
+            @Override
+            public Controller getController() {
+                return Controller.DETAILS;
+            }
 
-    public void updateDescription() {
-        String description = getElement().getDescription();
-        if (description != null)
-            descriptionTa.setText(description);
+            @Override
+            public void fireAttributeChanged(BPKeyWords keyWord, Object value) {
+                dataAttributeChanged(keyWord, value);
+            }
+        });
     }
 
     protected Element getElement() {

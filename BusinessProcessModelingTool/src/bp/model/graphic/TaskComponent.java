@@ -2,7 +2,12 @@ package bp.model.graphic;
 
 import java.awt.Shape;
 
+import bp.app.AppCore;
+import bp.event.AttributeChangeListener;
+import bp.model.data.Task;
 import bp.model.graphic.util.ElementHandlers;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 import bp.view.painter.BPElementPainter;
 import bp.view.painter.BPElementTextPainter;
 import bp.view.painter.BPShapeFactory;
@@ -11,9 +16,12 @@ public class TaskComponent extends BPComponent {
 
     private final BPElementTextPainter painter;
     private String text;
+    private final Task task;
 
-    public TaskComponent() {
-        painter = new BPElementTextPainter(this, text);
+    public TaskComponent(Task task) {
+        this.task = task;
+        this.painter = new BPElementTextPainter(this, text);
+        addDataListener();
     }
 
     @Override
@@ -45,8 +53,29 @@ public class TaskComponent extends BPComponent {
         return text;
     }
 
-    public void updateText(String text) {
+    protected void updateText(String text) {
         this.text = text;
         painter.setText(text);
+        AppCore.getInstance().getBpPanel().getGraphicsPanel().repaint();
     }
+
+    protected void addDataListener() {
+        task.addAttributeChangeListener(new AttributeChangeListener() {
+
+            @Override
+            public Controller getController() {
+                return Controller.GRAPHIC;
+            }
+
+            @Override
+            public void fireAttributeChanged(BPKeyWords keyWord, Object value) {
+                if (value != null) {
+                    if (keyWord == BPKeyWords.NAME) {
+                        updateText((String) value);
+                    }
+                }
+            }
+        });
+    }
+
 }
