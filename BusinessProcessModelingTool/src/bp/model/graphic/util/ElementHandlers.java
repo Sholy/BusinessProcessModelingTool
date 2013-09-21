@@ -9,7 +9,7 @@ import bp.model.graphic.BPComponent;
 import bp.view.Strokes;
 import bp.view.painter.BPShapeFactory;
 
-public class ElementHandlers {
+public class ElementHandlers implements IHandlers {
 
     public static final Integer RECTANGLE_HANDLERS = 0;
     public static final Integer SQUARE_HANDLERS = 1;
@@ -64,6 +64,7 @@ public class ElementHandlers {
         w = new Handler(0, 0, HandlerPosition.WEST);
     }
 
+    @Override
     public void updateHandlers() {
         Integer x = getComponent().getX();
         Integer y = getComponent().getY();
@@ -178,6 +179,7 @@ public class ElementHandlers {
         return BPShapeFactory.handlerBorder(this);
     }
 
+    @Override
     public boolean isHandlerAt(Point p) {
         Boolean squareHandlers = nw.isAt(p) || ne.isAt(p) || se.isAt(p) || sw.isAt(p);
         if (handlerType == RECTANGLE_HANDLERS) {
@@ -187,6 +189,7 @@ public class ElementHandlers {
         return squareHandlers;
     }
 
+    @Override
     public Handler getHandlerAt(Point p) {
         if (nw.isAt(p))
             return nw;

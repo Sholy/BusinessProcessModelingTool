@@ -7,7 +7,7 @@ import java.awt.Stroke;
 import bp.model.graphic.BPEdge;
 import bp.view.Strokes;
 
-public class EdgeHandlers {
+public class EdgeHandlers implements IHandlers {
 
     private final BPEdge edge;
 
@@ -24,6 +24,7 @@ public class EdgeHandlers {
         updateHandlers();
     }
 
+    @Override
     public void updateHandlers() {
         source.setX(getEdge().getSourceX() - source.getWidth()/2);
         source.setY(getEdge().getSourceY() - source.getHeight()/2);
@@ -65,10 +66,12 @@ public class EdgeHandlers {
         return target;
     }
 
+    @Override
     public boolean isHandlerAt(Point p) {
         return source.isAt(p) || target.isAt(p);
     }
 
+    @Override
     public Handler getHandlerAt(Point p) {
         if (source.isAt(p))
             return source;

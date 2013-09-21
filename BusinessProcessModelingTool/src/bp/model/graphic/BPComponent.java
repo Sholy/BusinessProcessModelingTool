@@ -91,11 +91,13 @@ public abstract class BPComponent extends BPElement {
     public void setHeight(Integer height) {
         this.height = height;
         updateComponent();
+        getHandlers().updateHandlers();
     }
 
     public void setWidth(Integer width) {
         this.width = width;
         updateComponent();
+        getHandlers().updateHandlers();
     }
 
     public Dimension getSize() {
@@ -108,6 +110,7 @@ public abstract class BPComponent extends BPElement {
 
     public void setX(Integer x) {
         this.x = x;
+        getHandlers().updateHandlers();
     }
 
     public Integer getY() {
@@ -116,12 +119,14 @@ public abstract class BPComponent extends BPElement {
 
     public void setY(Integer y) {
         this.y = y;
+        getHandlers().updateHandlers();
     }
 
     public EdgePoints[] getValidEdgePoints() {
         return EdgePoints.values();
     }
 
+    @Override
     public ElementHandlers getHandlers() {
         return handlers;
     }

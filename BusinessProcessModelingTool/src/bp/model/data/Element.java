@@ -1,5 +1,6 @@
 package bp.model.data;
 
+import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,8 +28,8 @@ public abstract class Element {
 
     private final Set<AttributeChangeListener> acListeners;
 
-    public Element(String uniqueName) {
-        acListeners = new HashSet<>();
+    public Element(final String uniqueName) {
+        this.acListeners = new HashSet<>();
         if (uniqueName == null || uniqueName.trim().isEmpty()) {
             throw new IllegalArgumentException("uniqueName can't be empty or null");
         }
@@ -47,54 +48,61 @@ public abstract class Element {
     }
 
     public String getUniqueName() {
-        return uniqueName;
+        return this.uniqueName;
     }
 
-    public void updateUniqueName(String uniqueName, Controller source) {
+    public void updateUniqueName(final String uniqueName, final Controller source) {
         this.uniqueName = uniqueName;
         fireAttributeChanged(BPKeyWords.UNIQUE_NAME, this.uniqueName, source);
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public void updateName(String name, Controller source) {
+    public void updateName(final String name, final Controller source) {
         this.name = name;
         fireAttributeChanged(BPKeyWords.NAME, this.name, source);
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
-    public void updateDescription(String description, Controller source) {
+    public void updateDescription(final String description, final Controller source) {
         this.description = description;
         fireAttributeChanged(BPKeyWords.DESCRIPTION, this.description, source);
     }
 
     public ElementDetails getDetails() {
-        return details;
+        return this.details;
     }
-    
+
     public BPElement getComponent() {
-        return component;
+        return this.component;
     }
 
     public Set<AttributeChangeListener> getAcListeners() {
-        return acListeners;
+        return this.acListeners;
     }
 
-    public void addAttributeChangeListener(AttributeChangeListener listener) {
-        acListeners.add(listener);
+    public void addAttributeChangeListener(final AttributeChangeListener listener) {
+        this.acListeners.add(listener);
     }
 
-    protected void fireAttributeChanged(BPKeyWords keyWord, Object value, Controller source) {
-        for (AttributeChangeListener listener : acListeners) {
+    protected void fireAttributeChanged(final BPKeyWords keyWord, final Object value, final Controller source) {
+        for (final AttributeChangeListener listener : this.acListeners) {
             if (source == null || listener.getController() == null || source != listener.getController()) {
                 listener.fireAttributeChanged(keyWord, value);
             }
         }
+    }
+
+    public boolean isElementAt(final Point p) {
+        if (this.component != null) {
+            return this.component.getPainter().isElementAt(p);
+        }
+        return false;
     }
 
 }

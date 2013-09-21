@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -25,10 +26,10 @@ public class BPGraphicPanel extends JPanel{
 
     private final BPPanel mainPanel;
     private final SelectionManager selectionManager;
-    
+
     private final Process process;
 
-    public BPGraphicPanel(BPPanel mainPanel) {
+    public BPGraphicPanel(final BPPanel mainPanel) {
         setBackground(Color.WHITE);
         this.selectionManager = new SelectionManager();
         this.mainPanel = mainPanel;
@@ -38,49 +39,75 @@ public class BPGraphicPanel extends JPanel{
     }
 
     private void initializeMouseController() {
-        MouseController controller = new MouseController(mainPanel);
+        final MouseController controller = new MouseController(this.mainPanel);
         this.addMouseListener(controller);
         this.addMouseMotionListener(controller);
     }
 
     public SelectionManager getSelectionManager() {
-        return selectionManager;
+        return this.selectionManager;
     }
 
     public BPPanel getMainPanel() {
-        return mainPanel;
+        return this.mainPanel;
     }
 
-    public boolean isElementAt(Point p) {
-        for (Element e : process.getElements()) {
-            if (e.getComponent().getPainter().isElementAt(p))
+    public boolean isElementAt(final Point p) {
+        for (final Element e : this.process.getElements()) {
+            if (e.isElementAt(p)) {
                 return true;
+            }
         }
         return false;
     }
 
-    public Element getElementAt(Point p) {
-        for (Element e : process.getElements()) {
-            if (e.getComponent().getPainter().isElementAt(p))
+    public Element getElementAt(final Point p) {
+        for (final Element e : this.process.getElements()) {
+            if (e.isElementAt(p)) {
                 return e;
+            }
+        }
+        return null;
+    }
+
+    public boolean isElementAt(final Point p, final Set<Element> ignoreElements) {
+        if (ignoreElements == null) {
+            return isElementAt(p);
+        }
+        for (final Element e : this.process.getElements()) {
+            if (e.isElementAt(p) && !ignoreElements.contains(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Element getElementAt(final Point p, final Set<Element> ignoreElements) {
+        if (ignoreElements == null) {
+            return getElementAt(p);
+        }
+        for (final Element e : this.process.getElements()) {
+            if (e.isElementAt(p) && !ignoreElements.contains(e)) {
+                return e;
+            }
         }
         return null;
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D) g;
+        final Graphics2D g2 = (Graphics2D) g;
 
         // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
         // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        for (Element e : process.getElements()) {
+        for (final Element e : this.process.getElements()) {
             e.getComponent().getPainter().paint(g2);
         }
 
-        for (Element e : process.getElements()) {
+        for (final Element e : this.process.getElements()) {
             if (getSelectionManager().isElementSelected(e)) {
                 e.getComponent().getPainter().paintHandlers(g2);
             }

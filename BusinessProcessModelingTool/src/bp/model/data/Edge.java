@@ -1,7 +1,11 @@
 package bp.model.data;
 
+import java.awt.Point;
+
 import bp.details.EdgeDetails;
 import bp.model.graphic.BPEdge;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 
 /**
@@ -15,24 +19,34 @@ public class Edge extends Element {
     private Vertex source;
     private Vertex target;
 
-    public Edge(String uniqueName) {
+    public Edge(final String uniqueName) {
         super(uniqueName);
     }
 
     public Vertex getSource() {
-        return source;
+        return this.source;
     }
 
-    public void setSource(Vertex source) {
+    public void updateSource(final Vertex source, final Controller controller) {
+        if (this.source != null) {
+            this.source.getOutputEdges().remove(this);
+        }
         this.source = source;
+        this.source.getOutputEdges().add(this);
+        fireAttributeChanged(BPKeyWords.SOURCE, this.source, controller);
     }
 
     public Vertex getTarget() {
-        return target;
+        return this.target;
     }
 
-    public void setTarget(Vertex target) {
+    public void updateTarget(final Vertex target, final Controller controller) {
+        if (this.target != null) {
+            this.target.getInputEdges().remove(this);
+        }
         this.target = target;
+        this.target.getInputEdges().add(this);
+        fireAttributeChanged(BPKeyWords.TARGET, this.target, controller);
     }
 
     public BPEdge getEdgeComponent() {
@@ -41,12 +55,20 @@ public class Edge extends Element {
 
     @Override
     protected void initializeComponent() {
-        component = new BPEdge();
+        this.component = new BPEdge();
     }
 
     @Override
     protected void initializeDetails() {
-        details = new EdgeDetails(this);
+        this.details = new EdgeDetails(this);
+    }
+
+    @Override
+    public boolean isElementAt(final Point p) {
+        if (this.source == null || this.target == null) {
+            return false;
+        }
+        return super.isElementAt(p);
     }
 
 }
