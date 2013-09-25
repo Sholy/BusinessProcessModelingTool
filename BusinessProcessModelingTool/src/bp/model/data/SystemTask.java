@@ -1,5 +1,11 @@
 package bp.model.data;
 
+import bp.details.SystemTaskDetails;
+import bp.model.graphic.TaskComponent;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+import bp.util.ImageRes;
+
 /**
  * Task specialization - to be performed by machine
  * 
@@ -10,16 +16,27 @@ public class SystemTask extends Task {
 
     private String implementation;
 
-    public SystemTask(String uniqueName) {
+    public SystemTask(final String uniqueName) {
         super(uniqueName);
     }
 
     public String getImplementation() {
-        return implementation;
+        return this.implementation;
     }
 
-    public void setImplementation(String implementation) {
+    public void updateImplementation(final String implementation, final Controller source) {
         this.implementation = implementation;
+        fireAttributeChanged(BPKeyWords.IMPLEMENTATION, this.implementation, source);
     }
 
+    @Override
+    protected void initializeComponent() {
+        this.component = new TaskComponent(this, ImageRes.SYSTEM_TASK);
+        this.component.setzIndex(101);
+    }
+
+    @Override
+    protected void initializeDetails() {
+        this.details = new SystemTaskDetails(this);
+    }
 }

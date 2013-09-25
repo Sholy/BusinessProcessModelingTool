@@ -53,8 +53,8 @@ public class BPGraphicPanel extends JPanel{
     }
 
     public boolean isElementAt(final Point p) {
-        for (final Element e : this.process.getElements()) {
-            if (e.isElementAt(p)) {
+        for (int i = this.process.getElements().size() - 1; i >= 0; i--) {
+            if (this.process.getElements().get(i).isElementAt(p)) {
                 return true;
             }
         }
@@ -62,7 +62,8 @@ public class BPGraphicPanel extends JPanel{
     }
 
     public Element getElementAt(final Point p) {
-        for (final Element e : this.process.getElements()) {
+        for (int i = this.process.getElements().size() - 1; i >= 0; i--) {
+            final Element e = this.process.getElements().get(i);
             if (e.isElementAt(p)) {
                 return e;
             }
@@ -74,7 +75,8 @@ public class BPGraphicPanel extends JPanel{
         if (ignoreElements == null) {
             return isElementAt(p);
         }
-        for (final Element e : this.process.getElements()) {
+        for (int i = this.process.getElements().size() - 1; i >= 0; i--) {
+            final Element e = this.process.getElements().get(i);
             if (e.isElementAt(p) && !ignoreElements.contains(e)) {
                 return true;
             }
@@ -86,7 +88,8 @@ public class BPGraphicPanel extends JPanel{
         if (ignoreElements == null) {
             return getElementAt(p);
         }
-        for (final Element e : this.process.getElements()) {
+        for (int i = this.process.getElements().size() - 1; i >= 0; i--) {
+            final Element e = this.process.getElements().get(i);
             if (e.isElementAt(p) && !ignoreElements.contains(e)) {
                 return e;
             }

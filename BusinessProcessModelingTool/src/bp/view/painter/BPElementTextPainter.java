@@ -9,24 +9,28 @@ public class BPElementTextPainter extends BPElementPainter {
 
     private String text;
 
-    public BPElementTextPainter(BPComponent component, String text) {
+    public BPElementTextPainter(final BPComponent component) {
+        this(component, null);
+    }
+
+    public BPElementTextPainter(final BPComponent component, final String text) {
         super(component);
         this.text = text;
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 
     @Override
-    public void paint(Graphics2D g) {
+    public void paint(final Graphics2D g) {
         super.paint(g);
 
-        if (text == null || text.isEmpty())
+        if (this.text == null || this.text.isEmpty())
             return;
 
         final Integer textSeparatorSize = 10;
@@ -34,14 +38,14 @@ public class BPElementTextPainter extends BPElementPainter {
 
         g.setFont(comp.getFont());
         g.setPaint(comp.getFgColor());
-        FontMetrics metrics = g.getFontMetrics();
-        Integer stringWidth = metrics.stringWidth(text);
+        final FontMetrics metrics = g.getFontMetrics();
+        final Integer stringWidth = metrics.stringWidth(this.text);
         Integer x = comp.getX() + (comp.getWidth() - stringWidth) / 2;
-        Integer y = comp.getY() + comp.getHeight() + metrics.getHeight() + textSeparatorSize;
+        final Integer y = comp.getY() + comp.getHeight() + metrics.getHeight() + textSeparatorSize;
         if (x < 0)
             x = 0;
 
-        g.drawString(text, x, y);
+        g.drawString(this.text, x, y);
 
 
     }

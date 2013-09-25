@@ -13,49 +13,58 @@ public class BPGraphElement {
     private Font font = new Font("Arial", Font.PLAIN, 12);
     private Stroke bgStroke = Strokes.getLine(Strokes.THIN_LINE);
     private Stroke fgStroke = Strokes.getLine(Strokes.THIN_LINE);
+    private Integer zIndex = 0;
 
     public BPGraphElement() {
 
     }
 
     public Color getBgColor() {
-        return bgColor;
+        return this.bgColor;
     }
 
-    public void setBgColor(Color bgColor) {
+    public void setBgColor(final Color bgColor) {
         this.bgColor = bgColor;
     }
 
     public Color getFgColor() {
-        return fgColor;
+        return this.fgColor;
     }
 
-    public void setFgColor(Color fgColor) {
+    public void setFgColor(final Color fgColor) {
         this.fgColor = fgColor;
     }
 
     public Font getFont() {
-        return font;
+        return this.font;
     }
 
-    public void setFont(Font font) {
+    public void setFont(final Font font) {
         this.font = font;
     }
 
     public Stroke getBgStroke() {
-        return bgStroke;
+        return this.bgStroke;
     }
 
-    public void setBgStroke(Stroke bgStroke) {
+    public void setBgStroke(final Stroke bgStroke) {
         this.bgStroke = bgStroke;
     }
 
     public Stroke getFgStroke() {
-        return fgStroke;
+        return this.fgStroke;
     }
 
-    public void setFgStroke(Stroke fgStroke) {
+    public void setFgStroke(final Stroke fgStroke) {
         this.fgStroke = fgStroke;
+    }
+
+    public Integer getzIndex() {
+        return this.zIndex;
+    }
+
+    public void setzIndex(final Integer zIndex) {
+        this.zIndex = zIndex;
     }
 
 }

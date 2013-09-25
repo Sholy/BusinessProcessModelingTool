@@ -14,18 +14,14 @@ public abstract class Vertex extends Element {
     private List<Edge> inputEdges;
     private List<Edge> outputEdges;
 
-    public Vertex(String uniqueName) {
+    public Vertex(final String uniqueName) {
         super(uniqueName);
         initializeEdges();
     }
 
     private void initializeEdges() {
-        if (canHaveInput()) {
-            inputEdges = new ArrayList<Edge>();
-        }
-        if (canHaveOutput()) {
-            outputEdges = new ArrayList<Edge>();
-        }
+        this.inputEdges = new ArrayList<Edge>();
+        this.outputEdges = new ArrayList<Edge>();
     }
 
     /**
@@ -48,30 +44,35 @@ public abstract class Vertex extends Element {
      * @return
      */
     public boolean hasInput() {
-        return !inputEdges.isEmpty();
+        return !this.inputEdges.isEmpty();
     }
 
+    /**
+     * Returns true if it has at least one output edge
+     * 
+     * @return
+     */
     public boolean hasOutput() {
-        return !outputEdges.isEmpty();
+        return !this.outputEdges.isEmpty();
     }
 
     public List<Edge> getInputEdges() {
-        return inputEdges;
+        return this.inputEdges;
     }
 
     public List<Edge> getOutputEdges() {
-        return outputEdges;
+        return this.outputEdges;
     }
 
-    public void addOutputEdge(Edge edge) {
+    public void addOutputEdge(final Edge edge) {
         if (canHaveOutput()) {
-            outputEdges.add(edge);
+            this.outputEdges.add(edge);
         }
     }
 
-    public void addInputEdge(Edge edge) {
+    public void addInputEdge(final Edge edge) {
         if (canHaveInput()) {
-            inputEdges.add(edge);
+            this.inputEdges.add(edge);
         }
     }
 

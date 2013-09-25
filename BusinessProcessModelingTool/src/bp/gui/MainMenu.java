@@ -3,7 +3,7 @@ package bp.gui;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import bp.action.ActionFactory;
+import bp.action.ActionManager;
 
 public class MainMenu extends JMenuBar{
 
@@ -23,9 +23,9 @@ public class MainMenu extends JMenuBar{
         file.setMnemonic('f');
         file.setText("File");
 
-        file.add(ActionFactory.getNewDiagram());
+        file.add(ActionManager.getNewDiagram());
         file.addSeparator();
-        file.add(ActionFactory.getExit());
+        file.add(ActionManager.getExit());
 
         add(file);
     }

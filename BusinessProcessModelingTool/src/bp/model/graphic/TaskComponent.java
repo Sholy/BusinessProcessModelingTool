@@ -1,5 +1,6 @@
 package bp.model.graphic;
 
+import java.awt.Image;
 import java.awt.Shape;
 
 import bp.app.AppCore;
@@ -8,25 +9,37 @@ import bp.model.data.Task;
 import bp.model.graphic.util.ElementHandlers;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
+import bp.util.ImageRes;
 import bp.view.painter.BPElementPainter;
 import bp.view.painter.BPElementTextPainter;
 import bp.view.painter.BPShapeFactory;
 
-public class TaskComponent extends BPComponent {
+public class TaskComponent extends BPComponent implements BPImage {
 
     private final BPElementTextPainter painter;
     private String text;
     private final Task task;
 
-    public TaskComponent(Task task) {
+    private Image image;
+
+    public TaskComponent(final Task task) {
+        this(task, null);
+    }
+
+    public TaskComponent(final Task task, final ImageRes image) {
+        super();
         this.task = task;
-        this.painter = new BPElementTextPainter(this, text);
+        this.painter = new BPElementTextPainter(this, this.text);
         addDataListener();
+
+        if (image != null) {
+            this.image = image.getImage();
+        }
     }
 
     @Override
     protected void initializeElementHandlers() {
-        handlers = new ElementHandlers(this, ElementHandlers.RECTANGLE_HANDLERS);
+        this.handlers = new ElementHandlers(this, ElementHandlers.RECTANGLE_HANDLERS);
     }
 
     @Override
@@ -46,21 +59,49 @@ public class TaskComponent extends BPComponent {
 
     @Override
     public BPElementPainter getPainter() {
-        return painter;
+        return this.painter;
+    }
+
+    @Override
+    public Integer getMinimumWidth() {
+        if (this.image == null) {
+            return super.getMinimumWidth();
+        } else {
+            final Integer minImageWidth = getImageWidth() + getImageMargins() * 2;
+            if (minImageWidth > super.getMinimumWidth()) {
+                return minImageWidth;
+            } else {
+                return super.getMinimumWidth();
+            }
+        }
+    }
+
+    @Override
+    public Integer getMinimumHeight() {
+        if (this.image == null) {
+            return super.getMinimumHeight();
+        } else {
+            final Integer minImageHeight = getImageHeight() + getImageMargins() * 2;
+            if (minImageHeight > super.getMinimumHeight()) {
+                return minImageHeight;
+            } else {
+                return super.getMinimumHeight();
+            }
+        }
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
-    protected void updateText(String text) {
+    protected void updateText(final String text) {
         this.text = text;
-        painter.setText(text);
+        this.painter.setText(text);
         AppCore.getInstance().getBpPanel().getGraphicsPanel().repaint();
     }
 
     protected void addDataListener() {
-        task.addAttributeChangeListener(new AttributeChangeListener() {
+        this.task.addAttributeChangeListener(new AttributeChangeListener() {
 
             @Override
             public Controller getController() {
@@ -68,7 +109,7 @@ public class TaskComponent extends BPComponent {
             }
 
             @Override
-            public void fireAttributeChanged(BPKeyWords keyWord, Object value) {
+            public void fireAttributeChanged(final BPKeyWords keyWord, final Object value) {
                 if (value != null) {
                     if (keyWord == BPKeyWords.NAME) {
                         updateText((String) value);
@@ -76,6 +117,35 @@ public class TaskComponent extends BPComponent {
                 }
             }
         });
+    }
+
+    @Override
+    public Image getImage() {
+        return this.image;
+    }
+
+    @Override
+    public Integer getImageWidth() {
+        if (this.image != null) {
+            return 32;
+        }
+        return 0;
+    }
+
+    @Override
+    public Integer getImageHeight() {
+        if (this.image != null) {
+            return 32;
+        }
+        return 0;
+    }
+
+    @Override
+    public Integer getImageMargins() {
+        if (this.image != null) {
+            return 5;
+        }
+        return 0;
     }
 
 }

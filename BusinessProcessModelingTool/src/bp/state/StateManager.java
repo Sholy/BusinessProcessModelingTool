@@ -11,61 +11,93 @@ public class StateManager {
 
     private final SelectState selectState;
     private final TaskState taskState;
+    private final UserTaskState userTaskState;
+    private final SystemTaskState systemTaskState;
     private final EdgeState edgeState;
     private final LaneState laneState;
     private final MoveState moveState;
     private final EdgeMoveState moveEdgeState;
     private final ResizeState resizeState;
+    private final StartEventState startEventState;
+    private final TimerStartEventState timerStartEventState;
+    private final ConditionalStartEventState conditionalStartEventState;
+    private final MessageStartEventState messageStartEventState;
+    private final SignalStartEventState signalStartEventState;
+    private final ErrorStartEventState errorStartEventState;
 
-    public StateManager(BPPanel panel) {
+    public StateManager(final BPPanel panel) {
         this.panel = panel;
 
-        selectState = new SelectState(panel);
-        taskState = new TaskState(panel);
-        edgeState = new EdgeState(panel);
-        laneState = new LaneState(panel);
-        moveState = new MoveState(panel);
-        moveEdgeState = new EdgeMoveState(panel);
-        resizeState = new ResizeState(panel);
+        this.selectState = new SelectState(panel);
+        this.taskState = new TaskState(panel);
+        this.userTaskState = new UserTaskState(panel);
+        this.systemTaskState = new SystemTaskState(panel);
+        this.edgeState = new EdgeState(panel);
+        this.laneState = new LaneState(panel);
+        this.moveState = new MoveState(panel);
+        this.moveEdgeState = new EdgeMoveState(panel);
+        this.resizeState = new ResizeState(panel);
+        this.startEventState = new StartEventState(panel);
+        this.timerStartEventState = new TimerStartEventState(panel);
+        this.conditionalStartEventState = new ConditionalStartEventState(panel);
+        this.messageStartEventState = new MessageStartEventState(panel);
+        this.signalStartEventState = new SignalStartEventState(panel);
+        this.errorStartEventState = new ErrorStartEventState(panel);
 
-        defaultState = selectState;
-        currentState = defaultState;
+        this.defaultState = this.selectState;
+        this.currentState = this.defaultState;
     }
 
     public State getCurrentState() {
-        return currentState;
+        return this.currentState;
     }
 
-    public void moveToState(StateType state) {
+    public void moveToState(final StateType state) {
         // TODO: check if move from current state to next one is possible
 
-        currentState.exitingState();
+        this.currentState.exitingState();
 
-        State newState = getStateObject(state);
-        currentState = newState;
-        currentState.enteringState();
+        final State newState = getStateObject(state);
+        this.currentState = newState;
+        this.currentState.enteringState();
     }
 
     public BPPanel getPanel() {
-        return panel;
+        return this.panel;
     }
 
-    private State getStateObject(StateType stateType) {
+    private State getStateObject(final StateType stateType) {
         if (stateType == StateType.SELECT)
-            return selectState;
+            return this.selectState;
         else if (stateType == StateType.TASK)
-            return taskState;
+            return this.taskState;
         else if (stateType == StateType.EDGE)
-            return edgeState;
+            return this.edgeState;
         else if (stateType == StateType.LANE)
-            return laneState;
+            return this.laneState;
         else if (stateType == StateType.MOVE)
-            return moveState;
+            return this.moveState;
         else if (stateType == StateType.MOVE_EDGE)
-            return moveEdgeState;
+            return this.moveEdgeState;
         else if (stateType == StateType.RESIZE)
-            return resizeState;
+            return this.resizeState;
+        else if (stateType == StateType.USER_TASK)
+            return this.userTaskState;
+        else if (stateType == StateType.SYSTEM_TASK)
+            return this.systemTaskState;
+        else if (stateType == StateType.START_EVENT)
+            return this.startEventState;
+        else if (stateType == StateType.TIMER_START_EVENT)
+            return this.timerStartEventState;
+        else if (stateType == StateType.CONDITIONAL_START_EVENT)
+            return this.conditionalStartEventState;
+        else if (stateType == StateType.MESSAGE_START_EVENT)
+            return this.messageStartEventState;
+        else if (stateType == StateType.SIGNAL_START_EVENT)
+            return this.signalStartEventState;
+        else if (stateType == StateType.ERROR_START_EVENT)
+            return this.errorStartEventState;
 
-        return defaultState;
+        return this.defaultState;
     }
 }

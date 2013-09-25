@@ -11,62 +11,58 @@ import bp.model.data.Vertex;
 
 public class SelectState extends BPState {
 
-    public SelectState(BPPanel panel) {
+    public SelectState(final BPPanel panel) {
         super(panel);
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
         // if handler is clicked don't do anything
-        for (Element el : getGraphicPanel().getSelectionManager().getSelectedElements()) {
+        for (final Element el : getGraphicPanel().getSelectionManager().getSelectedElements()) {
             if (el.getComponent().getHandlers().isHandlerAt(e.getPoint())) {
                 System.out.println("Handler hit");
                 return;
             }
         }
 
-        Boolean elementHit = false;
-        for (Element el : getPanel().getProcess().getElements()) {
-            if (el.getComponent().getPainter().isElementAt(e.getPoint())) {
-                elementHit = true;
-                System.out.println("Element hit");
-                if (!getGraphicPanel().getSelectionManager().isElementSelected(el)) {
-                    getGraphicPanel().getSelectionManager().clearSelection();
-                    getGraphicPanel().getSelectionManager().addToSelection(el);
-                    getGraphicPanel().repaint();
-                    AppCore.getInstance().updateDetails(el.getDetails());
-                }
-                break;
-            }
-        } 
+        final Element el = getGraphicPanel().getElementAt(e.getPoint());
 
-        if (!elementHit) {
+        if (el != null) {
+            System.out.println("Element hit");
+            if (!getGraphicPanel().getSelectionManager().isElementSelected(el)) {
+                getGraphicPanel().getSelectionManager().clearSelection();
+                getGraphicPanel().getSelectionManager().addToSelection(el);
+                AppCore.getInstance().updateDetails(el.getDetails());
+            }
+        }
+
+        if (el == null) {
             getGraphicPanel().getSelectionManager().clearSelection();
-            getGraphicPanel().repaint();
             AppCore.getInstance().updateDetails(getPanel().getProcess().getDetails());
         }
+        getGraphicPanel().repaint();
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent e) {
         // check handlers first
-        for (Element el : getGraphicPanel().getSelectionManager().getSelectedElements()) {
+        for (final Element el : getGraphicPanel().getSelectionManager().getSelectedElements()) {
             if (el.getComponent().getHandlers().isHandlerAt(e.getPoint())) {
                 if (el instanceof Edge) {
                     getPanel().getStateManager().moveToState(StateType.MOVE_EDGE);
+                    return;
                 } else if (el instanceof Vertex || el instanceof Lane) {
                     getPanel().getStateManager().moveToState(StateType.RESIZE);
+                    return;
                 }
             }
         }
 
         // check elements
-        for (Element el : getPanel().getProcess().getElements()) {
-            if (el.getComponent().getPainter().isElementAt(e.getPoint())) {
-                if (el instanceof Vertex || el instanceof Lane) {
-                    getPanel().getStateManager().moveToState(StateType.MOVE);
-                }
-            }
+        final Element el = getGraphicPanel().getElementAt(e.getPoint());
+        if (el != null && (el instanceof Vertex || el instanceof Lane)) {
+            getPanel().getStateManager().moveToState(StateType.MOVE);
+            return;
         }
     }
 

@@ -1,8 +1,14 @@
 package bp.model.graphic;
 
+import java.awt.Font;
 import java.awt.Shape;
 
+import bp.app.AppCore;
+import bp.event.AttributeChangeListener;
+import bp.model.data.Lane;
 import bp.model.graphic.util.ElementHandlers;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 import bp.util.StringUtils;
 import bp.view.BasicPainter;
 import bp.view.painter.BPLanePainter;
@@ -10,16 +16,22 @@ import bp.view.painter.BPShapeFactory;
 
 public class LaneComponent extends BPComponent {
 
-    public static final Integer TEXT_TYPE_REGULAR = 0;
-    public static final Integer TEXT_TYPE_ITALIC = 1;
+    public static final Integer MIN_DIMENSION_COEFFICIENT = 1;
+    public static final Integer MAX_DIMENSION_COEFFICIENT = 10;
+
+    public static final Integer REGULAR_FONT = 0;
+    public static final Integer ITALIC_FONT = 1;
 
     private String text;
     private Integer textType;
     private final BPLanePainter painter;
+    private final Lane lane;
+    private Integer fontType = REGULAR_FONT;
 
-    public LaneComponent() {
-        painter = new BPLanePainter(this);
-        text = "test";
+    public LaneComponent(final Lane lane) {
+        this.lane = lane;
+        this.painter = new BPLanePainter(this);
+        addDataListener();
     }
 
     @Override
@@ -34,11 +46,11 @@ public class LaneComponent extends BPComponent {
 
     @Override
     public Integer getMinimumHeight() {
-        Integer textWidth = getTextPanelWidth();
+        final Integer textWidth = getTextPanelWidth();
         if (textWidth > super.getMinimumHeight())
-            return super.getMinimumHeight();
-        else
             return textWidth;
+        else
+            return super.getMinimumHeight();
     }
 
     @Override
@@ -48,21 +60,31 @@ public class LaneComponent extends BPComponent {
 
     @Override
     protected void initializeElementHandlers() {
-        handlers = new ElementHandlers(this, ElementHandlers.RECTANGLE_HANDLERS);
+        this.handlers = new ElementHandlers(this, ElementHandlers.RECTANGLE_HANDLERS);
 
     }
 
     @Override
     public BasicPainter getPainter() {
-        return painter;
+        return this.painter;
+    }
+
+    @Override
+    public Integer getMaxDimensionCoefficient() {
+        return MAX_DIMENSION_COEFFICIENT;
+    }
+
+    @Override
+    public Integer getMinDimensionCoefficient() {
+        return MIN_DIMENSION_COEFFICIENT;
     }
 
     public Integer getTextHeight() {
-        return StringUtils.calculateStringHeight(getFont(), text);
+        return StringUtils.calculateStringHeight(getFont(), this.text);
     }
 
     public Integer getTextWidth() {
-        return StringUtils.calculateStringWidth(getFont(), text);
+        return StringUtils.calculateStringWidth(getFont(), this.text);
     }
 
     public Integer getTextPanelHeight() {
@@ -74,18 +96,65 @@ public class LaneComponent extends BPComponent {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
-    public void setText(String text) {
+    protected void updateText(final String text) {
         this.text = text;
+        AppCore.getInstance().getBpPanel().getGraphicsPanel().repaint();
     }
 
     public Integer getTextType() {
-        return textType;
+        return this.textType;
     }
 
-    public void setTextType(Integer textType) {
+    public void setTextType(final Integer textType) {
         this.textType = textType;
+    }
+
+    protected void addDataListener() {
+        this.lane.addAttributeChangeListener(new AttributeChangeListener() {
+
+            @Override
+            public Controller getController() {
+                return Controller.GRAPHIC;
+            }
+
+            @Override
+            public void fireAttributeChanged(final BPKeyWords keyWord, final Object value) {
+                if (value != null) {
+                    if (keyWord == BPKeyWords.NAME) {
+                        updateText((String) value);
+                        LaneComponent.this.fontType = REGULAR_FONT;
+                        if (getText() == null || getText().isEmpty()) {
+                            updateText(LaneComponent.this.lane.getUniqueName());
+                            LaneComponent.this.fontType = ITALIC_FONT;
+                        }
+                    } else if (keyWord == BPKeyWords.UNIQUE_NAME) {
+                        if (LaneComponent.this.lane.getName() == null || LaneComponent.this.lane.getName().isEmpty()) {
+                            updateText((String) value);
+                            LaneComponent.this.fontType = ITALIC_FONT;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public Font getRegularFont() {
+        return super.getFont();
+    }
+
+    public Font getItalicFont() {
+        return new Font(super.getFont().getName(), Font.ITALIC, super.getFont().getSize());
+    }
+
+    @Override
+    public Font getFont() {
+        if (this.fontType == REGULAR_FONT)
+            return getRegularFont();
+        if (this.fontType == ITALIC_FONT)
+            return getItalicFont();
+        return super.getFont();
     }
 }

@@ -1,8 +1,11 @@
 package bp.model.data;
 
-public abstract class StartEvent extends Event {
+import bp.details.StartEventDetails;
+import bp.model.graphic.EventComponent;
 
-    public StartEvent(String uniqueName) {
+public class StartEvent extends Event {
+
+    public StartEvent(final String uniqueName) {
         super(uniqueName);
     }
 
@@ -14,6 +17,21 @@ public abstract class StartEvent extends Event {
     @Override
     public boolean canHaveOutput() {
         return true;
+    }
+
+    @Override
+    protected void initializeComponent() {
+        this.component = new EventComponent(this);
+        this.component.setzIndex(101);
+    }
+
+    @Override
+    protected void initializeDetails() {
+        this.details = new StartEventDetails(this);
+    }
+
+    public EventComponent getEventComponent() {
+        return (EventComponent) getComponent();
     }
 
 }

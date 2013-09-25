@@ -7,7 +7,10 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import bp.event.AttributeChangeListener;
 import bp.model.data.Process;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 public class ProcessDetails extends AbstractDetails {
 
@@ -34,158 +37,169 @@ public class ProcessDetails extends AbstractDetails {
     private JScrollPane descriptionScroll;
     private JScrollPane dataScroll;
 
-    public ProcessDetails(Process process) {
+    public ProcessDetails(final Process process) {
         this.process = process;
 
         initComponents();
         layoutComponents();
         addActions();
+        addDataListener();
     }
 
     private void initComponents() {
-        uniqueNameLb = new JLabel(UNIQUE_NAME_LABEL);
-        nameLb = new JLabel(NAME_LABEL);
-        descriptionLb = new JLabel(DESCRIPTION_LABEL);
-        dataLb = new JLabel(DATA_LABEL);
+        this.uniqueNameLb = new JLabel(UNIQUE_NAME_LABEL);
+        this.nameLb = new JLabel(NAME_LABEL);
+        this.descriptionLb = new JLabel(DESCRIPTION_LABEL);
+        this.dataLb = new JLabel(DATA_LABEL);
 
-        uniqueNameTf = new JTextField(20);
-        nameTf = new JTextField(20);
+        this.uniqueNameTf = new JTextField(20);
+        this.nameTf = new JTextField(20);
 
-        descriptionTa = new JTextArea(5, 20);
-        descriptionScroll = new JScrollPane(descriptionTa);
-        dataTa = new JTextArea(5, 20);
-        dataScroll = new JScrollPane(dataTa);
+        this.descriptionTa = new JTextArea(5, 20);
+        this.descriptionScroll = new JScrollPane(this.descriptionTa);
+        this.dataTa = new JTextArea(5, 20);
+        this.dataScroll = new JScrollPane(this.dataTa);
     }
 
     private void layoutComponents() {
         createBasic();
 
-        getBasic().add(uniqueNameLb);
-        getBasic().add(uniqueNameTf);
-        getBasic().add(nameLb);
-        getBasic().add(nameTf);
-        getBasic().add(descriptionLb);
-        getBasic().add(descriptionScroll);
+        getBasic().add(this.uniqueNameLb);
+        getBasic().add(this.uniqueNameTf);
+        getBasic().add(this.nameLb);
+        getBasic().add(this.nameTf);
+        getBasic().add(this.descriptionLb);
+        getBasic().add(this.descriptionScroll);
 
         createAdvanced();
 
-        getAdvanced().add(dataLb);
-        getAdvanced().add(dataScroll);
-    }
-
-    public void updateComponents() {
-        updateUniqueName();
-        updateName();
-        updateDescription();
-        updateData();
-    }
-
-    public void updateUniqueName() {
-        uniqueNameTf.setText(process.getUniqueName());
-    }
-
-    public void updateName() {
-        nameTf.setText(process.getName());
-    }
-
-    public void updateDescription() {
-        descriptionTa.setText(process.getDescription());
-    }
-
-    public void updateData() {
-        dataTa.setText(process.getData());
+        getAdvanced().add(this.dataLb);
+        getAdvanced().add(this.dataScroll);
     }
 
     private void addActions() {
-        uniqueNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.uniqueNameTf.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
             private void contentChanged() {
-                process.setUniqueName(uniqueNameTf.getText());
+                getProcess().updateUniqueName(ProcessDetails.this.uniqueNameTf.getText(), Controller.DETAILS);
             }
         });
 
-        nameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.nameTf.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
             private void contentChanged() {
-                process.setName(nameTf.getText());
+                getProcess().updateName(ProcessDetails.this.nameTf.getText(), Controller.DETAILS);
             }
         });
 
-        descriptionTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.descriptionTa.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
 
             }
 
             private void contentChanged() {
-                process.setDescription(descriptionTa.getText());
+                getProcess().updateDescription(ProcessDetails.this.descriptionTa.getText(), Controller.DETAILS);
             }
         });
 
-        dataTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.dataTa.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
 
             }
 
             private void contentChanged() {
-                process.setData(dataTa.getText());
+                getProcess().updateData(ProcessDetails.this.dataTa.getText(), Controller.DETAILS);
             }
         });
+    }
+
+    protected void dataAttributeChanged(final BPKeyWords keyWord, final Object value) {
+        if (value != null) {
+            if (keyWord == BPKeyWords.UNIQUE_NAME) {
+                this.uniqueNameTf.setText((String) value);
+            } else if (keyWord == BPKeyWords.NAME) {
+                this.nameTf.setText((String) value);
+            } else if (keyWord == BPKeyWords.DESCRIPTION) {
+                this.descriptionTa.setText((String) value);
+            } else if (keyWord == BPKeyWords.DATA) {
+                this.dataTa.setText((String) value);
+            }
+        }
+    }
+
+    private void addDataListener() {
+        getProcess().addAttributeChangeListener(new AttributeChangeListener() {
+
+            @Override
+            public Controller getController() {
+                return Controller.DETAILS;
+            }
+
+            @Override
+            public void fireAttributeChanged(final BPKeyWords keyWord, final Object value) {
+                dataAttributeChanged(keyWord, value);
+            }
+        });
+    }
+
+    protected Process getProcess() {
+        return this.process;
     }
 
 }

@@ -8,19 +8,19 @@ import bp.model.data.Lane;
 
 public class LaneState extends BPState {
 
-    public LaneState(BPPanel panel) {
+    public LaneState(final BPPanel panel) {
         super(panel);
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        Point position = e.getPoint();
-        Lane lane = new Lane("untitledLane");
+    public void mousePressed(final MouseEvent e) {
+        final Point position = e.getPoint();
+        final Lane lane = new Lane("untitledLane");
         lane.getLaneComponent().setX(position.x);
         lane.getLaneComponent().setY(position.y);
         lane.getLaneComponent().getHandlers().updateHandlers();
 
-        getPanel().getProcess().getElements().add(lane);
+        getPanel().getProcess().addElement(lane);
         getPanel().repaint();
     }
 

@@ -1,9 +1,14 @@
 package bp.model.data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import bp.details.ProcessDetails;
+import bp.event.AttributeChangeListener;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
 
 /**
  * Container for business process model
@@ -20,11 +25,14 @@ public class Process {
 
     private final ProcessDetails details;
 
-    private final Set<Element> elements = new HashSet<Element>();
+    private final List<Element> elements = new ArrayList<>();
+
+    private final Set<AttributeChangeListener> acListeners;
 
     private Integer blockDefIndentation;
 
-    public Process(String uniqueName, Integer indentation) {
+    public Process(final String uniqueName, final Integer indentation) {
+        this.acListeners = new HashSet<>();
         if (uniqueName == null || uniqueName.trim().isEmpty()) {
             throw new IllegalArgumentException("uniqueName can't be empty or null");
         }
@@ -34,56 +42,69 @@ public class Process {
             this.blockDefIndentation = 0;
         else
             this.blockDefIndentation = indentation;
-        
-        details = new ProcessDetails(this);
-        details.updateComponents();
+
+        this.details = new ProcessDetails(this);
     }
 
-    public Process(String uniqueName) {
+    public Process(final String uniqueName) {
         this(uniqueName, 0);
     }
 
     public String getUniqueName() {
-        return uniqueName;
+        return this.uniqueName;
     }
 
-    public void setUniqueName(String uniqueName) {
+    public void updateUniqueName(final String uniqueName, final Controller source) {
         this.uniqueName = uniqueName;
+        fireAttributeChanged(BPKeyWords.UNIQUE_NAME, this.uniqueName, source);
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public void setName(String name) {
+    public void updateName(final String name, final Controller source) {
         this.name = name;
+        fireAttributeChanged(BPKeyWords.NAME, this.name, source);
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
-    public void setDescription(String description) {
+    public void updateDescription(final String description, final Controller source) {
         this.description = description;
+        fireAttributeChanged(BPKeyWords.DESCRIPTION, this.description, source);
     }
 
     public String getData() {
-        return data;
+        return this.data;
     }
 
-    public void setData(String data) {
+    public void updateData(final String data, final Controller source) {
         this.data = data;
+        fireAttributeChanged(BPKeyWords.DATA, this.data, source);
     }
 
-    public Set<Element> getElements() {
-        return elements;
+    public List<Element> getElements() {
+        return this.elements;
+    }
+
+    public void addElement(final Element e) {
+        for (int i = 0; i < this.elements.size(); i++) {
+            if (e.getComponent().getzIndex() < this.elements.get(i).getComponent().getzIndex()) {
+                this.elements.add(i, e);
+                return;
+            }
+        }
+        this.elements.add(e);
     }
 
     public Integer getBlockDefIndentation() {
-        return blockDefIndentation;
+        return this.blockDefIndentation;
     }
 
-    public void setBlockDefIndentation(Integer blockDefIndentation) {
+    public void setBlockDefIndentation(final Integer blockDefIndentation) {
         this.blockDefIndentation = blockDefIndentation;
     }
 
@@ -92,8 +113,23 @@ public class Process {
     }
 
     public ProcessDetails getDetails() {
-        return details;
+        return this.details;
     }
 
+    public Set<AttributeChangeListener> getAcListeners() {
+        return this.acListeners;
+    }
+
+    public void addAttributeChangeListener(final AttributeChangeListener listener) {
+        this.acListeners.add(listener);
+    }
+
+    protected void fireAttributeChanged(final BPKeyWords keyWord, final Object value, final Controller source) {
+        for (final AttributeChangeListener listener : this.acListeners) {
+            if (source == null || listener.getController() == null || source != listener.getController()) {
+                listener.fireAttributeChanged(keyWord, value);
+            }
+        }
+    }
 
 }

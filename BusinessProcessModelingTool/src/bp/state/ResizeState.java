@@ -9,6 +9,7 @@ import bp.model.data.Lane;
 import bp.model.data.Vertex;
 import bp.model.graphic.BPComponent;
 import bp.model.graphic.BPElement;
+import bp.model.graphic.SquareComponent;
 import bp.model.graphic.util.HandlerPosition;
 
 public class ResizeState extends BPState {
@@ -75,6 +76,9 @@ public class ResizeState extends BPState {
                 this.end = this.draggedComponent.getHeight();
 
                 this.draggedComponent.setY(this.draggedComponent.getY() + this.start - this.end);
+                if (this.draggedComponent instanceof SquareComponent) {
+                    this.draggedComponent.setX(this.draggedComponent.getX() + this.start - this.end);
+                }
             } else if (this.handlerPos == HandlerPosition.NORTH) {
                 this.start = this.draggedComponent.getHeight();
                 this.draggedComponent.setHeight(this.draggedComponent.getHeight() - this.diffY);
@@ -96,13 +100,21 @@ public class ResizeState extends BPState {
 
                 this.draggedComponent.setY(this.draggedComponent.getY() + this.start - this.end);
             } else if (this.handlerPos == HandlerPosition.SOUTH_WEST) {
-                this.draggedComponent.setHeight(this.draggedComponent.getHeight() + this.diffY);
+                if (this.draggedComponent instanceof SquareComponent) {
+                    this.start = this.draggedComponent.getWidth();
+                    this.draggedComponent.setHeight(this.draggedComponent.getHeight() + this.diffY);
+                    this.end = this.draggedComponent.getWidth();
 
-                this.start = this.draggedComponent.getWidth();
-                this.draggedComponent.setWidth(this.draggedComponent.getWidth() - this.diffX);
-                this.end = this.draggedComponent.getWidth();
+                    this.draggedComponent.setX(this.draggedComponent.getX() + this.start - this.end);
+                } else {
+                    this.draggedComponent.setHeight(this.draggedComponent.getHeight() + this.diffY);
 
-                this.draggedComponent.setX(this.draggedComponent.getX() + this.start - this.end);
+                    this.start = this.draggedComponent.getWidth();
+                    this.draggedComponent.setWidth(this.draggedComponent.getWidth() - this.diffX);
+                    this.end = this.draggedComponent.getWidth();
+
+                    this.draggedComponent.setX(this.draggedComponent.getX() + this.start - this.end);
+                }
             }
 
             if (this.draggedVertex != null) {

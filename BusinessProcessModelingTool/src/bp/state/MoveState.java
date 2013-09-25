@@ -16,58 +16,56 @@ public class MoveState extends BPState {
     private Integer startX;
     private Integer startY;
 
-    public MoveState(BPPanel panel) {
+    public MoveState(final BPPanel panel) {
         super(panel);
-        draggedComponent = null;
+        this.draggedComponent = null;
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-        if (draggedComponent == null) {
-            for (Element el : getPanel().getProcess().getElements()) {
-                if (el.getComponent().getPainter().isElementAt(e.getPoint())) {
-                    BPElement bpEl = el.getComponent();
-                    if (bpEl instanceof BPComponent) {
-                        draggedComponent = (BPComponent) bpEl;
-                        if (el instanceof Vertex) {
-                            draggedVertex = (Vertex) el;
-                        }
-                        startX = e.getPoint().x;
-                        startY = e.getPoint().y;
-                        break;
+    public void mouseDragged(final MouseEvent e) {
+        if (this.draggedComponent == null) {
+            final Element el = getGraphicPanel().getElementAt(e.getPoint());
+            if (el != null) {
+                final BPElement bpEl = el.getComponent();
+                if (bpEl instanceof BPComponent) {
+                    this.draggedComponent = (BPComponent) bpEl;
+                    if (el instanceof Vertex) {
+                        this.draggedVertex = (Vertex) el;
                     }
-
+                    this.startX = e.getPoint().x;
+                    this.startY = e.getPoint().y;
                 }
+
             }
         }
 
-        if (draggedComponent == null) {
+        if (this.draggedComponent == null) {
             getPanel().getStateManager().moveToState(StateType.SELECT);
         } else {
-            draggedComponent.setX(draggedComponent.getX() + e.getPoint().x - startX);
-            draggedComponent.setY(draggedComponent.getY() + e.getPoint().y - startY);
-            if (draggedVertex != null) {
-                for (Edge edge : draggedVertex.getInputEdges()) {
-                    edge.getEdgeComponent().setTargetX(edge.getEdgeComponent().getTargetX() + e.getPoint().x - startX);
-                    edge.getEdgeComponent().setTargetY(edge.getEdgeComponent().getTargetY() + e.getPoint().y - startY);
+            this.draggedComponent.setX(this.draggedComponent.getX() + e.getPoint().x - this.startX);
+            this.draggedComponent.setY(this.draggedComponent.getY() + e.getPoint().y - this.startY);
+            if (this.draggedVertex != null) {
+                for (final Edge edge : this.draggedVertex.getInputEdges()) {
+                    edge.getEdgeComponent().setTargetX(edge.getEdgeComponent().getTargetX() + e.getPoint().x - this.startX);
+                    edge.getEdgeComponent().setTargetY(edge.getEdgeComponent().getTargetY() + e.getPoint().y - this.startY);
                 }
-                for (Edge edge : draggedVertex.getOutputEdges()) {
-                    edge.getEdgeComponent().setSourceX(edge.getEdgeComponent().getSourceX() + e.getPoint().x - startX);
-                    edge.getEdgeComponent().setSourceY(edge.getEdgeComponent().getSourceY() + e.getPoint().y - startY);
+                for (final Edge edge : this.draggedVertex.getOutputEdges()) {
+                    edge.getEdgeComponent().setSourceX(edge.getEdgeComponent().getSourceX() + e.getPoint().x - this.startX);
+                    edge.getEdgeComponent().setSourceY(edge.getEdgeComponent().getSourceY() + e.getPoint().y - this.startY);
                 }
             }
             getGraphicPanel().repaint();
 
-            startX = e.getPoint().x;
-            startY = e.getPoint().y;
+            this.startX = e.getPoint().x;
+            this.startY = e.getPoint().y;
         }
 
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-        draggedComponent = null;
-        draggedVertex = null;
+    public void mouseReleased(final MouseEvent e) {
+        this.draggedComponent = null;
+        this.draggedVertex = null;
         getPanel().getStateManager().moveToState(StateType.SELECT);
     }
 

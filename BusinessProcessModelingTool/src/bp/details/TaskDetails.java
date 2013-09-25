@@ -50,7 +50,7 @@ public class TaskDetails extends ActivityDetails{
     private JSpinner multipleExecutionSp;
     private JComboBox<String> multipleExecutionTypeCb;
 
-    public TaskDetails(Element element) {
+    public TaskDetails(final Element element) {
         super(element);
     }
 
@@ -58,29 +58,29 @@ public class TaskDetails extends ActivityDetails{
     protected void initComponents() {
         super.initComponents();
 
-        actorLb = new JLabel(ACTOR_LABEL);
-        laneActorLb = new JLabel(LANE_ACTOR_LABEL);
-        autoAssignLb = new JLabel(AUTO_ASSIGN);
-        multipleExecutionLb = new JLabel(MULTIPLE_EXECUTION);
-        multipleExecutionTypeLb = new JLabel(MULTIPLE_EXECUTION_TYPE);
+        this.actorLb = new JLabel(ACTOR_LABEL);
+        this.laneActorLb = new JLabel(LANE_ACTOR_LABEL);
+        this.autoAssignLb = new JLabel(AUTO_ASSIGN);
+        this.multipleExecutionLb = new JLabel(MULTIPLE_EXECUTION);
+        this.multipleExecutionTypeLb = new JLabel(MULTIPLE_EXECUTION_TYPE);
 
-        actorTa = new JTextArea(5, 20);
-        actorScroll = new JScrollPane(actorTa);
+        this.actorTa = new JTextArea(5, 20);
+        this.actorScroll = new JScrollPane(this.actorTa);
 
-        laneActorTf = new JTextField(20);
-        laneActorTf.setEnabled(false);
+        this.laneActorTf = new JTextField(20);
+        this.laneActorTf.setEnabled(false);
 
-        autoAssignCb = new JCheckBox();
+        this.autoAssignCb = new JCheckBox();
 
-        SpinnerModel sm = new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1);
-        multipleExecutionSp = new JSpinner(sm);
+        final SpinnerModel sm = new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1);
+        this.multipleExecutionSp = new JSpinner(sm);
 
-        String[] elements = new String[ExecutionType.values().length];
+        final String[] elements = new String[ExecutionType.values().length];
         for (int i = 0; i < elements.length; i++) {
             elements[i] = ExecutionType.values()[i].getName();
         }
-        multipleExecutionTypeCb = new JComboBox<>(elements);
-        multipleExecutionTypeCb.setSelectedIndex(0);
+        this.multipleExecutionTypeCb = new JComboBox<>(elements);
+        this.multipleExecutionTypeCb.setSelectedIndex(0);
     }
 
     @Override
@@ -89,86 +89,86 @@ public class TaskDetails extends ActivityDetails{
 
         createBasic();
 
-        getBasic().add(actorLb);
-        getBasic().add(actorScroll);
-        getBasic().add(laneActorLb);
-        getBasic().add(laneActorTf);
+        getBasic().add(this.actorLb);
+        getBasic().add(this.actorScroll);
+        getBasic().add(this.laneActorLb);
+        getBasic().add(this.laneActorTf);
 
         createAdvanced();
 
-        getAdvanced().add(autoAssignLb);
-        getAdvanced().add(autoAssignCb);
-        getAdvanced().add(multipleExecutionLb);
-        getAdvanced().add(multipleExecutionSp);
-        getAdvanced().add(multipleExecutionTypeLb);
-        getAdvanced().add(multipleExecutionTypeCb);
+        getAdvanced().add(this.autoAssignLb);
+        getAdvanced().add(this.autoAssignCb);
+        getAdvanced().add(this.multipleExecutionLb);
+        getAdvanced().add(this.multipleExecutionSp);
+        getAdvanced().add(this.multipleExecutionTypeLb);
+        getAdvanced().add(this.multipleExecutionTypeCb);
     }
 
     @Override
     protected void addActions() {
         super.addActions();
 
-        actorTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.actorTa.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
 
             }
 
             private void contentChanged() {
-                task.updateActor(actorTa.getText(), Controller.DETAILS);
+                TaskDetails.this.task.updateActor(TaskDetails.this.actorTa.getText(), Controller.DETAILS);
             }
         });
 
-        autoAssignCb.addChangeListener(new ChangeListener() {
+        this.autoAssignCb.addChangeListener(new ChangeListener() {
 
             @Override
-            public void stateChanged(ChangeEvent e) {
-                task.updateAutoAssign(autoAssignCb.isSelected(), Controller.DETAILS);
+            public void stateChanged(final ChangeEvent e) {
+                TaskDetails.this.task.updateAutoAssign(TaskDetails.this.autoAssignCb.isSelected(), Controller.DETAILS);
             }
         });
 
-        multipleExecutionSp.addChangeListener(new ChangeListener() {
+        this.multipleExecutionSp.addChangeListener(new ChangeListener() {
 
             @Override
-            public void stateChanged(ChangeEvent e) {
-                task.updateMultipleExecution((Integer) multipleExecutionSp.getValue(), Controller.DETAILS);
+            public void stateChanged(final ChangeEvent e) {
+                TaskDetails.this.task.updateMultipleExecution((Integer) TaskDetails.this.multipleExecutionSp.getValue(), Controller.DETAILS);
             }
         });
 
-        multipleExecutionTypeCb.addItemListener(new ItemListener() {
+        this.multipleExecutionTypeCb.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(ItemEvent arg0) {
-                task.updateMultipleExecutionType(ExecutionType.getEnumValue((String) multipleExecutionTypeCb.getSelectedItem()), Controller.DETAILS);
+            public void itemStateChanged(final ItemEvent arg0) {
+                TaskDetails.this.task.updateMultipleExecutionType(ExecutionType.getEnumValue((String) TaskDetails.this.multipleExecutionTypeCb.getSelectedItem()), Controller.DETAILS);
             }
         });
     }
 
     @Override
-    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+    protected void dataAttributeChanged(final BPKeyWords keyWord, final Object value) {
         super.dataAttributeChanged(keyWord, value);
         if (value != null) {
             if (keyWord == BPKeyWords.ACTOR) {
-                actorTa.setText((String) value);
+                this.actorTa.setText((String) value);
             } else if (keyWord == BPKeyWords.LANE_ACTOR) {
                 // TODO
             } else if (keyWord == BPKeyWords.AUTO_ASSIGN) {
-                autoAssignCb.setSelected((Boolean) value);
+                this.autoAssignCb.setSelected((Boolean) value);
             } else if (keyWord == BPKeyWords.MULTIPLE_EXECUTION) {
-                multipleExecutionSp.setValue(value);
+                this.multipleExecutionSp.setValue(value);
             } else if (keyWord == BPKeyWords.MULTIPLE_EXECUTION_TYPE) {
-                multipleExecutionTypeCb.setSelectedItem(((ExecutionType) value).getName());
+                this.multipleExecutionTypeCb.setSelectedItem(((ExecutionType) value).getName());
             }
         }
     }

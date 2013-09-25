@@ -56,6 +56,7 @@ public class Edge extends Element {
     @Override
     protected void initializeComponent() {
         this.component = new BPEdge();
+        this.component.setzIndex(301);
     }
 
     @Override

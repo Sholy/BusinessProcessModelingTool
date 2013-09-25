@@ -90,6 +90,10 @@ public abstract class Element {
         this.acListeners.add(listener);
     }
 
+    public void removeAttributeChangeListener(final AttributeChangeListener listener) {
+        this.acListeners.remove(listener);
+    }
+
     protected void fireAttributeChanged(final BPKeyWords keyWord, final Object value, final Controller source) {
         for (final AttributeChangeListener listener : this.acListeners) {
             if (source == null || listener.getController() == null || source != listener.getController()) {

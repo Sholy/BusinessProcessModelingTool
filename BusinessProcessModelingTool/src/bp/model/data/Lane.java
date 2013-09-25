@@ -15,44 +15,45 @@ public class Lane extends Element {
     private final List<Lane> children = new ArrayList<Lane>();
     private final List<Task> tasks = new ArrayList<Task>();
 
-    public Lane(String uniqueName) {
+    public Lane(final String uniqueName) {
         super(uniqueName);
     }
 
     @Override
     protected void initializeComponent() {
-        component = new LaneComponent();
+        this.component = new LaneComponent(this);
+        this.component.setzIndex(1);
     }
 
     @Override
     protected void initializeDetails() {
-        details = new LaneDetails(this);
+        this.details = new LaneDetails(this);
     }
 
     public Lane getParent() {
-        return parent;
+        return this.parent;
     }
 
-    public void updateParent(Lane parent, Controller source) {
+    public void updateParent(final Lane parent, final Controller source) {
         this.parent = parent;
         fireAttributeChanged(BPKeyWords.PARENT, this.parent, source);
     }
 
     public List<Lane> getChildren() {
-        return children;
+        return this.children;
     }
 
     public String getActor() {
-        return actor;
+        return this.actor;
     }
 
-    public void updateActor(String actor, Controller source) {
+    public void updateActor(final String actor, final Controller source) {
         this.actor = actor;
         fireAttributeChanged(BPKeyWords.ACTOR, this.actor, source);
     }
 
     public List<Task> getTasks() {
-        return tasks;
+        return this.tasks;
     }
 
     public LaneComponent getLaneComponent() {

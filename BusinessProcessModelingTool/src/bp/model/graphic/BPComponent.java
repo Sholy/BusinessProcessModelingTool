@@ -8,8 +8,8 @@ import bp.util.EdgePoints;
 
 public abstract class BPComponent extends BPElement {
 
-    public static final Integer MAX_DIMENSION_COEFICIENT = 2;
-    public static final Integer MIN_DIMENSION_COEFICIENT = 2;
+    public static final Integer MAX_DIMENSION_COEFFICIENT = 2;
+    public static final Integer MIN_DIMENSION_COEFFICIENT = 2;
 
     /**
      * X Coordinate
@@ -31,14 +31,14 @@ public abstract class BPComponent extends BPElement {
     protected ElementHandlers handlers;
 
     public BPComponent() {
-        width = getDefaultWidth();
-        height = getDefaultHeight();
-        x = 0;
-        y = 0;
+        this.width = getDefaultWidth();
+        this.height = getDefaultHeight();
+        this.x = 0;
+        this.y = 0;
         initializeElementHandlers();
     }
 
-    public BPComponent(Integer x, Integer y) {
+    public BPComponent(final Integer x, final Integer y) {
         this();
         setX(x);
         setY(y);
@@ -52,20 +52,28 @@ public abstract class BPComponent extends BPElement {
 
     protected abstract void initializeElementHandlers();
 
+    public Integer getMaxDimensionCoefficient() {
+        return MAX_DIMENSION_COEFFICIENT;
+    }
+
+    public Integer getMinDimensionCoefficient() {
+        return MIN_DIMENSION_COEFFICIENT;
+    }
+
     public Integer getMaximumHeight() {
-        return getDefaultHeight() * MAX_DIMENSION_COEFICIENT;
+        return getDefaultHeight() * getMaxDimensionCoefficient();
     }
 
     public Integer getMaximumWidth() {
-        return getDefaultWidth() * MAX_DIMENSION_COEFICIENT;
+        return getDefaultWidth() * getMaxDimensionCoefficient();
     }
 
     public Integer getMinimumHeight() {
-        return getDefaultHeight() / MIN_DIMENSION_COEFICIENT;
+        return getDefaultHeight() / getMinDimensionCoefficient();
     }
 
     public Integer getMinimumWidth() {
-        return getDefaultWidth() / MIN_DIMENSION_COEFICIENT;
+        return getDefaultWidth() / getMinDimensionCoefficient();
     }
 
     public Dimension getMinimumSize() {
@@ -88,13 +96,13 @@ public abstract class BPComponent extends BPElement {
         return this.width;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(final Integer height) {
         this.height = height;
         updateComponent();
         getHandlers().updateHandlers();
     }
 
-    public void setWidth(Integer width) {
+    public void setWidth(final Integer width) {
         this.width = width;
         updateComponent();
         getHandlers().updateHandlers();
@@ -105,19 +113,19 @@ public abstract class BPComponent extends BPElement {
     }
 
     public Integer getX() {
-        return x;
+        return this.x;
     }
 
-    public void setX(Integer x) {
+    public void setX(final Integer x) {
         this.x = x;
         getHandlers().updateHandlers();
     }
 
     public Integer getY() {
-        return y;
+        return this.y;
     }
 
-    public void setY(Integer y) {
+    public void setY(final Integer y) {
         this.y = y;
         getHandlers().updateHandlers();
     }
@@ -128,18 +136,18 @@ public abstract class BPComponent extends BPElement {
 
     @Override
     public ElementHandlers getHandlers() {
-        return handlers;
+        return this.handlers;
     }
 
     public void updateComponent() {
         if (getWidth() < getMinimumWidth())
-            setWidth(getMinimumWidth());
+            this.width = getMinimumWidth();
         else if (getWidth() > getMaximumWidth())
-            setWidth(getMaximumWidth());
+            this.width = getMaximumWidth();
 
         if (getHeight() < getMinimumHeight())
-            setHeight(getMinimumHeight());
+            this.height = getMinimumHeight();
         else if (getHeight() > getMaximumHeight())
-            setHeight(getMaximumHeight());
+            this.height = getMaximumHeight();
     }
 }

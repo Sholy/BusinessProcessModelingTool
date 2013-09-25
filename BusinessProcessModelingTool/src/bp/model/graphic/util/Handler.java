@@ -16,7 +16,7 @@ public class Handler extends BPGraphElement {
 
     private final HandlerPosition handlerPosition;
 
-    public Handler(HandlerPosition handlerPosition) {
+    public Handler(final HandlerPosition handlerPosition) {
         this.handlerPosition = handlerPosition;
 
         setFgColor(Color.BLACK);
@@ -24,12 +24,12 @@ public class Handler extends BPGraphElement {
 
         setX(0);
         setY(0);
-        width = 6;
-        height = 6;
+        this.width = 6;
+        this.height = 6;
 
     }
 
-    public Handler(Integer x, Integer y, HandlerPosition handlerPosition) {
+    public Handler(final Integer x, final Integer y, final HandlerPosition handlerPosition) {
         this(handlerPosition);
         setX(x);
         setY(y);
@@ -41,35 +41,35 @@ public class Handler extends BPGraphElement {
 
 
     public HandlerPosition getHandlerPosition() {
-        return handlerPosition;
+        return this.handlerPosition;
     }
 
     public Integer getX() {
-        return x;
+        return this.x;
     }
 
-    public void setX(Integer x) {
+    public void setX(final Integer x) {
         this.x = x;
     }
 
     public Integer getY() {
-        return y;
+        return this.y;
     }
 
-    public void setY(Integer y) {
+    public void setY(final Integer y) {
         this.y = y;
     }
 
     public Integer getWidth() {
-        return width;
+        return this.width;
     }
 
     public Integer getHeight() {
-        return height;
+        return this.height;
     }
 
-    public boolean isAt(Point p) {
-        if (p.x >= x && p.x <= x + width && p.y >= y && p.y <= y + height)
+    public boolean isAt(final Point p) {
+        if (p.x >= this.x - 2 && p.x <= this.x + this.width + 4 && p.y >= this.y - 2 && p.y <= this.y + this.height + 4)
             return true;
 
         return false;

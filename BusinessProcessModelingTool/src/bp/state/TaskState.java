@@ -8,20 +8,19 @@ import bp.model.data.Task;
 
 public class TaskState extends BPState {
 
-    public TaskState(BPPanel panel) {
+    public TaskState(final BPPanel panel) {
         super(panel);
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        Point position = e.getPoint();
+    public void mousePressed(final MouseEvent e) {
+        final Point position = e.getPoint();
         System.out.println(position);
-        Task task = new Task("untitledTask");
+        final Task task = new Task("untitledTask");
         task.getTaskComponent().setX(position.x);
         task.getTaskComponent().setY(position.y);
-        task.getTaskComponent().getHandlers().updateHandlers();
-        
-        getPanel().getProcess().getElements().add(task);
+
+        getPanel().getProcess().addElement(task);
         getPanel().repaint();
     }
 

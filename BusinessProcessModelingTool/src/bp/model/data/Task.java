@@ -21,63 +21,64 @@ public class Task extends Activity {
     private ExecutionType multipleExecutionType;
 
 
-    public Task(String uniqueName) {
+    public Task(final String uniqueName) {
         super(uniqueName);
     }
 
     public String getActor() {
-        return actor;
+        return this.actor;
     }
 
-    public void updateActor(String actor, Controller source) {
+    public void updateActor(final String actor, final Controller source) {
         this.actor = actor;
         fireAttributeChanged(BPKeyWords.ACTOR, this.actor, source);
     }
 
     public Boolean getAutoAssign() {
-        return autoAssign;
+        return this.autoAssign;
     }
 
-    public void updateAutoAssign(Boolean autoAssign, Controller source) {
+    public void updateAutoAssign(final Boolean autoAssign, final Controller source) {
         this.autoAssign = autoAssign;
         fireAttributeChanged(BPKeyWords.AUTO_ASSIGN, this.autoAssign, source);
     }
 
     public Integer getMultipleExecution() {
-        return multipleExecution;
+        return this.multipleExecution;
     }
 
-    public void updateMultipleExecution(Integer multipleExecution, Controller source) {
+    public void updateMultipleExecution(final Integer multipleExecution, final Controller source) {
         this.multipleExecution = multipleExecution;
         fireAttributeChanged(BPKeyWords.MULTIPLE_EXECUTION, this.multipleExecution, source);
     }
 
     public ExecutionType getMultipleExecutionType() {
-        return multipleExecutionType;
+        return this.multipleExecutionType;
     }
 
-    public void updateMultipleExecutionType(ExecutionType multipleExecutionType, Controller source) {
+    public void updateMultipleExecutionType(final ExecutionType multipleExecutionType, final Controller source) {
         this.multipleExecutionType = multipleExecutionType;
         fireAttributeChanged(BPKeyWords.MULTIPLE_EXECUTION_TYPE, this.multipleExecutionType, source);
     }
 
     public Lane getLaneActor() {
-        return laneActor;
+        return this.laneActor;
     }
 
-    public void updateLaneActor(Lane laneActor, Controller source) {
+    public void updateLaneActor(final Lane laneActor, final Controller source) {
         this.laneActor = laneActor;
         fireAttributeChanged(BPKeyWords.LANE_ACTOR, this.laneActor, source);
     }
 
     @Override
     protected void initializeComponent() {
-        component = new TaskComponent(this);
+        this.component = new TaskComponent(this);
+        this.component.setzIndex(101);
     }
 
     @Override
     protected void initializeDetails() {
-        details = new TaskDetails(this);
+        this.details = new TaskDetails(this);
     }
 
     public TaskComponent getTaskComponent() {

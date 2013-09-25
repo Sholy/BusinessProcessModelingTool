@@ -22,7 +22,13 @@ public abstract class SquareComponent extends BPComponent {
     }
 
     @Override
-    public final void setWidth(Integer width) {
-        setHeight(width);
+    public Integer getMaximumWidth() {
+        return getMaximumHeight();
     }
+
+    @Override
+    public Integer getMinimumWidth() {
+        return getMinimumHeight();
+    }
+
 }

@@ -6,6 +6,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import bp.model.graphic.BPComponent;
+import bp.model.graphic.BPImage;
+import bp.model.graphic.EventComponent;
+import bp.model.graphic.TaskComponent;
 import bp.model.graphic.util.ElementHandlers;
 import bp.view.BasicPainter;
 
@@ -13,17 +16,17 @@ public class BPElementPainter extends BasicPainter {
 
     private final BPComponent component = (BPComponent) getElement();
 
-    public BPElementPainter(BPComponent component) {
+    public BPElementPainter(final BPComponent component) {
         super(component);
     }
 
     protected BPComponent getComponent() {
-        return component;
+        return this.component;
     }
 
     @Override
-    public void paint(Graphics2D g) {
-        AffineTransform oldTransform = g.getTransform();
+    public void paint(final Graphics2D g) {
+        final AffineTransform oldTransform = g.getTransform();
 
         g.translate(getComponent().getX(), getComponent().getY());
 
@@ -36,25 +39,50 @@ public class BPElementPainter extends BasicPainter {
         g.fill(getComponent().getShape());
 
         g.setTransform(oldTransform);
+
+        if (this.component instanceof BPImage) {
+            final BPImage img = (BPImage) this.component;
+            if (this.component instanceof TaskComponent) {
+                if (img.getImage() != null) {
+                    g.translate(
+                            getComponent().getX() + getComponent().getWidth() - img.getImageWidth()
+                            - img.getImageMargins(), getComponent().getY() + img.getImageMargins());
+
+                    g.drawImage(img.getImage(), 0, 0, img.getImageWidth(), img.getImageHeight(), null);
+
+                    g.setTransform(oldTransform);
+                }
+            } else if (this.component instanceof EventComponent) {
+                if (img.getImage() != null) {
+
+                    g.translate(getComponent().getX() + getComponent().getWidth() / 2 - img.getImageWidth() / 2,
+                            getComponent().getY() + getComponent().getHeight() / 2 - img.getImageHeight() / 2);
+
+                    g.drawImage(img.getImage(), 0, 0, img.getImageWidth(), img.getImageHeight(), null);
+
+                    g.setTransform(oldTransform);
+                }
+            }
+        }
     }
 
     @Override
-    public boolean isElementAt(Point pos) {
-        Integer x = getComponent().getX();
-        Integer y = getComponent().getY();
-        Integer w = getComponent().getWidth();
-        Integer h = getComponent().getHeight();
-        Rectangle2D area = new Rectangle2D.Double(x, y, w, h);
+    public boolean isElementAt(final Point pos) {
+        final Integer x = getComponent().getX();
+        final Integer y = getComponent().getY();
+        final Integer w = getComponent().getWidth();
+        final Integer h = getComponent().getHeight();
+        final Rectangle2D area = new Rectangle2D.Double(x, y, w, h);
         return area.contains(pos);
     }
 
     @Override
-    public void paintHandlers(Graphics2D g) {
-        ElementHandlers handlers = getComponent().getHandlers();
+    public void paintHandlers(final Graphics2D g) {
+        final ElementHandlers handlers = getComponent().getHandlers();
         if (handlers == null)
             return;
 
-        AffineTransform oldTransform = g.getTransform();
+        final AffineTransform oldTransform = g.getTransform();
 
         g.translate(handlers.getX(), handlers.getY());
 

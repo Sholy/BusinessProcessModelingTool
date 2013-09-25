@@ -1,19 +1,37 @@
 package bp.model.data;
 
+import bp.details.TimerStartEventDetails;
+import bp.model.graphic.EventComponent;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+import bp.util.ImageRes;
+
 public class TimerStartEvent extends StartEvent {
 
     private String timeFormat;
 
-    public TimerStartEvent(String uniqueName) {
+    public TimerStartEvent(final String uniqueName) {
         super(uniqueName);
     }
 
     public String getTimeFormat() {
-        return timeFormat;
+        return this.timeFormat;
     }
 
-    public void setTimeFormat(String timeFormat) {
+    public void updateTimeFormat(final String timeFormat, final Controller source) {
         this.timeFormat = timeFormat;
+        fireAttributeChanged(BPKeyWords.TIME_FORMAT, this.timeFormat, source);
+    }
+
+    @Override
+    protected void initializeComponent() {
+        this.component = new EventComponent(this, ImageRes.TIMER, null);
+        this.component.setzIndex(101);
+    }
+
+    @Override
+    protected void initializeDetails() {
+        this.details = new TimerStartEventDetails(this);
     }
 
 }

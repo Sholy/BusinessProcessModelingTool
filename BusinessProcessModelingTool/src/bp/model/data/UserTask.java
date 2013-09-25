@@ -1,5 +1,11 @@
 package bp.model.data;
 
+import bp.details.UserTaskDetails;
+import bp.model.graphic.TaskComponent;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+import bp.util.ImageRes;
+
 /**
  * Task specialization - to be performed by user with help of software
  * 
@@ -8,18 +14,29 @@ package bp.model.data;
  */
 public class UserTask extends Task {
 
-    private String impelemntation;
+    private String implementation;
 
-    public String getImpelemntation() {
-        return impelemntation;
-    }
-
-    public void setImpelemntation(String impelemntation) {
-        this.impelemntation = impelemntation;
-    }
-
-    public UserTask(String uniqueName) {
+    public UserTask(final String uniqueName) {
         super(uniqueName);
     }
 
+    public String getImplementation() {
+        return this.implementation;
+    }
+
+    public void updateImplementation(final String implementation, final Controller source) {
+        this.implementation = implementation;
+        fireAttributeChanged(BPKeyWords.IMPLEMENTATION, this.implementation, source);
+    }
+
+    @Override
+    protected void initializeComponent() {
+        this.component = new TaskComponent(this, ImageRes.USER_TASK);
+        this.component.setzIndex(101);
+    }
+
+    @Override
+    protected void initializeDetails() {
+        this.details = new UserTaskDetails(this);
+    }
 }
