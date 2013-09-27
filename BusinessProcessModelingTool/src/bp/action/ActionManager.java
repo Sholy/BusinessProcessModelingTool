@@ -22,7 +22,8 @@ public class ActionManager {
     private static final Action addLane = new BPAction("Lane", "Add Lane", StateType.LANE);
 
     private static final Action addEdge = new BPAction("Edge", "Add Edge", StateType.EDGE);
-    private static final Action addConditionalEdge = new BPAction("Con. Edge", "Add Conditional Edge", null);
+    private static final Action addConditionalEdge = new BPAction("Con. Edge", "Add Conditional Edge",
+            StateType.CONDITIONAL_EDGE);
     private static final Action addGateway = new BPAction("Gateway", "Add Gateway", null);
 
     private static final Action addStartEvent = new BPAction("Normal", "Add Normal Start Event", StateType.START_EVENT);
@@ -63,12 +64,16 @@ public class ActionManager {
     private static final Action addThrowLinkEvent = new BPAction("Link", "Add Throw Link Event",
             StateType.LINK_THROW_EVENT);
 
-    private static final Action addActivityMessageEvent = new BPAction("Message", "Add Message Activity Event", null);
-    private static final Action addActivityTimerEvent = new BPAction("Timer", "Add Timer Activity Event", null);
+    private static final Action addActivityMessageEvent = new BPAction("Message", "Add Message Activity Event",
+            StateType.MESSAGE_ACTIVITY_EVENT);
+    private static final Action addActivityTimerEvent = new BPAction("Timer", "Add Timer Activity Event",
+            StateType.TIMER_ACTIVITY_EVENT);
     private static final Action addActivityConditionEvent = new BPAction("Condition", "Add Conditional Activity Event",
-            null);
-    private static final Action addActivitySignalEvent = new BPAction("Signal", "Add Signal Activity Event", null);
-    private static final Action addActivityErrorEvent = new BPAction("Error", "Add Error Activity Event", null);
+            StateType.CONDITIONAL_ACTIVITY_EVENT);
+    private static final Action addActivitySignalEvent = new BPAction("Signal", "Add Signal Activity Event",
+            StateType.SIGNAL_ACTIVITY_EVENT);
+    private static final Action addActivityErrorEvent = new BPAction("Error", "Add Error Activity Event",
+            StateType.ERROR_ACTIVITY_EVENT);
 
     public static Action getNewDiagram() {
         return newDiagram;

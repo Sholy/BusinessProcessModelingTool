@@ -55,7 +55,7 @@ public class Edge extends Element {
 
     @Override
     protected void initializeComponent() {
-        this.component = new BPEdge();
+        this.component = new BPEdge(BPEdge.REGULAR_EDGE);
         this.component.setzIndex(301);
     }
 

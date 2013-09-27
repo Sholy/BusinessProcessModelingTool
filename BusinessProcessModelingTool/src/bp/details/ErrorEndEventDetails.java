@@ -7,7 +7,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.ErrorEndEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -31,7 +30,7 @@ public class ErrorEndEventDetails extends EndEventDetails{
     private JTextArea errorDataTa;
     private JScrollPane errorDataScroll;
 
-    public ErrorEndEventDetails(final Element element) {
+    public ErrorEndEventDetails(final ErrorEndEvent element) {
         super(element);
     }
 

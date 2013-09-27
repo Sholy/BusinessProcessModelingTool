@@ -7,7 +7,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.SignalEndEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -31,7 +30,7 @@ public class SignalEndEventDetails extends EndEventDetails{
     private JTextArea signalDataTa;
     private JScrollPane signalDataScroll;
 
-    public SignalEndEventDetails(final Element element) {
+    public SignalEndEventDetails(final SignalEndEvent element) {
         super(element);
     }
 

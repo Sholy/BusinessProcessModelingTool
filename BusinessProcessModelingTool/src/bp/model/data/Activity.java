@@ -14,39 +14,43 @@ public abstract class Activity extends Vertex {
 
     private final List<ActivityEvent> activityEvents = new ArrayList<ActivityEvent>();
 
-    public Activity(String uniqueName) {
+    public Activity(final String uniqueName) {
         super(uniqueName);
     }
 
     public String getData() {
-        return data;
+        return this.data;
     }
 
-    public void updateData(String data, Controller source) {
+    public void updateData(final String data, final Controller source) {
         this.data = data;
         fireAttributeChanged(BPKeyWords.DATA, this.data, source);
     }
 
     public String getLoopExpression() {
-        return loopExpression;
+        return this.loopExpression;
     }
 
-    public void updateLoopExpression(String loopExpression, Controller source) {
+    public void updateLoopExpression(final String loopExpression, final Controller source) {
         this.loopExpression = loopExpression;
         fireAttributeChanged(BPKeyWords.LOOP_EXPRESSION, this.loopExpression, source);
     }
 
     public Integer getMinInput() {
-        return minInput;
+        return this.minInput;
     }
 
-    public void updateMinInput(Integer minInput, Controller source) {
+    public void updateMinInput(final Integer minInput, final Controller source) {
         this.minInput = minInput;
         fireAttributeChanged(BPKeyWords.MIN_INPUT, this.minInput, source);
     }
 
     public List<ActivityEvent> getActivityEvents() {
-        return activityEvents;
+        return this.activityEvents;
+    }
+
+    public void addActivityEvent(final ActivityEvent event) {
+        this.activityEvents.add(event);
     }
 
     @Override

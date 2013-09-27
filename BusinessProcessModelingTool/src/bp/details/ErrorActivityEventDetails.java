@@ -1,31 +1,29 @@
 package bp.details;
 
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.TimerCatchEvent;
+import bp.model.data.ErrorActivityEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 
-public class TimerCatchEventDetails extends IntermediateEventDetails {
+public class ErrorActivityEventDetails extends ActivityEventDetails{
 
     /**
      * 
      */
-    private static final long serialVersionUID = -883507948100426558L;
+    private static final long serialVersionUID = 1096834131210529218L;
 
-    public static final String TIME_FORMAT = "Time format:";
+    public static final String ERROR_NAME_LABEL = "Error name:";
 
-    private final TimerCatchEvent event = (TimerCatchEvent) getElement();
+    private final ErrorActivityEvent event = (ErrorActivityEvent) getElement();
 
-    private JLabel timeFormatLb;
-    private JTextArea timeFormatTa;
-    private JScrollPane timeFormatScroll;
+    private JLabel errorNameLb;
+    private JTextField errorNameTf;
 
-    public TimerCatchEventDetails(final TimerCatchEvent element) {
+    public ErrorActivityEventDetails(final ErrorActivityEvent element) {
         super(element);
     }
 
@@ -33,9 +31,8 @@ public class TimerCatchEventDetails extends IntermediateEventDetails {
     protected void initComponents() {
         super.initComponents();
 
-        this.timeFormatLb = new JLabel(TIME_FORMAT);
-        this.timeFormatTa = new JTextArea(5, 20);
-        this.timeFormatScroll = new JScrollPane(this.timeFormatTa);
+        this.errorNameLb = new JLabel(ERROR_NAME_LABEL);
+        this.errorNameTf = new JTextField(20);
     }
 
     @Override
@@ -44,15 +41,15 @@ public class TimerCatchEventDetails extends IntermediateEventDetails {
 
         createAdvanced();
 
-        getAdvanced().add(this.timeFormatLb);
-        getAdvanced().add(this.timeFormatScroll);
+        getAdvanced().add(this.errorNameLb);
+        getAdvanced().add(this.errorNameTf);
     }
 
     @Override
     protected void addActions() {
         super.addActions();
 
-        this.timeFormatTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.errorNameTf.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
             public void removeUpdate(final DocumentEvent arg0) {
@@ -70,8 +67,8 @@ public class TimerCatchEventDetails extends IntermediateEventDetails {
             }
 
             private void contentChanged() {
-                TimerCatchEventDetails.this.event.updateTimeFormat(TimerCatchEventDetails.this.timeFormatTa.getText(),
-                        Controller.DETAILS);
+                ErrorActivityEventDetails.this.event.updateErrorName(
+                        ErrorActivityEventDetails.this.errorNameTf.getText(), Controller.DETAILS);
             }
         });
     }
@@ -80,8 +77,8 @@ public class TimerCatchEventDetails extends IntermediateEventDetails {
     protected void dataAttributeChanged(final BPKeyWords keyWord, final Object value) {
         super.dataAttributeChanged(keyWord, value);
         if (value != null) {
-            if (keyWord == BPKeyWords.TIME_FORMAT) {
-                this.timeFormatTa.setText((String) value);
+            if (keyWord == BPKeyWords.ERROR_NAME) {
+                this.errorNameTf.setText((String) value);
             }
         }
     }

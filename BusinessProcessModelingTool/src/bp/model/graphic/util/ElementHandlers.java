@@ -11,8 +11,9 @@ import bp.view.painter.BPShapeFactory;
 
 public class ElementHandlers implements IHandlers {
 
-    public static final Integer RECTANGLE_HANDLERS = 0;
-    public static final Integer SQUARE_HANDLERS = 1;
+    public static final Integer NO_HANDLERS = 0;
+    public static final Integer RECTANGLE_HANDLERS = 1;
+    public static final Integer SQUARE_HANDLERS = 2;
 
     private final BPComponent component;
     private final Integer handlerType;
@@ -33,9 +34,9 @@ public class ElementHandlers implements IHandlers {
     private Handler e;
     private Handler s;
     private Handler w;
-    
 
-    public ElementHandlers(BPComponent component, Integer handlerType) {
+
+    public ElementHandlers(final BPComponent component, final Integer handlerType) {
         this.component = component;
         this.handlerType = handlerType;
 
@@ -45,133 +46,138 @@ public class ElementHandlers implements IHandlers {
 
 
     private void initializeHandlers() {
-        initializeSquareHandlers();
-        if (handlerType == RECTANGLE_HANDLERS)
+        if (this.handlerType == SQUARE_HANDLERS) {
+            initializeSquareHandlers();
+        } else if (this.handlerType == RECTANGLE_HANDLERS) {
+            initializeSquareHandlers();
             initializeRectangleHandlers();
+        }
     }
 
     private void initializeSquareHandlers() {
-        nw = new Handler(0, 0, HandlerPosition.NORTH_WEST);
-        ne = new Handler(0, 0, HandlerPosition.NORTH_EAST);
-        sw = new Handler(0, 0, HandlerPosition.SOUTH_WEST);
-        se = new Handler(0, 0, HandlerPosition.SOUTH_EAST);
+        this.nw = new Handler(0, 0, HandlerPosition.NORTH_WEST);
+        this.ne = new Handler(0, 0, HandlerPosition.NORTH_EAST);
+        this.sw = new Handler(0, 0, HandlerPosition.SOUTH_WEST);
+        this.se = new Handler(0, 0, HandlerPosition.SOUTH_EAST);
     }
 
     private void initializeRectangleHandlers() {
-        n = new Handler(0, 0, HandlerPosition.NORTH);
-        e = new Handler(0, 0, HandlerPosition.EAST);
-        s = new Handler(0, 0, HandlerPosition.SOUTH);
-        w = new Handler(0, 0, HandlerPosition.WEST);
+        this.n = new Handler(0, 0, HandlerPosition.NORTH);
+        this.e = new Handler(0, 0, HandlerPosition.EAST);
+        this.s = new Handler(0, 0, HandlerPosition.SOUTH);
+        this.w = new Handler(0, 0, HandlerPosition.WEST);
     }
 
     @Override
     public void updateHandlers() {
-        Integer x = getComponent().getX();
-        Integer y = getComponent().getY();
-        Integer w = getComponent().getWidth();
-        Integer h = getComponent().getHeight();
-        
+        final Integer x = getComponent().getX();
+        final Integer y = getComponent().getY();
+        final Integer w = getComponent().getWidth();
+        final Integer h = getComponent().getHeight();
+
         this.x = x - 3;
         this.y = y - 3;
         this.width = w + 6;
         this.height = h + 6;
 
-        this.nw.setX(x - this.nw.getWidth());
-        this.nw.setY(y - this.nw.getHeight());
+        if (this.handlerType == SQUARE_HANDLERS || this.handlerType == RECTANGLE_HANDLERS) {
+            this.nw.setX(x - this.nw.getWidth());
+            this.nw.setY(y - this.nw.getHeight());
 
-        this.ne.setX(x + w);
-        this.ne.setY(y - this.ne.getHeight());
-        
-        this.se.setX(x + w);
-        this.se.setY(y + h);
+            this.ne.setX(x + w);
+            this.ne.setY(y - this.ne.getHeight());
 
-        this.sw.setX(x - this.sw.getWidth());
-        this.sw.setY(y + h);
+            this.se.setX(x + w);
+            this.se.setY(y + h);
 
-        if (handlerType == RECTANGLE_HANDLERS) {
-            this.n.setX(x + (w - this.n.getWidth()) / 2);
-            this.n.setY(y - this.n.getHeight());
+            this.sw.setX(x - this.sw.getWidth());
+            this.sw.setY(y + h);
 
-            this.e.setX(x + w);
-            this.e.setY(y + (h - this.e.getHeight()) / 2);
+            if (this.handlerType == RECTANGLE_HANDLERS) {
+                this.n.setX(x + (w - this.n.getWidth()) / 2);
+                this.n.setY(y - this.n.getHeight());
 
-            this.s.setX(x + (w - this.s.getWidth()) / 2);
-            this.s.setY(y + h);
+                this.e.setX(x + w);
+                this.e.setY(y + (h - this.e.getHeight()) / 2);
 
-            this.w.setX(x - this.w.getWidth());
-            this.w.setY(y + (h - this.w.getHeight()) / 2);
+                this.s.setX(x + (w - this.s.getWidth()) / 2);
+                this.s.setY(y + h);
+
+                this.w.setX(x - this.w.getWidth());
+                this.w.setY(y + (h - this.w.getHeight()) / 2);
+            }
         }
     }
 
     public BPComponent getComponent() {
-        return component;
+        return this.component;
     }
 
     public Integer getHandlerType() {
-        return handlerType;
+        return this.handlerType;
     }
 
     public Handler getNw() {
-        return nw;
+        return this.nw;
     }
 
     public Handler getNe() {
-        return ne;
+        return this.ne;
     }
 
     public Handler getSe() {
-        return se;
+        return this.se;
     }
 
     public Handler getSw() {
-        return sw;
+        return this.sw;
     }
 
     public Handler getN() {
-        return n;
+        return this.n;
     }
 
     public Handler getE() {
-        return e;
+        return this.e;
     }
 
     public Handler getS() {
-        return s;
+        return this.s;
     }
 
     public Handler getW() {
-        return w;
+        return this.w;
     }
 
     public Integer getX() {
-        return x;
+        return this.x;
     }
 
     public Integer getY() {
-        return y;
+        return this.y;
     }
 
     public Integer getWidth() {
-        return width;
+        return this.width;
     }
 
     public Integer getHeight() {
-        return height;
+        return this.height;
     }
 
     public Stroke getLineStroke() {
-        return lineStroke;
+        return this.lineStroke;
     }
 
-    public void setLineStroke(Stroke lineStroke) {
+    public void setLineStroke(final Stroke lineStroke) {
         this.lineStroke = lineStroke;
     }
 
     public Color getLineColor() {
-        return lineColor;
+        return this.lineColor;
     }
 
-    public void setLineColor(Color lineColor) {
+    public void setLineColor(final Color lineColor) {
         this.lineColor = lineColor;
     }
 
@@ -180,36 +186,44 @@ public class ElementHandlers implements IHandlers {
     }
 
     @Override
-    public boolean isHandlerAt(Point p) {
-        Boolean squareHandlers = nw.isAt(p) || ne.isAt(p) || se.isAt(p) || sw.isAt(p);
-        if (handlerType == RECTANGLE_HANDLERS) {
-            Boolean rectangleHandlers = n.isAt(p) || e.isAt(p) || s.isAt(p) || w.isAt(p);
+    public boolean isHandlerAt(final Point p) {
+        if (this.handlerType == NO_HANDLERS) {
+            return false;
+        }
+
+        final Boolean squareHandlers = this.nw.isAt(p) || this.ne.isAt(p) || this.se.isAt(p) || this.sw.isAt(p);
+        if (this.handlerType == RECTANGLE_HANDLERS) {
+            final Boolean rectangleHandlers = this.n.isAt(p) || this.e.isAt(p) || this.s.isAt(p) || this.w.isAt(p);
             return squareHandlers || rectangleHandlers;
         }
         return squareHandlers;
     }
 
     @Override
-    public Handler getHandlerAt(Point p) {
-        if (nw.isAt(p))
-            return nw;
-        if (ne.isAt(p))
-            return ne;
-        if (se.isAt(p))
-            return se;
-        if (sw.isAt(p))
-            return sw;
-        if (handlerType == RECTANGLE_HANDLERS) {
-            if (n.isAt(p))
-                return n;
-            if (e.isAt(p))
-                return e;
-            if (s.isAt(p))
-                return s;
-            if (w.isAt(p))
-                return w;
+    public Handler getHandlerAt(final Point p) {
+        if (this.handlerType == NO_HANDLERS) {
+            return null;
         }
-        
+
+        if (this.nw.isAt(p))
+            return this.nw;
+        if (this.ne.isAt(p))
+            return this.ne;
+        if (this.se.isAt(p))
+            return this.se;
+        if (this.sw.isAt(p))
+            return this.sw;
+        if (this.handlerType == RECTANGLE_HANDLERS) {
+            if (this.n.isAt(p))
+                return this.n;
+            if (this.e.isAt(p))
+                return this.e;
+            if (this.s.isAt(p))
+                return this.s;
+            if (this.w.isAt(p))
+                return this.w;
+        }
+
         return null;
     }
 

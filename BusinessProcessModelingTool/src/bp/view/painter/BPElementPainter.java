@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
+import bp.model.graphic.ActivityEventComponent;
 import bp.model.graphic.BPComponent;
 import bp.model.graphic.BPImage;
 import bp.model.graphic.EventComponent;
@@ -52,7 +53,7 @@ public class BPElementPainter extends BasicPainter {
 
                     g.setTransform(oldTransform);
                 }
-            } else if (this.component instanceof EventComponent) {
+            } else if (this.component instanceof EventComponent || this.component instanceof ActivityEventComponent) {
                 if (img.getImage() != null) {
 
                     g.translate(getComponent().getX() + getComponent().getWidth() / 2 - img.getImageWidth() / 2,

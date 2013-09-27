@@ -6,7 +6,6 @@ import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.ErrorStartEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -26,7 +25,7 @@ public class ErrorStartEventDetails extends StartEventDetails{
     private JTextArea errorNameTa;
     private JScrollPane errorNameScroll;
 
-    public ErrorStartEventDetails(final Element element) {
+    public ErrorStartEventDetails(final ErrorStartEvent element) {
         super(element);
     }
 

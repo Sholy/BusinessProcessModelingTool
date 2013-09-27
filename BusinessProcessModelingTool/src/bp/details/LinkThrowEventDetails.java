@@ -4,7 +4,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import bp.app.AppCore;
-import bp.model.data.Element;
 import bp.model.data.LinkCatchEvent;
 import bp.model.data.LinkThrowEvent;
 import bp.model.data.Process;
@@ -24,7 +23,7 @@ public class LinkThrowEventDetails extends ElementDetails{
     private JLabel catchLinkLb;
     private JComboBox<String> catchLinkCb;
 
-    public LinkThrowEventDetails(final Element element) {
+    public LinkThrowEventDetails(final LinkThrowEvent element) {
         super(element);
     }
 

@@ -6,7 +6,6 @@ import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.TimerStartEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -26,7 +25,7 @@ public class TimerStartEventDetails extends StartEventDetails{
     private JTextArea timeFormatTa;
     private JScrollPane timeFormatScroll;
 
-    public TimerStartEventDetails(final Element element) {
+    public TimerStartEventDetails(final TimerStartEvent element) {
         super(element);
     }
 

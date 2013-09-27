@@ -1,31 +1,38 @@
 package bp.details;
 
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.MessageCatchEvent;
+import bp.model.data.MessageActivityEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 
-public class MessageCatchEventDetails extends IntermediateEventDetails{
+public class MessageActivityEventDetails extends ActivityEventDetails{
 
     /**
      * 
      */
-    private static final long serialVersionUID = -4226369332583687478L;
+    private static final long serialVersionUID = 1719722878457909960L;
 
     public static final String DATA_FORMAT_LABEL = "Data format:";
+    public static final String STOP_ACTIVITY_LABEL = "Stop activity:";
 
-    private final MessageCatchEvent event = (MessageCatchEvent) getElement();
+    private final MessageActivityEvent event = (MessageActivityEvent) getElement();
 
     private JLabel dataFormatLb;
+    private JLabel stopActivityLb;
+
     private JTextArea dataFormatTa;
     private JScrollPane dataFormatScroll;
+    private JCheckBox stopActivityCb;
 
-    public MessageCatchEventDetails(final MessageCatchEvent element) {
+    public MessageActivityEventDetails(final MessageActivityEvent element) {
         super(element);
     }
 
@@ -34,8 +41,12 @@ public class MessageCatchEventDetails extends IntermediateEventDetails{
         super.initComponents();
 
         this.dataFormatLb = new JLabel(DATA_FORMAT_LABEL);
+        this.stopActivityLb = new JLabel(STOP_ACTIVITY_LABEL);
+
         this.dataFormatTa = new JTextArea(5, 20);
         this.dataFormatScroll = new JScrollPane(this.dataFormatTa);
+        this.stopActivityCb = new JCheckBox();
+        this.stopActivityCb.setSelected(false);
     }
 
     @Override
@@ -46,6 +57,8 @@ public class MessageCatchEventDetails extends IntermediateEventDetails{
 
         getAdvanced().add(this.dataFormatLb);
         getAdvanced().add(this.dataFormatScroll);
+        getAdvanced().add(this.stopActivityLb);
+        getAdvanced().add(this.stopActivityCb);
     }
 
     @Override
@@ -70,8 +83,17 @@ public class MessageCatchEventDetails extends IntermediateEventDetails{
             }
 
             private void contentChanged() {
-                MessageCatchEventDetails.this.event.updateDataFormat(
-                        MessageCatchEventDetails.this.dataFormatTa.getText(), Controller.DETAILS);
+                MessageActivityEventDetails.this.event.updateDataFormat(
+                        MessageActivityEventDetails.this.dataFormatTa.getText(), Controller.DETAILS);
+            }
+        });
+
+        this.stopActivityCb.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(final ChangeEvent arg0) {
+                MessageActivityEventDetails.this.event.updateStopActivity(
+                        MessageActivityEventDetails.this.stopActivityCb.isSelected(), Controller.DETAILS);
             }
         });
     }
@@ -82,6 +104,8 @@ public class MessageCatchEventDetails extends IntermediateEventDetails{
         if (value != null) {
             if (keyWord == BPKeyWords.DATA_FORMAT) {
                 this.dataFormatTa.setText((String) value);
+            } else if (keyWord == BPKeyWords.STOP_ACTIVITY) {
+                this.stopActivityCb.setSelected((Boolean) value);
             }
         }
     }

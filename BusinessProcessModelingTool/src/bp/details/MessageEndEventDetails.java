@@ -6,7 +6,6 @@ import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.MessageEndEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -26,7 +25,7 @@ public class MessageEndEventDetails extends EndEventDetails{
     private JTextArea messageTa;
     private JScrollPane messageScroll;
 
-    public MessageEndEventDetails(final Element element) {
+    public MessageEndEventDetails(final MessageEndEvent element) {
         super(element);
     }
 

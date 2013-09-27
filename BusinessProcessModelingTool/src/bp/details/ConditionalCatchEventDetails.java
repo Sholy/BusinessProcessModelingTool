@@ -7,7 +7,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import bp.model.data.ConditionalCatchEvent;
-import bp.model.data.Element;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 
@@ -26,7 +25,7 @@ public class ConditionalCatchEventDetails extends IntermediateEventDetails{
     private JTextArea conditionTa;
     private JScrollPane conditionScroll;
 
-    public ConditionalCatchEventDetails(final Element element) {
+    public ConditionalCatchEventDetails(final ConditionalCatchEvent element) {
         super(element);
     }
 

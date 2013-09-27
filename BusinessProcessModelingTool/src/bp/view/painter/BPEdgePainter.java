@@ -13,24 +13,24 @@ public class BPEdgePainter extends BasicPainter {
 
     private final BPEdge edge = (BPEdge) getElement();
 
-    public BPEdgePainter(BPEdge edge) {
+    public BPEdgePainter(final BPEdge edge) {
         super(edge);
     }
 
     protected BPEdge getEdge() {
-        return edge;
+        return this.edge;
     }
 
     @Override
-    public void paint(Graphics2D g) {
+    public void paint(final Graphics2D g) {
         g.setPaint(getEdge().getFgColor());
         g.setStroke(getEdge().getFgStroke());
-        g.drawLine(edge.getSourceX(), edge.getSourceY(), edge.getTargetX(), edge.getTargetY());
+        g.drawLine(this.edge.getSourceX(), this.edge.getSourceY(), this.edge.getTargetX(), this.edge.getTargetY());
 
-        Integer x1 = getEdge().getSourceX();
-        Integer y1 = getEdge().getSourceY();
-        Integer x2 = getEdge().getTargetX();
-        Integer y2 = getEdge().getTargetY();
+        final Integer x1 = getEdge().getSourceX();
+        final Integer y1 = getEdge().getSourceY();
+        final Integer x2 = getEdge().getTargetX();
+        final Integer y2 = getEdge().getTargetY();
 
         Double angle = null;
 
@@ -40,7 +40,7 @@ public class BPEdgePainter extends BasicPainter {
             } else if (y1 > y2) {
                 angle = Math.PI / 2;
             } else {
-            angle = 0d;
+                angle = 0d;
             }
         }
         if (y1 == y2 && angle == null) {
@@ -55,8 +55,8 @@ public class BPEdgePainter extends BasicPainter {
             if (x1 > x2)
                 angle += Math.PI;
         }
-        
-        AffineTransform oldTransform = g.getTransform();
+
+        final AffineTransform oldTransform = g.getTransform();
 
         g.translate(x2, y2);
 
@@ -65,18 +65,33 @@ public class BPEdgePainter extends BasicPainter {
         g.draw(getEdge().getEndShape());
         g.fill(getEdge().getEndShape());
 
+        if (this.edge.getEdgeType() == BPEdge.CONDITIONAL_EDGE) {
+            g.setTransform(oldTransform);
+
+            g.translate(x1, y1);
+            g.rotate(-angle);
+
+            g.setPaint(getEdge().getFgColor());
+            g.setStroke(getEdge().getFgStroke());
+            g.draw(getEdge().getStartShape());
+
+            g.setPaint(getEdge().getBgColor());
+            g.setStroke(getEdge().getBgStroke());
+            g.fill(getEdge().getStartShape());
+        }
+
         g.setTransform(oldTransform);
 
     }
 
     @Override
-    public boolean isElementAt(Point pos) {
-        Integer x1 = getEdge().getSourceX();
-        Integer y1 = getEdge().getSourceY();
-        Integer x2 = getEdge().getTargetX();
-        Integer y2 = getEdge().getTargetY();
+    public boolean isElementAt(final Point pos) {
+        final Integer x1 = getEdge().getSourceX();
+        final Integer y1 = getEdge().getSourceY();
+        final Integer x2 = getEdge().getTargetX();
+        final Integer y2 = getEdge().getTargetY();
 
-        GeneralPath gp = new GeneralPath();
+        final GeneralPath gp = new GeneralPath();
         gp.moveTo(x1 - 5, y1);
         gp.lineTo(x2 - 5, y2);
         gp.lineTo(x2 + 5, y2);
@@ -87,14 +102,14 @@ public class BPEdgePainter extends BasicPainter {
     }
 
     @Override
-    public void paintHandlers(Graphics2D g) {
-        EdgeHandlers handlers = getEdge().getHandlers();
+    public void paintHandlers(final Graphics2D g) {
+        final EdgeHandlers handlers = getEdge().getHandlers();
         if (handlers == null)
             return;
 
         g.setPaint(handlers.getLineColor());
         g.setStroke(handlers.getLineStroke());
-        g.drawLine(edge.getSourceX(), edge.getSourceY(), edge.getTargetX(), edge.getTargetY());
+        g.drawLine(this.edge.getSourceX(), this.edge.getSourceY(), this.edge.getTargetX(), this.edge.getTargetY());
 
         if (handlers.getSource() != null)
             paintHandler(g, handlers.getSource());

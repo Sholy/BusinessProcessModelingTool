@@ -12,7 +12,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import bp.model.data.Activity;
-import bp.model.data.Element;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 
@@ -38,26 +37,26 @@ public abstract class ActivityDetails extends ElementDetails{
     private JScrollPane loopExpressionScroll;
     private JSpinner minInputSp;
 
-    public ActivityDetails(Element element) {
-        super(element);
+    public ActivityDetails(final Activity activity) {
+        super(activity);
     }
 
     @Override
     protected void initComponents() {
         super.initComponents();
 
-        dataLb = new JLabel(DATA_LABEL);
-        loopExpressionLb = new JLabel(LOOP_EXPRESSION_LABEL);
-        minInputLb = new JLabel(MIN_INPUT_LABEL);
+        this.dataLb = new JLabel(DATA_LABEL);
+        this.loopExpressionLb = new JLabel(LOOP_EXPRESSION_LABEL);
+        this.minInputLb = new JLabel(MIN_INPUT_LABEL);
 
-        dataTa = new JTextArea(5, 20);
-        loopExpressionTa = new JTextArea(5, 20);
+        this.dataTa = new JTextArea(5, 20);
+        this.loopExpressionTa = new JTextArea(5, 20);
 
-        dataScroll = new JScrollPane(dataTa);
-        loopExpressionScroll = new JScrollPane(loopExpressionTa);
+        this.dataScroll = new JScrollPane(this.dataTa);
+        this.loopExpressionScroll = new JScrollPane(this.loopExpressionTa);
 
-        SpinnerModel sm = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
-        minInputSp = new JSpinner(sm);
+        final SpinnerModel sm = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+        this.minInputSp = new JSpinner(sm);
     }
 
     @Override
@@ -66,81 +65,81 @@ public abstract class ActivityDetails extends ElementDetails{
 
         createAdvanced();
 
-        getAdvanced().add(dataLb);
-        getAdvanced().add(dataScroll);
-        getAdvanced().add(loopExpressionLb);
-        getAdvanced().add(loopExpressionScroll);
-        getAdvanced().add(minInputLb);
-        getAdvanced().add(minInputSp);
+        getAdvanced().add(this.dataLb);
+        getAdvanced().add(this.dataScroll);
+        getAdvanced().add(this.loopExpressionLb);
+        getAdvanced().add(this.loopExpressionScroll);
+        getAdvanced().add(this.minInputLb);
+        getAdvanced().add(this.minInputSp);
     }
 
     @Override
     protected void addActions() {
         super.addActions();
 
-        dataTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.dataTa.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
 
             }
 
             private void contentChanged() {
-                activity.updateData(dataTa.getText(), Controller.DETAILS);
+                ActivityDetails.this.activity.updateData(ActivityDetails.this.dataTa.getText(), Controller.DETAILS);
             }
         });
 
-        loopExpressionTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.loopExpressionTa.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
 
             }
 
             private void contentChanged() {
-                activity.updateLoopExpression(loopExpressionTa.getText(), Controller.DETAILS);
+                ActivityDetails.this.activity.updateLoopExpression(ActivityDetails.this.loopExpressionTa.getText(), Controller.DETAILS);
             }
         });
 
-        minInputSp.addChangeListener(new ChangeListener() {
+        this.minInputSp.addChangeListener(new ChangeListener() {
 
             @Override
-            public void stateChanged(ChangeEvent e) {
-                activity.updateMinInput((Integer) minInputSp.getValue(), Controller.DETAILS);
+            public void stateChanged(final ChangeEvent e) {
+                ActivityDetails.this.activity.updateMinInput((Integer) ActivityDetails.this.minInputSp.getValue(), Controller.DETAILS);
             }
         });
     }
 
     @Override
-    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+    protected void dataAttributeChanged(final BPKeyWords keyWord, final Object value) {
         super.dataAttributeChanged(keyWord, value);
         if (value != null) {
             if (keyWord == BPKeyWords.DATA) {
-                dataTa.setText((String) value);
+                this.dataTa.setText((String) value);
             } else if (keyWord == BPKeyWords.LOOP_EXPRESSION) {
-                loopExpressionTa.setText((String) value);
+                this.loopExpressionTa.setText((String) value);
             } else if (keyWord == BPKeyWords.MIN_INPUT) {
-                minInputSp.setValue(value);
+                this.minInputSp.setValue(value);
             }
         }
     }

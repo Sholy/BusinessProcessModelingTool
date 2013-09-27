@@ -5,6 +5,8 @@ import java.awt.Shape;
 
 import bp.app.AppCore;
 import bp.event.AttributeChangeListener;
+import bp.model.data.ActivityEvent;
+import bp.model.data.Edge;
 import bp.model.data.Task;
 import bp.model.graphic.util.ElementHandlers;
 import bp.model.util.BPKeyWords;
@@ -117,6 +119,24 @@ public class TaskComponent extends BPComponent implements BPImage {
                 }
             }
         });
+    }
+
+    @Override
+    public void moveComponent(final Integer diffX, final Integer diffY) {
+        if (diffX == null && diffY == null)
+            return;
+
+        super.moveComponent(diffX, diffY);
+
+        for (final Edge edge : this.task.getInputEdges()) {
+            edge.getEdgeComponent().updateComponent(null, this);
+        }
+        for (final Edge edge : this.task.getOutputEdges()) {
+            edge.getEdgeComponent().updateComponent(this, null);
+        }
+        for (final ActivityEvent event : this.task.getActivityEvents()) {
+            event.getEventComponent().moveComponent(diffX, diffY);
+        }
     }
 
     @Override

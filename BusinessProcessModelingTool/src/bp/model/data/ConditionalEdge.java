@@ -1,5 +1,10 @@
 package bp.model.data;
 
+import bp.details.ConditionalEdgeDetails;
+import bp.model.graphic.BPEdge;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+
 /**
  * Connects Vertices under some condition
  * 
@@ -11,15 +16,27 @@ public class ConditionalEdge extends Edge {
     private String condition;
 
     public String getCondition() {
-        return condition;
+        return this.condition;
     }
 
-    public void setCondition(String condition) {
+    public void updateCondition(final String condition, final Controller source) {
         this.condition = condition;
+        fireAttributeChanged(BPKeyWords.CONDITION, this.condition, source);
     }
 
-    public ConditionalEdge(String uniqueName) {
+    public ConditionalEdge(final String uniqueName) {
         super(uniqueName);
+    }
+
+    @Override
+    protected void initializeComponent() {
+        this.component = new BPEdge(BPEdge.CONDITIONAL_EDGE);
+        this.component.setzIndex(301);
+    }
+
+    @Override
+    protected void initializeDetails() {
+        this.details = new ConditionalEdgeDetails(this);
     }
 
 }

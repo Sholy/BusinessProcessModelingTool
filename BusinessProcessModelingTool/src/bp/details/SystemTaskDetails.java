@@ -6,7 +6,6 @@ import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.SystemTask;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -26,7 +25,7 @@ public class SystemTaskDetails extends TaskDetails {
     private JTextArea implementationTa;
     private JScrollPane implementationScroll;
 
-    public SystemTaskDetails(final Element element) {
+    public SystemTaskDetails(final SystemTask element) {
         super(element);
     }
 

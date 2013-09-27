@@ -3,6 +3,8 @@ package bp.state;
 import java.awt.event.MouseEvent;
 
 import bp.gui.BPPanel;
+import bp.model.data.Activity;
+import bp.model.data.ActivityEvent;
 import bp.model.data.Edge;
 import bp.model.data.Element;
 import bp.model.data.Lane;
@@ -123,6 +125,12 @@ public class ResizeState extends BPState {
                 }
                 for (final Edge edge : this.draggedVertex.getOutputEdges()) {
                     edge.getEdgeComponent().updateComponent(this.draggedComponent, null);
+                }
+                if (this.draggedVertex instanceof Activity) {
+                    final Activity activity = (Activity) this.draggedVertex;
+                    for (final ActivityEvent aEvent : activity.getActivityEvents()) {
+                        aEvent.getEventComponent().updatePosition();
+                    }
                 }
             }
             this.diffX = e.getPoint().x;

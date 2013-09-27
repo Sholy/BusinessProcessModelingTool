@@ -12,6 +12,9 @@ import bp.view.painter.BPShapeFactory;
 
 public class BPEdge extends BPElement {
 
+    public static final Integer REGULAR_EDGE = 1;
+    public static final Integer CONDITIONAL_EDGE = 2;
+
     private final BPEdgePainter painter;
 
     private Integer sourceX;
@@ -21,7 +24,9 @@ public class BPEdge extends BPElement {
 
     private final EdgeHandlers handlers;
 
-    public BPEdge() {
+    private final Integer edgeType;
+
+    public BPEdge(final Integer edgeType) {
         this.sourceX = 0;
         this.sourceY = 0;
         this.targetX = 0;
@@ -30,12 +35,12 @@ public class BPEdge extends BPElement {
         this.painter = new BPEdgePainter(this);
         setFgStroke(Strokes.getLine(Strokes.EDGE_LINE));
         this.handlers = new EdgeHandlers(this);
-    }
 
-    public BPEdge(final Integer x, final Integer y) {
-        this();
-        this.sourceX = x;
-        this.sourceY = y;
+        if (edgeType == null) {
+            this.edgeType = REGULAR_EDGE;
+        } else {
+            this.edgeType = edgeType;
+        }
     }
 
     public Integer getSourceX() {
@@ -79,6 +84,10 @@ public class BPEdge extends BPElement {
         return this.painter;
     }
 
+    public Shape getStartShape() {
+        return BPShapeFactory.diamond();
+    }
+
     public Shape getEndShape() {
         return BPShapeFactory.arrow();
     }
@@ -86,6 +95,10 @@ public class BPEdge extends BPElement {
     @Override
     public EdgeHandlers getHandlers() {
         return this.handlers;
+    }
+
+    public Integer getEdgeType() {
+        return this.edgeType;
     }
 
     public void updateComponent(final BPComponent sourceComponent, final BPComponent targetComponent) {

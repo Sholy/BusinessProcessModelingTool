@@ -17,7 +17,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.ExecutionType;
 import bp.model.data.Task;
 import bp.model.util.BPKeyWords;
@@ -50,7 +49,7 @@ public class TaskDetails extends ActivityDetails{
     private JSpinner multipleExecutionSp;
     private JComboBox<String> multipleExecutionTypeCb;
 
-    public TaskDetails(final Element element) {
+    public TaskDetails(final Task element) {
         super(element);
     }
 

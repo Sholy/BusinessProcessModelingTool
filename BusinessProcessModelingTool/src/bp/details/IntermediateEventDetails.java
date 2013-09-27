@@ -7,7 +7,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import bp.model.data.Element;
 import bp.model.data.IntermediateEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -26,7 +25,7 @@ public class IntermediateEventDetails extends ElementDetails{
     private JLabel minInputLb;
     private JSpinner minInputSp;
 
-    public IntermediateEventDetails(final Element element) {
+    public IntermediateEventDetails(final IntermediateEvent element) {
         super(element);
     }
 

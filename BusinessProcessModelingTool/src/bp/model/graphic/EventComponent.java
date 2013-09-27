@@ -6,6 +6,7 @@ import java.awt.Stroke;
 
 import bp.app.AppCore;
 import bp.event.AttributeChangeListener;
+import bp.model.data.Edge;
 import bp.model.data.Event;
 import bp.model.graphic.util.ElementHandlers;
 import bp.model.util.BPKeyWords;
@@ -104,6 +105,21 @@ public class EventComponent extends SquareComponent implements BPImage {
                 }
             }
         });
+    }
+
+    @Override
+    public void moveComponent(final Integer diffX, final Integer diffY) {
+        if (diffX == null && diffY == null)
+            return;
+
+        super.moveComponent(diffX, diffY);
+
+        for (final Edge edge : this.event.getInputEdges()) {
+            edge.getEdgeComponent().updateComponent(null, this);
+        }
+        for (final Edge edge : this.event.getOutputEdges()) {
+            edge.getEdgeComponent().updateComponent(this, null);
+        }
     }
 
     @Override

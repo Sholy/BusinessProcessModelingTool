@@ -7,7 +7,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.SignalStartEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -31,7 +30,7 @@ public class SignalStartEventDetails extends StartEventDetails{
     private JScrollPane dataFormatScroll;
     private JTextField signalNameTf;
 
-    public SignalStartEventDetails(final Element element) {
+    public SignalStartEventDetails(final SignalStartEvent element) {
         super(element);
     }
 

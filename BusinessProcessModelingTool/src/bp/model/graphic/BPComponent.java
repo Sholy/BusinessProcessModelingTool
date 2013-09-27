@@ -150,4 +150,12 @@ public abstract class BPComponent extends BPElement {
         else if (getHeight() > getMaximumHeight())
             this.height = getMaximumHeight();
     }
+
+    public void moveComponent(final Integer diffX, final Integer diffY) {
+        if (diffX != null)
+            setX(diffX == null ? getX() : getX() + diffX);
+
+        if (diffY != null)
+            setY(diffY == null ? getY() : getY() + diffY);
+    }
 }

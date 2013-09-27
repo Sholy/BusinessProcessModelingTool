@@ -18,15 +18,15 @@ public class BPShapeFactory {
 
     }
 
-    public static Shape task(BPComponent component) {
+    public static Shape task(final BPComponent component) {
         final Integer arcSize = component.getWidth() / 10;
         return new RoundRectangle2D.Float(0, 0, component.getWidth(), component.getHeight(), arcSize, arcSize);
     }
 
-    public static Shape gateway(SquareComponent component) {
+    public static Shape gateway(final SquareComponent component) {
         final Integer w = component.getWidth();
         final Integer h = component.getHeight();
-        GeneralPath gp = new GeneralPath();
+        final GeneralPath gp = new GeneralPath();
         gp.moveTo(0, h / 2);
         gp.lineTo(w / 2, 0);
         gp.lineTo(w, h / 2);
@@ -35,20 +35,20 @@ public class BPShapeFactory {
         return gp;
     }
 
-    public static Shape event(SquareComponent component) {
+    public static Shape event(final SquareComponent component) {
         return new Ellipse2D.Float(0, 0, component.getWidth(), component.getHeight());
     }
 
-    public static Shape handler(Handler component) {
+    public static Shape handler(final Handler component) {
         return new Rectangle(component.getWidth(), component.getHeight());
     }
 
-    public static Shape handlerBorder(ElementHandlers component) {
+    public static Shape handlerBorder(final ElementHandlers component) {
         return new Rectangle(component.getWidth(), component.getHeight());
     }
 
     public static Shape arrow() {
-        GeneralPath gp = new GeneralPath();
+        final GeneralPath gp = new GeneralPath();
         gp.moveTo(0, 0);
         gp.lineTo(-10, -5);
         gp.lineTo(-10, 5);
@@ -56,8 +56,18 @@ public class BPShapeFactory {
         return gp;
     }
 
-    public static Shape lane(LaneComponent component) {
-        GeneralPath gp = new GeneralPath();
+    public static Shape diamond() {
+        final GeneralPath gp = new GeneralPath();
+        gp.moveTo(0, 0);
+        gp.lineTo(10, 5);
+        gp.lineTo(20, 0);
+        gp.lineTo(10, -5);
+        gp.lineTo(0, 0);
+        return gp;
+    }
+
+    public static Shape lane(final LaneComponent component) {
+        final GeneralPath gp = new GeneralPath();
         gp.moveTo(component.getTextPanelHeight(), 0);
         gp.lineTo(component.getWidth(), 0);
         gp.lineTo(component.getWidth(), component.getHeight());

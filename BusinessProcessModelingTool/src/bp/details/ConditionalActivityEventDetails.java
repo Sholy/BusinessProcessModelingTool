@@ -1,31 +1,38 @@
 package bp.details;
 
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.ConditionalStartEvent;
+import bp.model.data.ConditionalActivityEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 
-public class ConditionalStartEventDetails extends StartEventDetails{
+public class ConditionalActivityEventDetails extends ActivityEventDetails{
 
     /**
      * 
      */
-    private static final long serialVersionUID = -3830283509661106420L;
+    private static final long serialVersionUID = -1132192828474462860L;
 
-    public static final String CONDITION = "Condition:";
+    public static final String CONDITION_LABEL = "Condition:";
+    public static final String STOP_ACTIVITY_LABEL = "Stop activity:";
 
-    private final ConditionalStartEvent event = (ConditionalStartEvent) getElement();
+    private final ConditionalActivityEvent event = (ConditionalActivityEvent) getElement();
 
     private JLabel conditionLb;
+    private JLabel stopActivityLb;
+
     private JTextArea conditionTa;
     private JScrollPane conditionScroll;
+    private JCheckBox stopActivityCb;
 
-    public ConditionalStartEventDetails(final ConditionalStartEvent element) {
+    public ConditionalActivityEventDetails(final ConditionalActivityEvent element) {
         super(element);
     }
 
@@ -33,9 +40,13 @@ public class ConditionalStartEventDetails extends StartEventDetails{
     protected void initComponents() {
         super.initComponents();
 
-        this.conditionLb = new JLabel(CONDITION);
+        this.conditionLb = new JLabel(CONDITION_LABEL);
+        this.stopActivityLb = new JLabel(STOP_ACTIVITY_LABEL);
+
         this.conditionTa = new JTextArea(5, 20);
         this.conditionScroll = new JScrollPane(this.conditionTa);
+        this.stopActivityCb = new JCheckBox();
+        this.stopActivityCb.setSelected(false);
     }
 
     @Override
@@ -46,6 +57,8 @@ public class ConditionalStartEventDetails extends StartEventDetails{
 
         getAdvanced().add(this.conditionLb);
         getAdvanced().add(this.conditionScroll);
+        getAdvanced().add(this.stopActivityLb);
+        getAdvanced().add(this.stopActivityCb);
     }
 
     @Override
@@ -70,8 +83,17 @@ public class ConditionalStartEventDetails extends StartEventDetails{
             }
 
             private void contentChanged() {
-                ConditionalStartEventDetails.this.event.updateCondition(
-                        ConditionalStartEventDetails.this.conditionTa.getText(), Controller.DETAILS);
+                ConditionalActivityEventDetails.this.event.updateCondition(
+                        ConditionalActivityEventDetails.this.conditionTa.getText(), Controller.DETAILS);
+            }
+        });
+
+        this.stopActivityCb.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(final ChangeEvent arg0) {
+                ConditionalActivityEventDetails.this.event.updateStopActivity(
+                        ConditionalActivityEventDetails.this.stopActivityCb.isSelected(), Controller.DETAILS);
             }
         });
     }
@@ -82,6 +104,8 @@ public class ConditionalStartEventDetails extends StartEventDetails{
         if (value != null) {
             if (keyWord == BPKeyWords.CONDITION) {
                 this.conditionTa.setText((String) value);
+            } else if (keyWord == BPKeyWords.STOP_ACTIVITY) {
+                this.stopActivityCb.setSelected((Boolean) value);
             }
         }
     }

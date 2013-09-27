@@ -14,6 +14,7 @@ public class StateManager {
     private final UserTaskState userTaskState;
     private final SystemTaskState systemTaskState;
     private final EdgeState edgeState;
+    private final ConditionalEdgeState conditionalEdgeState;
     private final LaneState laneState;
     private final MoveState moveState;
     private final EdgeMoveState moveEdgeState;
@@ -36,6 +37,11 @@ public class StateManager {
     private final MessageThrowEventState messageThrowEventState;
     private final SignalThrowEventState signalThrowEventState;
     private final LinkThrowEventState linkThrowEventState;
+    private final MessageActivityEventState messageActivityEventState;
+    private final TimerActivityEventState timerActivityEventState;
+    private final ConditionalActivityEventState conditionalActivityEventState;
+    private final SignalActivityEventState signalActivityEventState;
+    private final ErrorActivityEventState errorActivityEventState;
 
     public StateManager(final BPPanel panel) {
         this.panel = panel;
@@ -45,6 +51,7 @@ public class StateManager {
         this.userTaskState = new UserTaskState(panel);
         this.systemTaskState = new SystemTaskState(panel);
         this.edgeState = new EdgeState(panel);
+        this.conditionalEdgeState = new ConditionalEdgeState(panel);
         this.laneState = new LaneState(panel);
         this.moveState = new MoveState(panel);
         this.moveEdgeState = new EdgeMoveState(panel);
@@ -67,6 +74,11 @@ public class StateManager {
         this.messageThrowEventState = new MessageThrowEventState(panel);
         this.signalThrowEventState = new SignalThrowEventState(panel);
         this.linkThrowEventState = new LinkThrowEventState(panel);
+        this.messageActivityEventState = new MessageActivityEventState(panel);
+        this.timerActivityEventState = new TimerActivityEventState(panel);
+        this.conditionalActivityEventState = new ConditionalActivityEventState(panel);
+        this.signalActivityEventState = new SignalActivityEventState(panel);
+        this.errorActivityEventState = new ErrorActivityEventState(panel);
 
         this.defaultState = this.selectState;
         this.currentState = this.defaultState;
@@ -97,6 +109,8 @@ public class StateManager {
             return this.taskState;
         else if (stateType == StateType.EDGE)
             return this.edgeState;
+        else if (stateType == StateType.CONDITIONAL_EDGE)
+            return this.conditionalEdgeState;
         else if (stateType == StateType.LANE)
             return this.laneState;
         else if (stateType == StateType.MOVE)
@@ -145,6 +159,16 @@ public class StateManager {
             return this.signalThrowEventState;
         else if (stateType == StateType.LINK_THROW_EVENT)
             return this.linkThrowEventState;
+        else if (stateType == StateType.MESSAGE_ACTIVITY_EVENT)
+            return this.messageActivityEventState;
+        else if (stateType == StateType.TIMER_ACTIVITY_EVENT)
+            return this.timerActivityEventState;
+        else if (stateType == StateType.CONDITIONAL_ACTIVITY_EVENT)
+            return this.conditionalActivityEventState;
+        else if (stateType == StateType.SIGNAL_ACTIVITY_EVENT)
+            return this.signalActivityEventState;
+        else if (stateType == StateType.ERROR_ACTIVITY_EVENT)
+            return this.errorActivityEventState;
 
         return this.defaultState;
     }

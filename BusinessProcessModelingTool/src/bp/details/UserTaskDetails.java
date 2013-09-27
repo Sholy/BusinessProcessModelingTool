@@ -6,7 +6,6 @@ import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import bp.model.data.Element;
 import bp.model.data.UserTask;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -26,7 +25,7 @@ public class UserTaskDetails extends TaskDetails {
     private JTextArea implementationTa;
     private JScrollPane implementationScroll;
 
-    public UserTaskDetails(final Element element) {
+    public UserTaskDetails(final UserTask element) {
         super(element);
     }
 
