@@ -132,4 +132,13 @@ public class Process {
         }
     }
 
+    public Element getElement(final String uniqueName) {
+        for (final Element e : this.elements) {
+            if (e.getUniqueName().equals(uniqueName)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
 }

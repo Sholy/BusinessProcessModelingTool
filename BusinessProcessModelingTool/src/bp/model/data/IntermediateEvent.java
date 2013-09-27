@@ -1,10 +1,13 @@
 package bp.model.data;
 
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+
 public abstract class IntermediateEvent extends Event {
 
-    private Long minInput;
+    private Integer minInput;
 
-    public IntermediateEvent(String uniqueName) {
+    public IntermediateEvent(final String uniqueName) {
         super(uniqueName);
     }
 
@@ -18,12 +21,13 @@ public abstract class IntermediateEvent extends Event {
         return true;
     }
 
-    public Long getMinInput() {
-        return minInput;
+    public Integer getMinInput() {
+        return this.minInput;
     }
 
-    public void setMinInput(Long minInput) {
+    public void updateMinInput(final Integer minInput, final Controller source) {
         this.minInput = minInput;
+        fireAttributeChanged(BPKeyWords.MIN_INPUT, this.minInput, source);
     }
 
 }

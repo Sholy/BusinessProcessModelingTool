@@ -1,28 +1,47 @@
 package bp.model.data;
 
+import bp.details.SignalCatchEventDetails;
+import bp.model.graphic.EventComponent;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+import bp.util.ImageRes;
+import bp.view.Strokes;
+
 public class SignalCatchEvent extends CatchEvent {
 
     private String dataFormat;
     private String signalName;
 
-    public SignalCatchEvent(String uniqueName) {
+    public SignalCatchEvent(final String uniqueName) {
         super(uniqueName);
     }
 
     public String getDataFormat() {
-        return dataFormat;
+        return this.dataFormat;
     }
 
-    public void setDataFormat(String dataFormat) {
+    public void updateDataFormat(final String dataFormat, final Controller source) {
         this.dataFormat = dataFormat;
+        fireAttributeChanged(BPKeyWords.DATA_FORMAT, this.dataFormat, source);
     }
 
     public String getSignalName() {
-        return signalName;
+        return this.signalName;
     }
 
-    public void setSignalName(String signalName) {
+    public void updateSignalName(final String signalName, final Controller source) {
         this.signalName = signalName;
+        fireAttributeChanged(BPKeyWords.SIGNAL_NAME, this.signalName, source);
     }
 
+    @Override
+    protected void initializeComponent() {
+        this.component = new EventComponent(this, ImageRes.SIGNAL, Strokes.getDashedLine(Strokes.THIN_LINE));
+        this.component.setzIndex(101);
+    }
+
+    @Override
+    protected void initializeDetails() {
+        this.details = new SignalCatchEventDetails(this);
+    }
 }

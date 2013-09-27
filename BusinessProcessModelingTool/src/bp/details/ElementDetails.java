@@ -12,7 +12,7 @@ import bp.model.data.Element;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 
-public abstract class ElementDetails extends AbstractDetails {
+public class ElementDetails extends AbstractDetails {
 
     /**
      * 
@@ -33,7 +33,7 @@ public abstract class ElementDetails extends AbstractDetails {
     private JTextArea descriptionTa;
     private JScrollPane descriptionScroll;
 
-    public ElementDetails(Element element) {
+    public ElementDetails(final Element element) {
         this.element = element;
 
         initComponents();
@@ -43,104 +43,104 @@ public abstract class ElementDetails extends AbstractDetails {
     }
 
     protected void initComponents() {
-        uniqueNameLb = new JLabel(UNIQUE_NAME_LABEL);
-        nameLb = new JLabel(NAME_LABEL);
-        descriptionLb = new JLabel(DESCRIPTION_LABEL);
+        this.uniqueNameLb = new JLabel(UNIQUE_NAME_LABEL);
+        this.nameLb = new JLabel(NAME_LABEL);
+        this.descriptionLb = new JLabel(DESCRIPTION_LABEL);
 
-        uniqueNameTf = new JTextField(20);
-        nameTf = new JTextField(20);
+        this.uniqueNameTf = new JTextField(20);
+        this.nameTf = new JTextField(20);
 
-        descriptionTa = new JTextArea(5, 20);
-        descriptionScroll = new JScrollPane(descriptionTa);
+        this.descriptionTa = new JTextArea(5, 20);
+        this.descriptionScroll = new JScrollPane(this.descriptionTa);
     }
-    
+
     protected void layoutComponents() {
         createBasic();
 
-        getBasic().add(uniqueNameLb);
-        getBasic().add(uniqueNameTf);
-        getBasic().add(nameLb);
-        getBasic().add(nameTf);
-        getBasic().add(descriptionLb);
-        getBasic().add(descriptionScroll);
+        getBasic().add(this.uniqueNameLb);
+        getBasic().add(this.uniqueNameTf);
+        getBasic().add(this.nameLb);
+        getBasic().add(this.nameTf);
+        getBasic().add(this.descriptionLb);
+        getBasic().add(this.descriptionScroll);
     }
 
     protected void addActions() {
-        uniqueNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.uniqueNameTf.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
 
             }
 
             private void contentChanged() {
-                getElement().updateUniqueName(uniqueNameTf.getText(), Controller.DETAILS);
+                getElement().updateUniqueName(ElementDetails.this.uniqueNameTf.getText(), Controller.DETAILS);
             }
         });
 
-        nameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.nameTf.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
 
             }
 
             private void contentChanged() {
-                getElement().updateName(nameTf.getText(), Controller.DETAILS);
+                getElement().updateName(ElementDetails.this.nameTf.getText(), Controller.DETAILS);
             }
         });
 
-        descriptionTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.descriptionTa.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 contentChanged();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
 
             }
 
             private void contentChanged() {
-                getElement().updateDescription(descriptionTa.getText(), Controller.DETAILS);
+                getElement().updateDescription(ElementDetails.this.descriptionTa.getText(), Controller.DETAILS);
             }
         });
     }
 
-    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+    protected void dataAttributeChanged(final BPKeyWords keyWord, final Object value) {
         if (value != null) {
             if (keyWord == BPKeyWords.UNIQUE_NAME) {
-                uniqueNameTf.setText((String) value);
+                this.uniqueNameTf.setText((String) value);
             } else if (keyWord == BPKeyWords.NAME) {
-                nameTf.setText((String) value);
+                this.nameTf.setText((String) value);
             } else if (keyWord == BPKeyWords.DESCRIPTION) {
-                descriptionTa.setText((String) value);
+                this.descriptionTa.setText((String) value);
             }
         }
     }
@@ -154,14 +154,14 @@ public abstract class ElementDetails extends AbstractDetails {
             }
 
             @Override
-            public void fireAttributeChanged(BPKeyWords keyWord, Object value) {
+            public void fireAttributeChanged(final BPKeyWords keyWord, final Object value) {
                 dataAttributeChanged(keyWord, value);
             }
         });
     }
 
     protected Element getElement() {
-        return element;
+        return this.element;
     }
 
 }

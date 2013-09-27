@@ -37,25 +37,31 @@ public class ActionManager {
     private static final Action addErrorStartEvent = new BPAction("Error", "Add Error Start Event",
             StateType.ERROR_START_EVENT);
 
-    private static final Action addEndEvent = new BPAction("Normal", "Add Normal End Event", null);
-    private static final Action addMessageEndEvent = new BPAction("Message", "Add Message End Event", null);
-    private static final Action addErrorEndEvent = new BPAction("Error", "Add Error End Event", null);
-    private static final Action addSignalEndEvent = new BPAction("Signal", "Add Signal End Event", null);
+    private static final Action addEndEvent = new BPAction("Normal", "Add Normal End Event", StateType.END_EVENT);
+    private static final Action addMessageEndEvent = new BPAction("Message", "Add Message End Event",
+            StateType.MESSAGE_END_EVENT);
+    private static final Action addErrorEndEvent = new BPAction("Error", "Add Error End Event",
+            StateType.ERROR_END_EVENT);
+    private static final Action addSignalEndEvent = new BPAction("Signal", "Add Signal End Event",
+            StateType.SIGNAL_END_EVENT);
 
-    private static final Action addCatchTimerEvent = new BPAction("Timer", "Add Catch Timer Intermediate Event", null);
+    private static final Action addCatchTimerEvent = new BPAction("Timer", "Add Catch Timer Intermediate Event",
+            StateType.TIMER_CATCH_EVENT);
     private static final Action addCatchConditionEvent = new BPAction("Condition",
-            "Add Catch Conditional Intermediate Event", null);
+            "Add Catch Conditional Intermediate Event", StateType.CONDITIONAL_CATCH_EVENT);
     private static final Action addCatchMessageEvent = new BPAction("Message", "Add Catch Message Intermediate Event",
-            null);
+            StateType.MESSAGE_CATCH_EVENT);
     private static final Action addCatchSignalEvent = new BPAction("Signal", "Add Catch Signal Intermediate Event",
-            null);
-    private static final Action addCatchLinkEvent = new BPAction("Link", "Add Catch Link Event", null);
+            StateType.SIGNAL_CATCH_EVENT);
+    private static final Action addCatchLinkEvent = new BPAction("Link", "Add Catch Link Event",
+            StateType.LINK_CATCH_EVENT);
 
     private static final Action addThrowMessageEvent = new BPAction("Message", "Add Throw Message Intermediate Event",
-            null);
+            StateType.MESSAGE_THROW_EVENT);
     private static final Action addThrowSignalEvent = new BPAction("Signal", "Add Throw Signal Intermediate Event",
-            null);
-    private static final Action addThrowLinkEvent = new BPAction("Link", "Add Throw Link Event", null);
+            StateType.SIGNAL_THROW_EVENT);
+    private static final Action addThrowLinkEvent = new BPAction("Link", "Add Throw Link Event",
+            StateType.LINK_THROW_EVENT);
 
     private static final Action addActivityMessageEvent = new BPAction("Message", "Add Message Activity Event", null);
     private static final Action addActivityTimerEvent = new BPAction("Timer", "Add Timer Activity Event", null);

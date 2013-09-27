@@ -30,8 +30,4 @@ public class StartEvent extends Event {
         this.details = new StartEventDetails(this);
     }
 
-    public EventComponent getEventComponent() {
-        return (EventComponent) getComponent();
-    }
-
 }

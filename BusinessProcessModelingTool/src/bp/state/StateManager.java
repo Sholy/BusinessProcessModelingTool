@@ -24,6 +24,18 @@ public class StateManager {
     private final MessageStartEventState messageStartEventState;
     private final SignalStartEventState signalStartEventState;
     private final ErrorStartEventState errorStartEventState;
+    private final EndEventState endEventState;
+    private final MessageEndEventState messageEndEventState;
+    private final ErrorEndEventState errorEndEventState;
+    private final SignalEndEventState signalEndEventState;
+    private final TimerCatchEventState timerCatchEventState;
+    private final ConditionalCatchEventState conditionalCatchEventState;
+    private final MessageCatchEventState messageCatchEventState;
+    private final SignalCatchEventState signalCatchEventState;
+    private final LinkCatchEventState linkCatchEventState;
+    private final MessageThrowEventState messageThrowEventState;
+    private final SignalThrowEventState signalThrowEventState;
+    private final LinkThrowEventState linkThrowEventState;
 
     public StateManager(final BPPanel panel) {
         this.panel = panel;
@@ -43,6 +55,18 @@ public class StateManager {
         this.messageStartEventState = new MessageStartEventState(panel);
         this.signalStartEventState = new SignalStartEventState(panel);
         this.errorStartEventState = new ErrorStartEventState(panel);
+        this.endEventState = new EndEventState(panel);
+        this.messageEndEventState = new MessageEndEventState(panel);
+        this.errorEndEventState = new ErrorEndEventState(panel);
+        this.signalEndEventState = new SignalEndEventState(panel);
+        this.timerCatchEventState = new TimerCatchEventState(panel);
+        this.conditionalCatchEventState = new ConditionalCatchEventState(panel);
+        this.messageCatchEventState = new MessageCatchEventState(panel);
+        this.signalCatchEventState = new SignalCatchEventState(panel);
+        this.linkCatchEventState = new LinkCatchEventState(panel);
+        this.messageThrowEventState = new MessageThrowEventState(panel);
+        this.signalThrowEventState = new SignalThrowEventState(panel);
+        this.linkThrowEventState = new LinkThrowEventState(panel);
 
         this.defaultState = this.selectState;
         this.currentState = this.defaultState;
@@ -97,6 +121,30 @@ public class StateManager {
             return this.signalStartEventState;
         else if (stateType == StateType.ERROR_START_EVENT)
             return this.errorStartEventState;
+        else if (stateType == StateType.END_EVENT)
+            return this.endEventState;
+        else if (stateType == StateType.MESSAGE_END_EVENT)
+            return this.messageEndEventState;
+        else if (stateType == StateType.ERROR_END_EVENT)
+            return this.errorEndEventState;
+        else if (stateType == StateType.SIGNAL_END_EVENT)
+            return this.signalEndEventState;
+        else if (stateType == StateType.TIMER_CATCH_EVENT)
+            return this.timerCatchEventState;
+        else if (stateType == StateType.CONDITIONAL_CATCH_EVENT)
+            return this.conditionalCatchEventState;
+        else if (stateType == StateType.MESSAGE_CATCH_EVENT)
+            return this.messageCatchEventState;
+        else if (stateType == StateType.SIGNAL_CATCH_EVENT)
+            return this.signalCatchEventState;
+        else if (stateType == StateType.LINK_CATCH_EVENT)
+            return this.linkCatchEventState;
+        else if (stateType == StateType.MESSAGE_THROW_EVENT)
+            return this.messageThrowEventState;
+        else if (stateType == StateType.SIGNAL_THROW_EVENT)
+            return this.signalThrowEventState;
+        else if (stateType == StateType.LINK_THROW_EVENT)
+            return this.linkThrowEventState;
 
         return this.defaultState;
     }

@@ -1,15 +1,24 @@
 package bp.model.data;
 
+import bp.details.LinkThrowEventDetails;
+import bp.model.graphic.EventComponent;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+import bp.util.ImageRes;
+import bp.view.Strokes;
+
 public class LinkThrowEvent extends Event {
 
     private LinkCatchEvent link;
 
-    public LinkThrowEvent(String uniqueName) {
+    public LinkThrowEvent(final String uniqueName) {
         super(uniqueName);
     }
 
     @Override
     public boolean canHaveInput() {
+        if (getInputEdges().size() > 0)
+            return false;
         return true;
     }
 
@@ -19,11 +28,24 @@ public class LinkThrowEvent extends Event {
     }
 
     public LinkCatchEvent getLink() {
-        return link;
+        return this.link;
     }
 
-    public void setLink(LinkCatchEvent link) {
+    public void updateLink(final LinkCatchEvent link, final Controller source) {
         this.link = link;
+        fireAttributeChanged(BPKeyWords.LINK, this.link, source);
     }
+
+    @Override
+    protected void initializeComponent() {
+        this.component = new EventComponent(this, ImageRes.LINK, Strokes.getDashedLine(Strokes.THICK_LINE));
+        this.component.setzIndex(101);
+    }
+
+    @Override
+    protected void initializeDetails() {
+        this.details = new LinkThrowEventDetails(this);
+    }
+
 
 }

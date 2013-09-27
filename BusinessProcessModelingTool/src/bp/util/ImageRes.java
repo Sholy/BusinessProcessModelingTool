@@ -14,7 +14,8 @@ public enum ImageRes {
     CONDITION("src/bp/resources/image/condition.png"),
     MESSAGE("src/bp/resources/image/message.jpg"),
     SIGNAL("src/bp/resources/image/signal.png"),
-    ERROR("src/bp/resources/image/error.png");
+    ERROR("src/bp/resources/image/error.png"),
+    LINK("src/bp/resources/image/link.png");
 
     private final String path;
     private Image img;

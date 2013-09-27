@@ -1,19 +1,38 @@
 package bp.model.data;
 
+import bp.details.MessageCatchEventDetails;
+import bp.model.graphic.EventComponent;
+import bp.model.util.BPKeyWords;
+import bp.model.util.Controller;
+import bp.util.ImageRes;
+import bp.view.Strokes;
+
 public class MessageCatchEvent extends CatchEvent {
 
     private String dataFormat;
 
-    public MessageCatchEvent(String uniqueName) {
+    public MessageCatchEvent(final String uniqueName) {
         super(uniqueName);
     }
 
     public String getDataFormat() {
-        return dataFormat;
+        return this.dataFormat;
     }
 
-    public void setDataFormat(String dataFormat) {
+    public void updateDataFormat(final String dataFormat, final Controller source) {
         this.dataFormat = dataFormat;
+        fireAttributeChanged(BPKeyWords.DATA_FORMAT, this.dataFormat, source);
+    }
+
+    @Override
+    protected void initializeComponent() {
+        this.component = new EventComponent(this, ImageRes.MESSAGE, Strokes.getDashedLine(Strokes.THIN_LINE));
+        this.component.setzIndex(101);
+    }
+
+    @Override
+    protected void initializeDetails() {
+        this.details = new MessageCatchEventDetails(this);
     }
 
 
