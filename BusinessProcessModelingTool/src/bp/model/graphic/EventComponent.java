@@ -16,7 +16,7 @@ import bp.view.BasicPainter;
 import bp.view.painter.BPElementTextPainter;
 import bp.view.painter.BPShapeFactory;
 
-public class EventComponent extends SquareComponent implements BPImage {
+public class EventComponent extends SquareComponent implements BPImage, BPText {
 
     private final BPElementTextPainter painter;
     private final Event event;
@@ -78,14 +78,20 @@ public class EventComponent extends SquareComponent implements BPImage {
         }
     }
 
+    @Override
     public String getText() {
         return this.text;
     }
 
+    @Override
     public void updateText(final String text) {
         this.text = text;
-        this.painter.setText(text);
         AppCore.getInstance().getBpPanel().getGraphicsPanel().repaint();
+    }
+
+    @Override
+    public Integer getTextSeparatorSize() {
+        return 10;
     }
 
     protected void addDataListener() {

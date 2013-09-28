@@ -16,7 +16,7 @@ import bp.view.painter.BPElementPainter;
 import bp.view.painter.BPElementTextPainter;
 import bp.view.painter.BPShapeFactory;
 
-public class TaskComponent extends BPComponent implements BPImage {
+public class TaskComponent extends BPComponent implements BPImage, BPText {
 
     private final BPElementTextPainter painter;
     private String text;
@@ -92,14 +92,20 @@ public class TaskComponent extends BPComponent implements BPImage {
         }
     }
 
+    @Override
     public String getText() {
         return this.text;
     }
 
-    protected void updateText(final String text) {
+    @Override
+    public void updateText(final String text) {
         this.text = text;
-        this.painter.setText(text);
         AppCore.getInstance().getBpPanel().getGraphicsPanel().repaint();
+    }
+
+    @Override
+    public Integer getTextSeparatorSize() {
+        return 10;
     }
 
     protected void addDataListener() {

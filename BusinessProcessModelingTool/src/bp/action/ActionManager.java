@@ -24,7 +24,7 @@ public class ActionManager {
     private static final Action addEdge = new BPAction("Edge", "Add Edge", StateType.EDGE);
     private static final Action addConditionalEdge = new BPAction("Con. Edge", "Add Conditional Edge",
             StateType.CONDITIONAL_EDGE);
-    private static final Action addGateway = new BPAction("Gateway", "Add Gateway", null);
+    private static final Action addGateway = new BPAction("Gateway", "Add Gateway", StateType.GATEWAY);
 
     private static final Action addStartEvent = new BPAction("Normal", "Add Normal Start Event", StateType.START_EVENT);
     private static final Action addTimerStartEvent = new BPAction("Timer", "Add Timer Start Event",

@@ -24,7 +24,7 @@ public abstract class ActivityDetails extends ElementDetails{
 
     public static final String DATA_LABEL = "Data:";
     public static final String LOOP_EXPRESSION_LABEL = "Loop expression:";
-    public static final String MIN_INPUT_LABEL = "Minimal input count:";
+    public static final String MIN_INPUT_LABEL = "Minimal input:";
 
     private final Activity activity = (Activity) getElement();
 

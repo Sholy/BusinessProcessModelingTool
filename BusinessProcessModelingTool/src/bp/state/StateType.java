@@ -8,6 +8,7 @@ public enum StateType {
     SYSTEM_TASK,
     EDGE,
     CONDITIONAL_EDGE,
+    GATEWAY,
     LANE,
     MOVE,
     MOVE_EDGE,
