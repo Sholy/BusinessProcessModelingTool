@@ -24,7 +24,7 @@ public class EdgeState extends BPState {
         if (element instanceof Vertex) {
             final Vertex vertex = (Vertex) element;
             if (this.edge == null) {
-                this.edge = new Edge("untitledEdge");
+                this.edge = new Edge(getPanel().getProcess().getNameGenerator().nextEdgeName());
                 if (vertex.canHaveOutput()) {
                     this.edge.updateSource(vertex, null);
                     final BPComponent vertexComponent = (BPComponent) vertex.getComponent();

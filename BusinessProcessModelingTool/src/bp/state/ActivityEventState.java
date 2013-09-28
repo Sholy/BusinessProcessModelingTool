@@ -57,20 +57,21 @@ public class ActivityEventState extends BPState {
     }
 
     private ActivityEvent createActivityEvent() {
+        final String eventName = getPanel().getProcess().getNameGenerator().nextEventName();
         if (this.eventType == StateType.MESSAGE_ACTIVITY_EVENT) {
-            return new MessageActivityEvent("a");
+            return new MessageActivityEvent(eventName);
         }
         if (this.eventType == StateType.TIMER_ACTIVITY_EVENT) {
-            return new TimerActivityEvent("a");
+            return new TimerActivityEvent(eventName);
         }
         if (this.eventType == StateType.CONDITIONAL_ACTIVITY_EVENT) {
-            return new ConditionalActivityEvent("a");
+            return new ConditionalActivityEvent(eventName);
         }
         if (this.eventType == StateType.SIGNAL_ACTIVITY_EVENT) {
-            return new SignalActivityEvent("a");
+            return new SignalActivityEvent(eventName);
         }
         if (this.eventType == StateType.ERROR_ACTIVITY_EVENT) {
-            return new ErrorActivityEvent("a");
+            return new ErrorActivityEvent(eventName);
         }
         return null;
     }

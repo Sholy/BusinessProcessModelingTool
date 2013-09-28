@@ -24,7 +24,7 @@ public class ConditionalEdgeState extends BPState {
         if (element instanceof Vertex) {
             final Vertex vertex = (Vertex) element;
             if (this.edge == null) {
-                this.edge = new ConditionalEdge("untitledEdge");
+                this.edge = new ConditionalEdge(getPanel().getProcess().getNameGenerator().nextEdgeName());
                 if (vertex.canHaveOutput()) {
                     this.edge.updateSource(vertex, null);
                     final BPComponent vertexComponent = (BPComponent) vertex.getComponent();

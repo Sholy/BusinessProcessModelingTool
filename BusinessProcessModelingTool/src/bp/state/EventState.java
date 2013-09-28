@@ -60,59 +60,60 @@ public class EventState extends BPState {
     }
 
     private Event createEvent() {
+        final String eventName = getPanel().getProcess().getNameGenerator().nextEventName();
         if (this.eventType == StateType.START_EVENT) {
-            return new StartEvent("a");
+            return new StartEvent(eventName);
         }
         if (this.eventType == StateType.TIMER_START_EVENT) {
-            return new TimerStartEvent("a");
+            return new TimerStartEvent(eventName);
         }
         if (this.eventType == StateType.CONDITIONAL_START_EVENT) {
-            return new ConditionalStartEvent("a");
+            return new ConditionalStartEvent(eventName);
         }
         if (this.eventType == StateType.MESSAGE_START_EVENT) {
-            return new MessageStartEvent("a");
+            return new MessageStartEvent(eventName);
         }
         if (this.eventType == StateType.SIGNAL_START_EVENT) {
-            return new SignalStartEvent("a");
+            return new SignalStartEvent(eventName);
         }
         if (this.eventType == StateType.ERROR_START_EVENT) {
-            return new ErrorStartEvent("a");
+            return new ErrorStartEvent(eventName);
         }
         if (this.eventType == StateType.END_EVENT) {
-            return new EndEvent("a");
+            return new EndEvent(eventName);
         }
         if (this.eventType == StateType.MESSAGE_END_EVENT) {
-            return new MessageEndEvent("a");
+            return new MessageEndEvent(eventName);
         }
         if (this.eventType == StateType.ERROR_END_EVENT) {
-            return new ErrorEndEvent("a");
+            return new ErrorEndEvent(eventName);
         }
         if (this.eventType == StateType.SIGNAL_END_EVENT) {
-            return new SignalEndEvent("a");
+            return new SignalEndEvent(eventName);
         }
         if (this.eventType == StateType.TIMER_CATCH_EVENT) {
-            return new TimerCatchEvent("a");
+            return new TimerCatchEvent(eventName);
         }
         if (this.eventType == StateType.CONDITIONAL_CATCH_EVENT) {
-            return new ConditionalCatchEvent("a");
+            return new ConditionalCatchEvent(eventName);
         }
         if (this.eventType == StateType.MESSAGE_CATCH_EVENT) {
-            return new MessageCatchEvent("a");
+            return new MessageCatchEvent(eventName);
         }
         if (this.eventType == StateType.SIGNAL_CATCH_EVENT) {
-            return new SignalCatchEvent("a");
+            return new SignalCatchEvent(eventName);
         }
         if (this.eventType == StateType.LINK_CATCH_EVENT) {
-            return new LinkCatchEvent("a");
+            return new LinkCatchEvent(eventName);
         }
         if (this.eventType == StateType.MESSAGE_THROW_EVENT) {
-            return new MessageThrowEvent("a");
+            return new MessageThrowEvent(eventName);
         }
         if (this.eventType == StateType.SIGNAL_THROW_EVENT) {
-            return new SignalThrowEvent("a");
+            return new SignalThrowEvent(eventName);
         }
         if (this.eventType == StateType.LINK_THROW_EVENT) {
-            return new LinkThrowEvent("a");
+            return new LinkThrowEvent(eventName);
         }
         return null;
     }

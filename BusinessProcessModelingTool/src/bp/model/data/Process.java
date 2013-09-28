@@ -9,6 +9,7 @@ import bp.details.ProcessDetails;
 import bp.event.AttributeChangeListener;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
+import bp.util.BPNameGenerator;
 
 /**
  * Container for business process model
@@ -29,6 +30,8 @@ public class Process {
 
     private final Set<AttributeChangeListener> acListeners;
 
+    private final BPNameGenerator nameGenerator;
+
     private Integer blockDefIndentation;
 
     public Process(final String uniqueName, final Integer indentation) {
@@ -44,6 +47,7 @@ public class Process {
             this.blockDefIndentation = indentation;
 
         this.details = new ProcessDetails(this);
+        this.nameGenerator = new BPNameGenerator();
     }
 
     public Process(final String uniqueName) {
@@ -114,6 +118,10 @@ public class Process {
 
     public ProcessDetails getDetails() {
         return this.details;
+    }
+
+    public BPNameGenerator getNameGenerator() {
+        return this.nameGenerator;
     }
 
     public Set<AttributeChangeListener> getAcListeners() {

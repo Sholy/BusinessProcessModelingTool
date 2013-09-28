@@ -16,7 +16,7 @@ public class TaskState extends BPState {
     public void mousePressed(final MouseEvent e) {
         final Point position = e.getPoint();
         System.out.println(position);
-        final Task task = new Task("untitledTask");
+        final Task task = new Task(getPanel().getProcess().getNameGenerator().nextTaskName());
         task.getTaskComponent().setX(position.x);
         task.getTaskComponent().setY(position.y);
 

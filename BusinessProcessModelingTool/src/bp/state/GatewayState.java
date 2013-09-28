@@ -15,7 +15,7 @@ public class GatewayState extends BPState {
     @Override
     public void mousePressed(final MouseEvent e) {
         final Point p = e.getPoint();
-        final Gateway gateway = new Gateway("untitledGateway");
+        final Gateway gateway = new Gateway(getPanel().getProcess().getNameGenerator().nextGatewayName());
         gateway.getGatewayComponent().setX(p.x);
         gateway.getGatewayComponent().setY(p.y);
 

@@ -15,7 +15,7 @@ public class LaneState extends BPState {
     @Override
     public void mousePressed(final MouseEvent e) {
         final Point position = e.getPoint();
-        final Lane lane = new Lane("untitledLane");
+        final Lane lane = new Lane(getPanel().getProcess().getNameGenerator().nextLaneName());
         lane.getLaneComponent().setX(position.x);
         lane.getLaneComponent().setY(position.y);
         lane.getLaneComponent().getHandlers().updateHandlers();
