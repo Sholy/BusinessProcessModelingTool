@@ -4,16 +4,28 @@ public class SubProcess extends Activity {
 
     private Process process;
 
-    public SubProcess(String uniqueName) {
+    public SubProcess(final String uniqueName) {
         super(uniqueName);
     }
 
     public Process getProcess() {
-        return process;
+        return this.process;
     }
 
-    public void setProcess(Process process) {
+    public void setProcess(final Process process) {
         this.process = process;
+    }
+
+    @Override
+    protected void initializeDetails() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected void initializeComponent() {
+        // TODO Auto-generated method stub
+
     }
 
 }

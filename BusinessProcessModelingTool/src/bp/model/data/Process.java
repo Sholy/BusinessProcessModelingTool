@@ -7,6 +7,7 @@ import java.util.Set;
 
 import bp.details.ProcessDetails;
 import bp.event.AttributeChangeListener;
+import bp.event.ElementsListener;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 import bp.util.BPNameGenerator;
@@ -29,29 +30,20 @@ public class Process {
     private final List<Element> elements = new ArrayList<>();
 
     private final Set<AttributeChangeListener> acListeners;
+    private final Set<ElementsListener> eListeners;
 
     private final BPNameGenerator nameGenerator;
 
-    private Integer blockDefIndentation;
-
-    public Process(final String uniqueName, final Integer indentation) {
+    public Process(final String uniqueName) {
         this.acListeners = new HashSet<>();
+        this.eListeners = new HashSet<>();
         if (uniqueName == null || uniqueName.trim().isEmpty()) {
             throw new IllegalArgumentException("uniqueName can't be empty or null");
         }
         this.uniqueName = uniqueName;
 
-        if (indentation < 0)
-            this.blockDefIndentation = 0;
-        else
-            this.blockDefIndentation = indentation;
-
         this.details = new ProcessDetails(this);
         this.nameGenerator = new BPNameGenerator();
-    }
-
-    public Process(final String uniqueName) {
-        this(uniqueName, 0);
     }
 
     public String getUniqueName() {
@@ -98,22 +90,19 @@ public class Process {
         for (int i = 0; i < this.elements.size(); i++) {
             if (e.getComponent().getzIndex() < this.elements.get(i).getComponent().getzIndex()) {
                 this.elements.add(i, e);
+                elementAdded(e);
                 return;
             }
         }
         this.elements.add(e);
+        elementAdded(e);
     }
 
-    public Integer getBlockDefIndentation() {
-        return this.blockDefIndentation;
-    }
-
-    public void setBlockDefIndentation(final Integer blockDefIndentation) {
-        this.blockDefIndentation = blockDefIndentation;
-    }
-
-    public Integer getIndentation() {
-        return getBlockDefIndentation() + 1;
+    public void removeElement(final Element e) {
+        final Boolean removed = this.elements.remove(e);
+        if (removed) {
+            elementRemoved(e);
+        }
     }
 
     public ProcessDetails getDetails() {
@@ -147,6 +136,26 @@ public class Process {
             }
         }
         return null;
+    }
+
+    public void addElementsListener(final ElementsListener listener) {
+        this.eListeners.add(listener);
+    }
+
+    public void removeElementsListener(final ElementsListener listener) {
+        this.eListeners.remove(listener);
+    }
+
+    protected void elementAdded(final Element e) {
+        for (final ElementsListener el : this.eListeners) {
+            el.elementAdded(e);
+        }
+    }
+
+    protected void elementRemoved(final Element e) {
+        for (final ElementsListener el : this.eListeners) {
+            el.elementRemoved(e);
+        }
     }
 
 }

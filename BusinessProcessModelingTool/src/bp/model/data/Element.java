@@ -39,13 +39,9 @@ public abstract class Element {
         updateUniqueName(uniqueName, null);
     }
 
-    protected void initializeDetails() {
-        // TODO set abstract
-    }
+    protected abstract void initializeDetails();
 
-    protected void initializeComponent() {
-        // TODO set abstract
-    }
+    protected abstract void initializeComponent();
 
     public String getUniqueName() {
         return this.uniqueName;
