@@ -4,9 +4,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.SignalCatchEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -62,49 +61,29 @@ public class SignalCatchEventDetails extends IntermediateEventDetails{
     protected void addActions() {
         super.addActions();
 
-        this.signalNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.signalNameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent arg0) {
-                contentChanged();
+            public void updateValue() {
+                SignalCatchEventDetails.this.event.updateSignalName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent arg0) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent arg0) {
-
-            }
-
-            private void contentChanged() {
-                SignalCatchEventDetails.this.event.updateSignalName(
-                        SignalCatchEventDetails.this.signalNameTf.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return SignalCatchEventDetails.this.signalNameTf.getText();
             }
         });
 
-        this.dataFormatTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.dataFormatTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                SignalCatchEventDetails.this.event.updateDataFormat((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                SignalCatchEventDetails.this.event.updateDataFormat(
-                        SignalCatchEventDetails.this.dataFormatTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return SignalCatchEventDetails.this.dataFormatTa.getText();
             }
         });
     }

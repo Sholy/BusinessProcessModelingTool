@@ -4,9 +4,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.ErrorEndEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -63,49 +62,29 @@ public class ErrorEndEventDetails extends EndEventDetails{
     protected void addActions() {
         super.addActions();
 
-        this.errorNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.errorNameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent arg0) {
-                contentChanged();
+            public void updateValue() {
+                ErrorEndEventDetails.this.event.updateErrorName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent arg0) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent arg0) {
-
-            }
-
-            private void contentChanged() {
-                ErrorEndEventDetails.this.event.updateErrorName(ErrorEndEventDetails.this.errorNameTf.getText(),
-                        Controller.DETAILS);
+            public Object getValue() {
+                return ErrorEndEventDetails.this.errorNameTf.getText();
             }
         });
 
-        this.errorDataTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.errorDataTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                ErrorEndEventDetails.this.event.updateErrorData((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                ErrorEndEventDetails.this.event.updateErrorData(ErrorEndEventDetails.this.errorDataTa.getText(),
-                        Controller.DETAILS);
+            public Object getValue() {
+                return ErrorEndEventDetails.this.errorDataTa.getText();
             }
         });
     }

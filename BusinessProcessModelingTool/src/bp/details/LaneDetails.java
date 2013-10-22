@@ -4,9 +4,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.Lane;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -29,7 +28,7 @@ public class LaneDetails extends ElementDetails{
     private JTextArea actorTa;
     private JScrollPane actorScroll;
 
-    public LaneDetails(Lane lane) {
+    public LaneDetails(final Lane lane) {
         super(lane);
     }
 
@@ -37,12 +36,12 @@ public class LaneDetails extends ElementDetails{
     protected void initComponents() {
         super.initComponents();
 
-        parentLb = new JLabel(PARENT_LABEL);
-        actorLb = new JLabel(ACTOR_LABEL);
+        this.parentLb = new JLabel(PARENT_LABEL);
+        this.actorLb = new JLabel(ACTOR_LABEL);
 
-        parentTf = new JTextField(20);
-        actorTa = new JTextArea(5, 20);
-        actorScroll = new JScrollPane(actorTa);
+        this.parentTf = new JTextField(20);
+        this.actorTa = new JTextArea(5, 20);
+        this.actorScroll = new JScrollPane(this.actorTa);
     }
 
     @Override
@@ -51,47 +50,38 @@ public class LaneDetails extends ElementDetails{
 
         createBasic();
 
-        getBasic().add(actorLb);
-        getBasic().add(actorScroll);
-        getBasic().add(parentLb);
-        getBasic().add(parentTf);
+        getBasic().add(this.actorLb);
+        getBasic().add(this.actorScroll);
+        getBasic().add(this.parentLb);
+        getBasic().add(this.parentTf);
     }
 
     @Override
     protected void addActions() {
         super.addActions();
 
-        actorTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.actorTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                LaneDetails.this.lane.updateActor((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                // TODO Auto-generated method stub
-            }
-
-            private void contentChanged() {
-                lane.updateActor(actorTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return LaneDetails.this.actorTa.getText();
             }
         });
     }
 
     @Override
-    protected void dataAttributeChanged(BPKeyWords keyWord, Object value) {
+    protected void dataAttributeChanged(final BPKeyWords keyWord, final Object value) {
         super.dataAttributeChanged(keyWord, value);
         if (value != null) {
             if (keyWord == BPKeyWords.PARENT) {
                 // TODO
             } else if (keyWord == BPKeyWords.ACTOR) {
-                actorTa.setText((String) value);
+                this.actorTa.setText((String) value);
             }
         }
     }

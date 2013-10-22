@@ -11,7 +11,7 @@ public class RootTextBox extends CompositeTextBox {
     private final Set<TextChangeListener> tcListeners;
 
     public RootTextBox(final Process process) {
-        super(null, null, null, null);
+        super(null, null, null);
         appendTextBox(new ProcessTextBox(process, this));
         this.tcListeners = new HashSet<>();
     }

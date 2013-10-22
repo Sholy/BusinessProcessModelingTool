@@ -1,15 +1,15 @@
 package bp.details;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.SignalActivityEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -73,56 +73,36 @@ public class SignalActivityEventDetails extends ActivityEventDetails{
     protected void addActions() {
         super.addActions();
 
-        this.signalNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.signalNameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent arg0) {
-                contentChanged();
+            public void updateValue() {
+                SignalActivityEventDetails.this.event.updateSignalName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent arg0) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent arg0) {
-
-            }
-
-            private void contentChanged() {
-                SignalActivityEventDetails.this.event.updateSignalName(
-                        SignalActivityEventDetails.this.signalNameTf.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return SignalActivityEventDetails.this.signalNameTf.getText();
             }
         });
 
-        this.dataFormatTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.dataFormatTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                SignalActivityEventDetails.this.event.updateDataFormat((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                SignalActivityEventDetails.this.event.updateDataFormat(
-                        SignalActivityEventDetails.this.dataFormatTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return SignalActivityEventDetails.this.dataFormatTa.getText();
             }
         });
 
-        this.stopActivityCb.addChangeListener(new ChangeListener() {
+        this.stopActivityCb.addItemListener(new ItemListener() {
 
             @Override
-            public void stateChanged(final ChangeEvent arg0) {
+            public void itemStateChanged(final ItemEvent e) {
                 SignalActivityEventDetails.this.event.updateStopActivity(
                         SignalActivityEventDetails.this.stopActivityCb.isSelected(), Controller.DETAILS);
             }

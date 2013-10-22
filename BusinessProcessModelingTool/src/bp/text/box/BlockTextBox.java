@@ -4,8 +4,8 @@ import bp.model.util.BPKeyWords;
 
 public class BlockTextBox extends CompositeTextBox {
 
-    public BlockTextBox(final BPKeyWords key, final Object value, final Integer indentationLevel, final TextBox owner) {
-        super(key, value, indentationLevel, owner);
+    public BlockTextBox(final BPKeyWords key, final Object value, final TextBox owner) {
+        super(key, value, owner);
     }
 
     @Override

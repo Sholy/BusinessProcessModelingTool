@@ -4,10 +4,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import bp.event.AttributeChangeListener;
+import bp.event.BPFocusListener;
 import bp.model.data.Element;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -66,69 +65,42 @@ public class ElementDetails extends AbstractDetails {
     }
 
     protected void addActions() {
-        this.uniqueNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.uniqueNameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                getElement().updateUniqueName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                getElement().updateUniqueName(ElementDetails.this.uniqueNameTf.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ElementDetails.this.uniqueNameTf.getText();
             }
         });
 
-        this.nameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.nameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                getElement().updateName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                getElement().updateName(ElementDetails.this.nameTf.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ElementDetails.this.nameTf.getText();
             }
         });
 
-        this.descriptionTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.descriptionTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                getElement().updateDescription((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                getElement().updateDescription(ElementDetails.this.descriptionTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ElementDetails.this.descriptionTa.getText();
             }
         });
     }

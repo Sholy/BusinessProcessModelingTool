@@ -8,9 +8,8 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.Activity;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -77,47 +76,29 @@ public abstract class ActivityDetails extends ElementDetails{
     protected void addActions() {
         super.addActions();
 
-        this.dataTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.dataTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                ActivityDetails.this.activity.updateData((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                ActivityDetails.this.activity.updateData(ActivityDetails.this.dataTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ActivityDetails.this.dataTa.getText();
             }
         });
 
-        this.loopExpressionTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.loopExpressionTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                ActivityDetails.this.activity.updateLoopExpression((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                ActivityDetails.this.activity.updateLoopExpression(ActivityDetails.this.loopExpressionTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ActivityDetails.this.loopExpressionTa.getText();
             }
         });
 
@@ -125,7 +106,8 @@ public abstract class ActivityDetails extends ElementDetails{
 
             @Override
             public void stateChanged(final ChangeEvent e) {
-                ActivityDetails.this.activity.updateMinInput((Integer) ActivityDetails.this.minInputSp.getValue(), Controller.DETAILS);
+                ActivityDetails.this.activity.updateMinInput((Integer) ActivityDetails.this.minInputSp.getValue(),
+                        Controller.DETAILS);
             }
         });
     }

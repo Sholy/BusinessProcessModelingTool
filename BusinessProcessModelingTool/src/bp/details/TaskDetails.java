@@ -14,15 +14,14 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.ExecutionType;
 import bp.model.data.Task;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 
-public class TaskDetails extends ActivityDetails{
+public class TaskDetails extends ActivityDetails {
 
     /**
      * 
@@ -107,32 +106,23 @@ public class TaskDetails extends ActivityDetails{
     protected void addActions() {
         super.addActions();
 
-        this.actorTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.actorTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                TaskDetails.this.task.updateActor((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                TaskDetails.this.task.updateActor(TaskDetails.this.actorTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return TaskDetails.this.actorTa.getText();
             }
         });
 
-        this.autoAssignCb.addChangeListener(new ChangeListener() {
+        this.autoAssignCb.addItemListener(new ItemListener() {
 
             @Override
-            public void stateChanged(final ChangeEvent e) {
+            public void itemStateChanged(final ItemEvent e) {
                 TaskDetails.this.task.updateAutoAssign(TaskDetails.this.autoAssignCb.isSelected(), Controller.DETAILS);
             }
         });

@@ -4,10 +4,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import bp.event.AttributeChangeListener;
+import bp.event.BPFocusListener;
 import bp.model.data.Process;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -78,93 +77,55 @@ public class ProcessDetails extends AbstractDetails {
     }
 
     private void addActions() {
-        this.uniqueNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.uniqueNameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                getProcess().updateUniqueName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            private void contentChanged() {
-                getProcess().updateUniqueName(ProcessDetails.this.uniqueNameTf.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ProcessDetails.this.uniqueNameTf.getText();
             }
         });
 
-        this.nameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.nameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                getProcess().updateName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            private void contentChanged() {
-                getProcess().updateName(ProcessDetails.this.nameTf.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ProcessDetails.this.nameTf.getText();
             }
         });
 
-        this.descriptionTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.descriptionTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                getProcess().updateDescription((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                getProcess().updateDescription(ProcessDetails.this.descriptionTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ProcessDetails.this.descriptionTa.getText();
             }
         });
 
-        this.dataTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.dataTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                getProcess().updateData((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                getProcess().updateData(ProcessDetails.this.dataTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ProcessDetails.this.dataTa.getText();
             }
         });
     }

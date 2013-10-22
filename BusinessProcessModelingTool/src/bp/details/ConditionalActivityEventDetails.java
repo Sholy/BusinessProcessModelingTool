@@ -1,14 +1,14 @@
 package bp.details;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.ConditionalActivityEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -65,33 +65,23 @@ public class ConditionalActivityEventDetails extends ActivityEventDetails{
     protected void addActions() {
         super.addActions();
 
-        this.conditionTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.conditionTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent arg0) {
-                contentChanged();
+            public void updateValue() {
+                ConditionalActivityEventDetails.this.event.updateCondition((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent arg0) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent arg0) {
-
-            }
-
-            private void contentChanged() {
-                ConditionalActivityEventDetails.this.event.updateCondition(
-                        ConditionalActivityEventDetails.this.conditionTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ConditionalActivityEventDetails.this.conditionTa.getText();
             }
         });
 
-        this.stopActivityCb.addChangeListener(new ChangeListener() {
+        this.stopActivityCb.addItemListener(new ItemListener() {
 
             @Override
-            public void stateChanged(final ChangeEvent arg0) {
+            public void itemStateChanged(final ItemEvent e) {
                 ConditionalActivityEventDetails.this.event.updateStopActivity(
                         ConditionalActivityEventDetails.this.stopActivityCb.isSelected(), Controller.DETAILS);
             }

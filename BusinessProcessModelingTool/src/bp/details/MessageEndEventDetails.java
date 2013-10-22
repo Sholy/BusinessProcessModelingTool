@@ -3,9 +3,8 @@ package bp.details;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.MessageEndEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -52,26 +51,16 @@ public class MessageEndEventDetails extends EndEventDetails{
     protected void addActions() {
         super.addActions();
 
-        this.messageTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.messageTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent arg0) {
-                contentChanged();
+            public void updateValue() {
+                MessageEndEventDetails.this.event.updateMessage((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent arg0) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent arg0) {
-
-            }
-
-            private void contentChanged() {
-                MessageEndEventDetails.this.event.updateMessage(MessageEndEventDetails.this.messageTa.getText(),
-                        Controller.DETAILS);
+            public Object getValue() {
+                return MessageEndEventDetails.this.messageTa.getText();
             }
         });
     }

@@ -3,6 +3,8 @@ package bp.model.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import bp.app.AppCore;
+import bp.event.ElementsListener;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
 
@@ -53,6 +55,10 @@ public abstract class Activity extends Vertex {
         this.activityEvents.add(event);
     }
 
+    public void removeActivityEvent(final ActivityEvent event) {
+        this.activityEvents.remove(event);
+    }
+
     @Override
     public boolean canHaveInput() {
         return true;
@@ -63,4 +69,29 @@ public abstract class Activity extends Vertex {
         return true;
     }
 
+    protected void addElementsListener() {
+        AppCore.getInstance().getBpPanel().getProcess().addElementsListener(new ElementsListener() {
+
+            @Override
+            public void elementRemoved(final Element e) {
+                if (e instanceof ActivityEvent) {
+                    final ActivityEvent ae = (ActivityEvent) e;
+                    if (ae.getActivity().equals(this)) {
+                        removeActivityEvent(ae);
+                    }
+                }
+            }
+
+            @Override
+            public void elementAdded(final Element e) {
+                if (e instanceof ActivityEvent) {
+                    final ActivityEvent activityEvent = (ActivityEvent) e;
+                    if (activityEvent.getActivity().equals(this)) {
+                        addActivityEvent(activityEvent);
+                    }
+                }
+
+            }
+        });
+    }
 }

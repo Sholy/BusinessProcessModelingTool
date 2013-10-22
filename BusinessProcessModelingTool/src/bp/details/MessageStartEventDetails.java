@@ -3,9 +3,8 @@ package bp.details;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.MessageStartEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -52,26 +51,16 @@ public class MessageStartEventDetails extends StartEventDetails {
     protected void addActions() {
         super.addActions();
 
-        this.dataFormatTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.dataFormatTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                MessageStartEventDetails.this.event.updateDataFormat((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                MessageStartEventDetails.this.event.updateDataFormat(
-                        MessageStartEventDetails.this.dataFormatTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return MessageStartEventDetails.this.dataFormatTa.getText();
             }
         });
     }

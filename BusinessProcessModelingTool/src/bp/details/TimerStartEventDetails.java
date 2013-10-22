@@ -3,9 +3,8 @@ package bp.details;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.TimerStartEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -52,26 +51,16 @@ public class TimerStartEventDetails extends StartEventDetails{
     protected void addActions() {
         super.addActions();
 
-        this.timeFormatTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.timeFormatTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent arg0) {
-                contentChanged();
+            public void updateValue() {
+                TimerStartEventDetails.this.event.updateTimeFormat((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent arg0) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent arg0) {
-
-            }
-
-            private void contentChanged() {
-                TimerStartEventDetails.this.event.updateTimeFormat(TimerStartEventDetails.this.timeFormatTa.getText(),
-                        Controller.DETAILS);
+            public Object getValue() {
+                return TimerStartEventDetails.this.timeFormatTa.getText();
             }
         });
     }

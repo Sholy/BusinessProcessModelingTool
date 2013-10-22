@@ -4,9 +4,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.SignalStartEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -62,49 +61,29 @@ public class SignalStartEventDetails extends StartEventDetails{
     protected void addActions() {
         super.addActions();
 
-        this.dataFormatTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.dataFormatTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                SignalStartEventDetails.this.event.updateDataFormat((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                SignalStartEventDetails.this.event.updateDataFormat(
-                        SignalStartEventDetails.this.dataFormatTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return SignalStartEventDetails.this.dataFormatTa.getText();
             }
         });
 
-        this.signalNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.signalNameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent e) {
-                contentChanged();
+            public void updateValue() {
+                SignalStartEventDetails.this.event.updateSignalName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-
-            private void contentChanged() {
-                SignalStartEventDetails.this.event.updateSignalName(
-                        SignalStartEventDetails.this.signalNameTf.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return SignalStartEventDetails.this.signalNameTf.getText();
             }
         });
     }

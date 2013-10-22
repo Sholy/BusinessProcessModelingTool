@@ -12,26 +12,23 @@ public abstract class TextBox {
     private final TextBox owner;
 
     public TextBox(final BPKeyWords key) {
-        this(key, null, null, null);
-    }
-
-    public TextBox(final BPKeyWords key, final Integer indentationLevel) {
-        this(key, null, indentationLevel, null);
+        this(key, null, null);
     }
 
     public TextBox(final BPKeyWords key, final Object value) {
-        this(key, value, null, null);
+        this(key, value, null);
     }
 
-    public TextBox(final BPKeyWords key, final Object value, final Integer indentationLevel, final TextBox owner) {
+    public TextBox(final BPKeyWords key, final Object value, final TextBox owner) {
         this.key = key;
         this.value = value;
-        if (indentationLevel == null) {
+        this.owner = owner;
+        if (this.owner == null) {
             this.indentationLevel = 0;
         } else {
-            this.indentationLevel = indentationLevel;
+            this.indentationLevel = owner.getIndentationLevel() + 1;
         }
-        this.owner = owner;
+
     }
 
     public abstract String generateText();
@@ -52,6 +49,14 @@ public abstract class TextBox {
 
     public Integer getIndentationLevel() {
         return this.indentationLevel;
+    }
+
+    public void setIndentationLevel(final Integer indentationLevel) {
+        if (indentationLevel == null || indentationLevel < 0) {
+            this.indentationLevel = 0;
+        } else {
+            this.indentationLevel = indentationLevel;
+        }
     }
 
     public Object getValue() {

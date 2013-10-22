@@ -26,7 +26,6 @@ public class EdgeState extends BPState {
             if (this.edge == null) {
                 this.edge = new Edge(getPanel().getProcess().getNameGenerator().nextEdgeName());
                 if (vertex.canHaveOutput()) {
-                    this.edge.updateSource(vertex, null);
                     final BPComponent vertexComponent = (BPComponent) vertex.getComponent();
                     this.edge.getEdgeComponent().setSourceX(p.x);
                     this.edge.getEdgeComponent().setSourceY(p.y);
@@ -35,6 +34,7 @@ public class EdgeState extends BPState {
                     this.edge.getEdgeComponent().updateComponent(vertexComponent, null);
 
                     getPanel().getProcess().addElement(this.edge);
+                    this.edge.updateSource(vertex, null);
                     // TODO: limit repaint region
                     getPanel().repaint();
                 }

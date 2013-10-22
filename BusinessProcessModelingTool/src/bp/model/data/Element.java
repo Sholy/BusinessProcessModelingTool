@@ -104,5 +104,4 @@ public abstract class Element {
         }
         return false;
     }
-
 }

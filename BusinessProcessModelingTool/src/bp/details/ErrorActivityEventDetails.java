@@ -2,9 +2,8 @@ package bp.details;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.ErrorActivityEvent;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -49,26 +48,16 @@ public class ErrorActivityEventDetails extends ActivityEventDetails{
     protected void addActions() {
         super.addActions();
 
-        this.errorNameTf.getDocument().addDocumentListener(new DocumentListener() {
+        this.errorNameTf.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent arg0) {
-                contentChanged();
+            public void updateValue() {
+                ErrorActivityEventDetails.this.event.updateErrorName((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent arg0) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent arg0) {
-
-            }
-
-            private void contentChanged() {
-                ErrorActivityEventDetails.this.event.updateErrorName(
-                        ErrorActivityEventDetails.this.errorNameTf.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return ErrorActivityEventDetails.this.errorNameTf.getText();
             }
         });
     }

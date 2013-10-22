@@ -61,46 +61,27 @@ public class BPTextPanel extends JTextPane {
         FORMATTING_PATTERN = Pattern.compile(sb.toString());
     }
 
-    StyledDocument doc = getStyledDocument();
-    MutableAttributeSet standardStyle;
-    MutableAttributeSet keywordStyle;
-    MutableAttributeSet valueStyle;
-    MutableAttributeSet commentStyle;
+    private final StyledDocument doc = getStyledDocument();
+    private MutableAttributeSet standardStyle;
+    private MutableAttributeSet keywordStyle;
+    private MutableAttributeSet valueStyle;
+    private MutableAttributeSet commentStyle;
+
+    private final RootTextBox rootTextBox;
 
     public BPTextPanel(final RootTextBox rootTextBox) {
         initializeStyles();
 
-        rootTextBox.addTextChangeListener(new TextChangeListener() {
+        this.rootTextBox = rootTextBox;
 
-            @Override
-            public void textChanged(final String text) {
-                setText(text);
-                try {
-                    BPTextPanel.this.doc.remove(0, BPTextPanel.this.doc.getLength());
-                    BPTextPanel.this.doc.insertString(0, text, null);
-                } catch (final BadLocationException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        addTextChangedListener();
+        addDocListener();
 
-        this.doc.addDocumentListener(new DocumentListener() {
-
-            @Override
-            public void removeUpdate(final DocumentEvent e) {
-                new Thread(new Formatter()).start();
-            }
-
-            @Override
-            public void insertUpdate(final DocumentEvent e) {
-                new Thread(new Formatter()).start();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-
-            }
-        });
+        try {
+            getDocument().insertString(0, rootTextBox.generateText(), this.standardStyle);
+        } catch (final BadLocationException e1) {
+            e1.printStackTrace();
+        }
     }
 
     private void initializeStyles() {
@@ -126,28 +107,46 @@ public class BPTextPanel extends JTextPane {
         StyleConstants.setFontSize(this.commentStyle, 11);
     }
 
+    private void addTextChangedListener() {
+        getRootTextBox().addTextChangeListener(new TextChangeListener() {
+            @Override
+            public void textChanged(final String text) {
+                try {
+                    getDocument().remove(0, getDocument().getLength());
+                    getDocument().insertString(0, text, null);
+                } catch (final BadLocationException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void addDocListener() {
+        getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void removeUpdate(final DocumentEvent e) {
+                new Thread(new Formatter()).start();
+            }
+
+            @Override
+            public void insertUpdate(final DocumentEvent e) {
+                new Thread(new Formatter()).start();
+            }
+
+            @Override
+            public void changedUpdate(final DocumentEvent e) {
+
+            }
+        });
+    }
+
+    public RootTextBox getRootTextBox() {
+        return this.rootTextBox;
+    }
+
 
     private class Formatter implements Runnable {
-
-        private StyledDocument getDoc() {
-            return BPTextPanel.this.doc;
-        }
-
-        private AttributeSet standardStyle() {
-            return BPTextPanel.this.standardStyle;
-        }
-
-        private AttributeSet keywordStyle() {
-            return BPTextPanel.this.keywordStyle;
-        }
-
-        private AttributeSet valueStyle() {
-            return BPTextPanel.this.valueStyle;
-        }
-
-        private AttributeSet commentStyle() {
-            return BPTextPanel.this.commentStyle;
-        }
 
         @Override
         public void run() {
@@ -186,6 +185,26 @@ public class BPTextPanel extends JTextPane {
             } catch (final BadLocationException e) {
                 e.printStackTrace();
             }
+        }
+
+        private StyledDocument getDoc() {
+            return BPTextPanel.this.doc;
+        }
+
+        private AttributeSet standardStyle() {
+            return BPTextPanel.this.standardStyle;
+        }
+
+        private AttributeSet keywordStyle() {
+            return BPTextPanel.this.keywordStyle;
+        }
+
+        private AttributeSet valueStyle() {
+            return BPTextPanel.this.valueStyle;
+        }
+
+        private AttributeSet commentStyle() {
+            return BPTextPanel.this.commentStyle;
         }
 
     }

@@ -40,10 +40,11 @@ public class Process {
         if (uniqueName == null || uniqueName.trim().isEmpty()) {
             throw new IllegalArgumentException("uniqueName can't be empty or null");
         }
-        this.uniqueName = uniqueName;
 
         this.details = new ProcessDetails(this);
         this.nameGenerator = new BPNameGenerator();
+
+        updateUniqueName(uniqueName, null);
     }
 
     public String getUniqueName() {

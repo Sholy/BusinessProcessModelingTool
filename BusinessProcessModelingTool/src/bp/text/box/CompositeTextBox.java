@@ -9,9 +9,8 @@ public abstract class CompositeTextBox extends TextBox {
 
     private final List<TextBox> textBoxes;
 
-    public CompositeTextBox(final BPKeyWords key, final Object value, final Integer indentationLevel,
-            final TextBox owner) {
-        super(key, value, indentationLevel, owner);
+    public CompositeTextBox(final BPKeyWords key, final Object value, final TextBox owner) {
+        super(key, value, owner);
         this.textBoxes = new ArrayList<>();
     }
 

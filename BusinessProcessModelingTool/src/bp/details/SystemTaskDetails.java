@@ -3,9 +3,8 @@ package bp.details;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
+import bp.event.BPFocusListener;
 import bp.model.data.SystemTask;
 import bp.model.util.BPKeyWords;
 import bp.model.util.Controller;
@@ -52,26 +51,16 @@ public class SystemTaskDetails extends TaskDetails {
     protected void addActions() {
         super.addActions();
 
-        this.implementationTa.getDocument().addDocumentListener(new DocumentListener() {
+        this.implementationTa.addFocusListener(new BPFocusListener() {
 
             @Override
-            public void removeUpdate(final DocumentEvent arg0) {
-                contentChanged();
+            public void updateValue() {
+                SystemTaskDetails.this.systemTask.updateImplementation((String) getValue(), Controller.DETAILS);
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent arg0) {
-                contentChanged();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent arg0) {
-
-            }
-
-            private void contentChanged() {
-                SystemTaskDetails.this.systemTask.updateImplementation(
-                        SystemTaskDetails.this.implementationTa.getText(), Controller.DETAILS);
+            public Object getValue() {
+                return SystemTaskDetails.this.implementationTa.getText();
             }
         });
     }
