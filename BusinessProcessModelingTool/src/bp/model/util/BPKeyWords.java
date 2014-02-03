@@ -2,6 +2,7 @@ package bp.model.util;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public enum BPKeyWords {
 
@@ -11,7 +12,7 @@ public enum BPKeyWords {
     DATA("data", BPType.STRING),
     TASK("task", BPType.UNIQUE_NAME),
     ACTOR("actor", BPType.STRING),
-    LANE_ACTOR("actor[lane]", BPType.UNIQUE_NAME),
+    LANE_ACTOR("laneActor", BPType.UNIQUE_NAME),
     MIN_INPUT("minInput", BPType.INTEGER),
     AUTO_ASSIGN("autoAssign", BPType.BOOLEAN),
     MULTIPLE_EXECUTION("multipleExecution", BPType.INTEGER),
@@ -75,6 +76,20 @@ public enum BPKeyWords {
     private final String name;
     private final BPType type;
 
+    private static final Pattern keyWordsPattern;
+
+    static {
+        final StringBuilder sb = new StringBuilder();
+        for (final BPKeyWords v : BPKeyWords.values()) {
+            if (!v.getName().isEmpty()) {
+                sb.append(v.getName());
+                sb.append("|");
+            }
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        keyWordsPattern = Pattern.compile(sb.toString());
+    }
+
     private BPKeyWords(final String name, final BPType type) {
         this.name = name;
         this.type = type;
@@ -96,6 +111,10 @@ public enum BPKeyWords {
             }
         }
         return keyWords.toArray(new String[0]);
+    }
+
+    public static boolean isKeyWord(final String keyWord) {
+        return keyWordsPattern.matcher(keyWord).matches();
     }
 
 }

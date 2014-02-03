@@ -17,4 +17,9 @@ public class Token {
     public TokenType getTokenType() {
         return this.tokenType;
     }
+
+    @Override
+    public String toString() {
+        return String.format("[%s]: %s", getTokenType().toString(), getContent());
+    }
 }

@@ -3,7 +3,11 @@ package bp.text.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import bp.model.util.BPKeyWords;
+
 public class Lexer {
+
+    private static final int INITIAL_TOKEN_CAPACITY = 300;
 
     private final TokenFactory tokenFactory;
 
@@ -16,15 +20,16 @@ public class Lexer {
         this.tokenFactory = new TokenFactory();
         this.in = new StringBuilder();
         this.processed = new StringBuilder();
-        this.tokens = new ArrayList<>();
+        this.tokens = new ArrayList<>(INITIAL_TOKEN_CAPACITY);
     }
 
-    public Token[] buildTokens(final String input) {
+    public List<Token> buildTokens(final String input) {
         clearStringBuilder(this.in);
         clearStringBuilder(this.processed);
         this.tokens.clear();
 
         toUnknownState();
+        this.in.append(input);
 
         while (this.in.length() > 0) {
             final char c = this.in.charAt(0);
@@ -33,48 +38,67 @@ public class Lexer {
             case TEXT_STATE:
                 if (isText(c) || isDigit(c)) {
                     this.processed.append(c);
-                } else {
-                    // TODO: check for keywords
-                    this.tokens.add(this.tokenFactory.createIdentifierToken(this.processed.toString()));
+                } else if (isWhitespace(c)) {
+                    addTextToken(this.processed.toString());
                     clearStringBuilder(this.processed);
-                    if (isWhitespace(c)) {
-                        toWhitespaceState();
-                    } else if (isDoubleQuote(c)) {
-                        toStringState();
-                    } else {
-                        if (isOpenedCurvyBracket(c)) {
-                            this.tokens.add(this.tokenFactory.createOpenedCurvyBracketToken());
-                        } else if (isClosedCurvyBracket(c)) {
-                            this.tokens.add(this.tokenFactory.createClosedCurvyBracketToken());
-                        } else if (isAssignemt(c)) {
-                            this.tokens.add(this.tokenFactory.createAssignmentToken());
-                        }
-                        toUnknownState();
-                    }
+                    this.processed.append(c);
+                    toWhitespaceState();
+                } else if (isOpenedCurvyBracket(c)) {
+                    addTextToken(this.processed.toString());
+                    clearStringBuilder(this.processed);
+                    addOpenedCurvyBracketToken();
+                    toUnknownState();
+                } else if (isClosedCurvyBracket(c)) {
+                    addTextToken(this.processed.toString());
+                    clearStringBuilder(this.processed);
+                    addClosedCurvyBracketToken();
+                    toUnknownState();
+                } else if (isAssignemt(c)) {
+                    addTextToken(this.processed.toString());
+                    clearStringBuilder(this.processed);
+                    addAssigmentToken();
+                    toUnknownState();
+                } else if (isDoubleQuote(c)) {
+                    addTextToken(this.processed.toString());
+                    clearStringBuilder(this.processed);
+                    this.processed.append(c);
+                    toStringState();
+                } else {
+                    this.processed.append(c);
+                    toUnknownState();
                 }
                 break;
             case NUMBER_STATE:
                 if (isDigit(c)) {
                     this.processed.append(c);
-                } else {
-                    this.tokens.add(this.tokenFactory.createNumberToken(this.processed.toString()));
+                } else if (isWhitespace(c)) {
+                    addNumberToken(this.processed.toString());
                     clearStringBuilder(this.processed);
-                    if (isWhitespace(c)) {
-                        toWhitespaceState();
-                    } else if (isText(c)) {
-                        toTextState();
-                    } else if (isDoubleQuote(c)) {
-                        toStringState();
-                    } else {
-                        if (isOpenedCurvyBracket(c)) {
-                            this.tokens.add(this.tokenFactory.createOpenedCurvyBracketToken());
-                        } else if (isClosedCurvyBracket(c)) {
-                            this.tokens.add(this.tokenFactory.createClosedCurvyBracketToken());
-                        } else if (isAssignemt(c)) {
-                            this.tokens.add(this.tokenFactory.createAssignmentToken());
-                        }
-                        toUnknownState();
-                    }
+                    this.processed.append(c);
+                    toWhitespaceState();
+                } else if (isOpenedCurvyBracket(c)) {
+                    addNumberToken(this.processed.toString());
+                    clearStringBuilder(this.processed);
+                    addOpenedCurvyBracketToken();
+                    toUnknownState();
+                } else if (isClosedCurvyBracket(c)) {
+                    addNumberToken(this.processed.toString());
+                    clearStringBuilder(this.processed);
+                    addClosedCurvyBracketToken();
+                    toUnknownState();
+                } else if (isAssignemt(c)) {
+                    addNumberToken(this.processed.toString());
+                    clearStringBuilder(this.processed);
+                    addAssigmentToken();
+                    toUnknownState();
+                } else if (isDoubleQuote(c)) {
+                    addNumberToken(this.processed.toString());
+                    clearStringBuilder(this.processed);
+                    this.processed.append(c);
+                    toStringState();
+                } else {
+                    this.processed.append(c);
+                    toUnknownState();
                 }
                 break;
             case STRING_STATE:
@@ -108,10 +132,13 @@ public class Lexer {
                     this.tokens.add(this.tokenFactory.createWhitespaceToken(this.processed.toString()));
                     clearStringBuilder(this.processed);
                     if (isDigit(c)) {
+                        this.processed.append(c);
                         toNumberState();
                     } else if (isText(c)) {
+                        this.processed.append(c);
                         toTextState();
                     } else if (isDoubleQuote(c)) {
+                        this.processed.append(c);
                         toStringState();
                     } else {
                         if (isOpenedCurvyBracket(c)) {
@@ -121,6 +148,7 @@ public class Lexer {
                         } else if (isAssignemt(c)) {
                             this.tokens.add(this.tokenFactory.createAssignmentToken());
                         }
+                        this.processed.append(c);
                         toUnknownState();
                     }
                 }
@@ -191,7 +219,11 @@ public class Lexer {
 
         if (this.processed.length() > 0) {
             if (this.state == LexerState.TEXT_STATE) {
-                this.tokens.add(this.tokenFactory.createIdentifierToken(this.processed.toString()));
+                if (BPKeyWords.isKeyWord(this.processed.toString())) {
+                    this.tokens.add(this.tokenFactory.createKeywordToken(this.processed.toString()));
+                } else {
+                    this.tokens.add(this.tokenFactory.createIdentifierToken(this.processed.toString()));
+                }
             } else if (this.state == LexerState.NUMBER_STATE) {
                 this.tokens.add(this.tokenFactory.createNumberToken(this.processed.toString()));
             } else if (this.state == LexerState.STRING_STATE) {
@@ -207,7 +239,7 @@ public class Lexer {
             }
         }
 
-        return this.tokens.toArray(new Token[this.tokens.size()]);
+        return this.tokens;
     }
 
     private void clearStringBuilder(final StringBuilder sb) {
@@ -284,5 +316,29 @@ public class Lexer {
 
     private boolean isStar(final char c) {
         return c == '*';
+    }
+
+    private void addTextToken(final String s) {
+        if (BPKeyWords.isKeyWord(s)) {
+            this.tokens.add(this.tokenFactory.createKeywordToken(s));
+        } else {
+            this.tokens.add(this.tokenFactory.createIdentifierToken(s));
+        }
+    }
+
+    private void addOpenedCurvyBracketToken() {
+        this.tokens.add(this.tokenFactory.createOpenedCurvyBracketToken());
+    }
+
+    private void addClosedCurvyBracketToken() {
+        this.tokens.add(this.tokenFactory.createClosedCurvyBracketToken());
+    }
+
+    private void addAssigmentToken() {
+        this.tokens.add(this.tokenFactory.createAssignmentToken());
+    }
+
+    private void addNumberToken(final String s) {
+        this.tokens.add(this.tokenFactory.createNumberToken(s));
     }
 }
